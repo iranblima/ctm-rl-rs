@@ -102,7 +102,8 @@ const txt = Object.fromEntries(Object.entries(files).map(([k, v]) => [k, JSON.st
 const sums = Object.keys(txt).sort().map(k => `${sha(txt[k])}  ${k}`).join('\n') + '\n';
 if (CONFERIR) {
   const ref = fs.readFileSync(path.join(__dirname, 'referencia', 'SHA256SUMS'), 'utf8');
-  const a = new Map(ref.trim().split('\n').map(l => l.split(/\s+/).reverse())), b = new Map(sums.trim().split('\n').map(l => l.split(/\s+/).reverse()));
+  const ler = s => new Map(s.split(/\r?\n/).filter(l => l.trim()).map(l => l.trim().split(/\s+/).reverse()));   // aceita quebra de linha do Windows
+  const a = ler(ref), b = ler(sums);
   let iguais = true;
   for (const k of new Set([...a.keys(), ...b.keys()])) { const eq = a.get(k) === b.get(k); iguais = iguais && eq; console.log(`${eq ? 'igual    ' : 'DIFERENTE'} ${k}`); }
   console.log(iguais ? 'Referência reproduzida.' : 'A referência NÃO foi reproduzida.');
