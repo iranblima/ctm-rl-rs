@@ -1,5 +1,5 @@
 {
-  "name": "andina-ctm-rl",
+  "name": "ctm-rl-rs",
   "private": true,
   "description": "Simulador CTM e Dueling DDQN para desobstrução da malha federal do RS (etapas 02 e 03)",
   "engines": {

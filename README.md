@@ -1,6 +1,6 @@
-# andina-ctm-rl
+# ctm-rl-rs
 
-Código, dados e resultados dos experimentos feitos para o artigo da Andina Alay Lerma (com Taveira, Menezes e Buarque) sobre a escolha sequencial de intervenções na malha federal do Rio Grande do Sul.
+Código, dados e resultados dos experimentos ligados ao artigo *Sequential Spatial-Temporal Influence Maximization under Flow, Coverage, and Capacity Constraints* (Lerma, Taveira, Menezes e Buarque) e à proposta CTM–RL que o estende: escolha sequencial de intervenções na malha federal do Rio Grande do Sul.
 
 O repositório tem quatro etapas, na ordem em que foram feitas. Cada etapa guarda o código, os resultados que geraram as páginas e a página pronta para abrir no navegador.
 
@@ -10,7 +10,7 @@ O repositório tem quatro etapas, na ordem em que foram feitas. Cada etapa guard
 | `01_reproducao_artigo/` | Reprodução do experimento do artigo inicial: cascata independente, K = 5 sementes, Dueling DDQN × Improved Re-rank × Greedy MC e outros | Python |
 | `02_ordem_liberacao/` | Primeira adaptação: semente = liberar um trecho interditado, propagação da fila pelo modelo de tráfego, Guloso × Dueling DDQN | JavaScript (Node.js) |
 | `03_desobstrucao_ctm_rl/` | **Versão atual**, a proposta CTM–RL: rede obstruída, decisão a cada hora por 12 h, orçamento K ∈ {1, 3, 5, 10}, Esperar × Guloso × Dueling DDQN MLP | JavaScript (Node.js) |
-| `data/raw/` | Arquivos enviados pela Andina (malha SNV, contagens PNCT, interdições da PRF) | — |
+| `data/raw/` | Dados de entrada: malha SNV/DNIT, contagens PNCT e interdições da PRF (chuvas de 2024) | — |
 | `data/derived/` | `rsdata.json`: malha + postos + interdições prontos para os simuladores (gerado por `00_simulador_enchentes/prep.py`) | — |
 | `paginas/` | Todas as páginas dos simuladores, já com os dados embutidos | HTML |
 | `tools/embed.py` | Junta um modelo HTML com um JSON de dados e gera a página | Python |
@@ -145,7 +145,7 @@ As células são horas até ≥ 80% dos postos estáveis; menor é melhor.
   - critério de estabilidade (±20% ou ±30 veículos/h em relação à simulação sem interdições).
 - **Correção feita depois do treino da etapa 03.** `legal()` passou a excluir interdições que terminam exatamente no minuto da decisão, e o Guloso passou a restaurar o histórico de estabilidade depois de olhar à frente. O teste e os números acima já usam a versão corrigida; os checkpoints foram treinados com a anterior.
 - **As etapas 01 a 03 são deterministas** com as sementes indicadas: rodar o teste de novo dá os mesmos números. Retreinar a etapa 03 com o código corrigido gera checkpoints um pouco diferentes dos guardados.
-- **Os dados em `data/raw/`** vêm do SNV/DNIT, do PNCT e da PRF e foram enviados pela Andina. Antes de tornar este repositório público, confirme com ela.
+- **Os dados em `data/raw/`** vêm do SNV/DNIT, do PNCT e da PRF e foram cedidos pelos autores do artigo. Antes de tornar este repositório público, confirme com eles.
 
 ## Próximo passo planejado
 
