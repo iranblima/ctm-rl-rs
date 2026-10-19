@@ -1,0 +1,739 @@
+<title>Interdições na Grande Porto Alegre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: mapa rodoviário à esquerda como palco principal; painel de comando à direita, como uma mesa de operações. Paleta de sinalização rodoviária (verde de placa, asfalto, âmbar e vermelho de alerta). */
+:root{
+  --bg:#eef2ef; --surface:#ffffff; --fg:#16201b; --muted:#5a6861; --line:#d3dcd6;
+  --accent:#0d6a42; --accent-fg:#ffffff; --accent-soft:#dcefe4;
+  --map-bg:#f7f9f7; --asphalt:#c9d1cc; --node:#ffffff;
+  --free:#2e9d5a; --slow:#dba110; --jam:#d9492c; --stop:#7c1f14; --dash:rgba(255,255,255,.85);
+  --font-display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --font-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1411; --surface:#161e1a; --fg:#e5ece8; --muted:#95a39c; --line:#28332e;
+    --accent:#3cbf80; --accent-fg:#06140d; --accent-soft:#173427;
+    --map-bg:#121a16; --asphalt:#2f3a35; --node:#161e1a;
+    --free:#37b068; --slow:#e8b02a; --jam:#ef5a3c; --stop:#ff8f7a; --dash:rgba(0,0,0,.55);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1411; --surface:#161e1a; --fg:#e5ece8; --muted:#95a39c; --line:#28332e;
+  --accent:#3cbf80; --accent-fg:#06140d; --accent-soft:#173427;
+  --map-bg:#121a16; --asphalt:#2f3a35; --node:#161e1a;
+  --free:#37b068; --slow:#e8b02a; --jam:#ef5a3c; --stop:#ff8f7a; --dash:rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:16px;padding-block:28px 40px}
+header{display:grid;gap:6px;margin-bottom:20px;max-width:760px}
+.eyebrow{font-family:var(--font-display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--accent)}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.05;margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:65ch}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:minmax(0,1fr)}}
+.stage{display:grid;gap:12px;min-width:0}
+.mapbox{position:relative;background:var(--map-bg);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+#map{display:block;width:100%;touch-action:manipulation;cursor:crosshair}
+.clock{position:absolute;top:10px;left:12px;font-family:var(--font-data);font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--fg)}
+.clock b{font-weight:500;font-size:15px}
+.status{font-size:14px;color:var(--muted);min-height:1.5em}
+.status strong{color:var(--fg);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:22px;height:6px;border-radius:3px;display:inline-block}
+.sw.thin{height:3px}
+.mk{width:12px;height:12px;border-radius:3px;display:inline-block;position:relative}
+.mk::after{content:"";position:absolute;left:2px;right:2px;top:5px;height:2px;background:#fff}
+.chartbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px 8px}
+.chart-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:6px}
+.chart-head b{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--fg);text-transform:uppercase;letter-spacing:.04em}
+#chart{display:block;width:100%;height:150px}
+aside{display:grid;gap:14px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px}
+.card h2{font-family:var(--font-display);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.07em;margin:0;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:500;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.block{width:100%;text-align:left}
+.field{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+select{font:inherit;font-size:14px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 8px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-size:13px;line-height:1.25;font-weight:500;border:0;border-right:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 6px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--fg);box-shadow:inset 0 -3px 0 var(--accent)}
+.check{display:flex;gap:8px;align-items:center;font-size:14px}
+.metrics{display:grid;gap:0}
+.metric{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.metric:last-child{border-bottom:0}
+.metric .k{font-size:13px;color:var(--muted)}
+.metric .v{font-family:var(--font-data);font-size:15px;font-variant-numeric:tabular-nums;text-align:right}
+.pill{font-family:var(--font-body);font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--fg)}
+.pill.alert{background:var(--jam);color:#fff}
+.pill.warn{background:var(--slow);color:#1b1400}
+.notes{font-size:14px;margin:0;padding-left:18px;display:grid;gap:6px}
+.notes b{font-weight:600}
+footer{margin-top:22px;font-size:13px;color:var(--muted);max-width:80ch}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Rodovias federais reais · Grande Porto Alegre · fora de escala</div>
+    <h1>Interdições na Grande Porto Alegre</h1>
+    <p class="lead">BR-290, BR-116, BR-386 e BR-448, as rodovias do estudo de caso das enchentes de 2024 no artigo de Taveira et al. Clique num trecho para interditá-lo, acompanhe a fila crescer para trás e chegar aos entroncamentos, depois libere e veja quanto tempo a rede leva para normalizar. A BR-448 e a BR-386 estão em sentido único, como numa operação de saída de feriado.</p>
+  </header>
+
+  <div class="grid">
+    <section class="stage">
+      <div class="mapbox">
+        <canvas id="map" aria-label="Mapa da rede rodoviária simulada"></canvas>
+        <div class="clock" id="clock">sex <b>16:00</b></div>
+      </div>
+      <div class="status" id="status">Passe o mouse sobre um trecho para ver velocidade e sentido. Clique para aplicar a ação escolhida no painel.</div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--free)"></i>Livre</span>
+        <span><i class="sw" style="background:var(--slow)"></i>Lento</span>
+        <span><i class="sw" style="background:var(--jam)"></i>Congestionado</span>
+        <span><i class="sw" style="background:var(--stop)"></i>Parado</span>
+        <span><i class="sw" style="background:var(--muted);height:8px"></i>3 faixas</span>
+        <span><i class="sw" style="background:var(--muted)"></i>2 faixas</span>
+        <span><i class="sw thin" style="background:var(--muted)"></i>Pista simples</span>
+        <span><i class="sw" style="background:var(--accent)"></i>▸ Sentido único</span>
+        <span><i class="mk" style="background:var(--stop)"></i>Interdição total</span>
+        <span><i class="mk" style="background:var(--slow)"></i>Meia pista</span>
+      </div>
+      <div class="chartbox">
+        <div class="chart-head"><b>Quilômetros congestionados</b><span>últimas 4 horas · linhas verticais marcam interdições e liberações</span></div>
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <h2>Situação agora</h2>
+        <div class="metrics">
+          <div class="metric"><span class="k">Estado</span><span class="v" id="mState"><span class="pill">Normal</span></span></div>
+          <div class="metric"><span class="k">Extensão congestionada</span><span class="v" id="mCong">0 km</span></div>
+          <div class="metric"><span class="k">Veículos esperando para entrar na rede</span><span class="v" id="mWait">0</span></div>
+          <div class="metric"><span class="k">Tempo perdido somado</span><span class="v" id="mDelay">0 h</span></div>
+          <div class="metric"><span class="k" id="mTimeK">Desde a última mudança</span><span class="v" id="mTime">—</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ao clicar num trecho</h2>
+        <div class="seg" role="group" aria-label="Ação ao clicar">
+          <button type="button" id="toolTotal" data-tool="total" aria-pressed="true">Interditar</button>
+          <button type="button" id="toolPartial" data-tool="partial" aria-pressed="false">Meia pista</button>
+          <button type="button" id="toolFree" data-tool="free" aria-pressed="false">Liberar</button>
+        </div>
+        <label class="check"><input type="checkbox" id="both"> Aplicar nos dois sentidos</label>
+        <button type="button" class="btn" id="clearAll">Liberar todas as interdições</button>
+      </div>
+
+      <div class="card">
+        <h2>Cenários prontos</h2>
+        <button type="button" class="btn block" id="sc1">Enchente: BR-290 fechada entre Porto Alegre e Eldorado do Sul, nos dois sentidos</button>
+        <button type="button" class="btn block" id="sc2">Acidente na BR-448 (sentido único), rumo a Sapucaia do Sul</button>
+        <button type="button" class="btn block" id="sc3">Acidente na BR-116 em Canoas, sentido Novo Hamburgo</button>
+        <button type="button" class="btn block" id="sc4">Meia pista na BR-386 (sentido único) perto de Tabaí, no pico</button>
+      </div>
+
+      <div class="card">
+        <h2>Simulação</h2>
+        <div class="row">
+          <button type="button" class="btn primary" id="play">Pausar</button>
+          <button type="button" class="btn" id="reset">Reiniciar</button>
+        </div>
+        <label class="field" for="speed">Velocidade
+          <select id="speed">
+            <option value="6">Devagar (2 min por segundo)</option>
+            <option value="20" selected>Normal (6 min por segundo)</option>
+            <option value="80">Rápida (24 min por segundo)</option>
+          </select>
+        </label>
+        <label class="field" for="demand">Movimento nas rodovias
+          <select id="demand">
+            <option value="0.5">Madrugada</option>
+            <option value="1" selected>Tarde comum</option>
+            <option value="1.3">Pico de sexta-feira</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>O que observar</h2>
+        <ul class="notes">
+          <li>A fila cresce <b>para trás</b>, contra o sentido do trânsito. O outro sentido segue normal.</li>
+          <li>Em <b>pista simples</b>, quem ia para outro destino fica preso atrás da fila. Quando ela chega ao entroncamento, trava também a outra rodovia.</li>
+          <li>Em <b>pista dupla</b>, parte do trânsito passa pela outra faixa, e a fila cresce mais devagar.</li>
+          <li>Na <b>via de sentido único</b>, não existe o "outro sentido": toda a capacidade serve a um só fluxo, e uma interdição ali prende quem sai de Porto Alegre, que fica esperando para entrar na rodovia.</li>
+          <li>Ao liberar, a fila se desfaz <b>a partir da frente</b>. Com muito movimento, ela demora mais para sumir do que levou para se formar.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    Modelo de transmissão por células (Daganzo, 1994): cada sentido de cada trecho é dividido em células de 500 m, e o fluxo entre células é limitado pela capacidade da via e pelo espaço livre à frente. Vias com 2 ou 3 faixas: 2.000 veículos/hora por faixa, 100 km/h. Pista simples: 1 faixa por sentido, 1.600 veículos/hora, 80 km/h. Meia pista reduz a capacidade para 40% em pista simples (pare e siga), 50% com 2 faixas e 67% com 3 faixas. Rodovias e cidades reais, citadas no estudo de caso das enchentes de 2024 em Taveira et al. (Applied Network Science, 2026), com distâncias aproximadas e desenho fora de escala. Número de faixas simplificado. Os volumes de tráfego são ilustrativos, e o sentido único da BR-448 e da BR-386 é hipotético: na realidade elas têm os dois sentidos. Os motoristas não mudam de rota.
+  </footer>
+</div>
+
+<script>
+(() => {
+  const DT = 18 / 3600;   // passo de tempo: 18 s, em horas
+  const DX = 0.5;         // comprimento da célula, km
+  const KJ = 130;         // densidade de congestionamento, veículos/km/faixa
+
+  const NODES = {
+    POA: { name: 'Porto Alegre', x: 560, y: 380, lx: 14, ly: 26, align: 'left' },
+    GRV: { name: 'Gravataí', x: 760, y: 330, lx: 0, ly: -22, align: 'center' },
+    OSO: { name: 'Osório → Litoral', x: 960, y: 300, lx: 0, ly: 28, align: 'right', bound: true },
+    ELD: { name: 'Eldorado do Sul', x: 395, y: 440, lx: -14, ly: -18, align: 'right' },
+    ARR: { name: 'Arroio dos Ratos → Fronteira Oeste', x: 60, y: 420, lx: -6, ly: 28, align: 'left', bound: true },
+    GUA: { name: 'Guaíba → Pelotas', x: 420, y: 592, lx: 16, ly: 0, align: 'left', bound: true },
+    CAN: { name: 'Canoas', x: 430, y: 285, lx: -16, ly: 0, align: 'right' },
+    SAP: { name: 'Sapucaia do Sul', x: 640, y: 170, lx: 16, ly: 0, align: 'left' },
+    NHA: { name: 'Novo Hamburgo', x: 660, y: 90, lx: 16, ly: 0, align: 'left' },
+    DOI: { name: 'Dois Irmãos → Caxias do Sul', x: 740, y: 28, lx: 14, ly: 4, align: 'left', bound: true },
+    NSR: { name: 'Nova Santa Rita', x: 270, y: 228, lx: 0, ly: 22, align: 'center' },
+    TAB: { name: 'Tabaí → Estrela / Lajeado', x: 60, y: 165, lx: -6, ly: 28, align: 'left', bound: true },
+  };
+  const ROADS = [
+    { a: 'OSO', b: 'GRV', km: 70, lanes: 2, vf: 100, br: 'BR-290 (Freeway)' },
+    { a: 'GRV', b: 'POA', km: 20, lanes: 3, vf: 100, br: 'BR-290 (Freeway)' },
+    { a: 'POA', b: 'ELD', km: 12, lanes: 2, vf: 100, br: 'BR-290 (ponte do Guaíba)' },
+    { a: 'ELD', b: 'ARR', km: 45, lanes: 1, vf: 80, br: 'BR-290' },
+    { a: 'ELD', b: 'GUA', km: 10, lanes: 2, vf: 100, br: 'BR-116' },
+    { a: 'POA', b: 'CAN', km: 13, lanes: 3, vf: 100, br: 'BR-116' },
+    { a: 'CAN', b: 'SAP', km: 12, lanes: 2, vf: 100, br: 'BR-116' },
+    { a: 'SAP', b: 'NHA', km: 12, lanes: 2, vf: 100, br: 'BR-116' },
+    { a: 'NHA', b: 'DOI', km: 15, lanes: 1, vf: 80, br: 'BR-116' },
+    { a: 'POA', b: 'SAP', km: 22, lanes: 2, vf: 100, br: 'BR-448', oneway: true, ls: 1, lt: 0.72 },
+    { a: 'CAN', b: 'NSR', km: 14, lanes: 2, vf: 100, br: 'BR-386', oneway: true },
+    { a: 'NSR', b: 'TAB', km: 38, lanes: 2, vf: 100, br: 'BR-386', oneway: true },
+  ];
+  // veículos/hora gerados em cada ponto (sexta à tarde, valores ilustrativos)
+  const DEMAND = { POA: 5000, GRV: 800, OSO: 800, ELD: 300, ARR: 500, GUA: 1200, CAN: 1200, SAP: 400, NHA: 900, DOI: 900, NSR: 200, TAB: 0 };
+  // para onde vai quem chega a cada ponto, conforme a origem ("sink" = fica na cidade)
+  const SPLIT = {
+    POA: { GRV: { ELD: .25, CAN: .10, SAP: .05, sink: .60 }, ELD: { GRV: .25, CAN: .15, SAP: .05, sink: .55 }, CAN: { GRV: .2, ELD: .2, sink: .6 }, local: { GRV: .35, ELD: .2, CAN: .2, SAP: .25 } },
+    GRV: { OSO: { POA: .8, sink: .2 }, POA: { OSO: .75, sink: .25 }, local: { POA: .6, OSO: .4 } },
+    ELD: { POA: { ARR: .4, GUA: .45, sink: .15 }, ARR: { POA: .65, GUA: .25, sink: .1 }, GUA: { POA: .8, ARR: .1, sink: .1 }, local: { POA: .6, GUA: .2, ARR: .2 } },
+    CAN: { POA: { SAP: .4, NSR: .3, sink: .3 }, SAP: { POA: .6, NSR: .1, sink: .3 }, local: { POA: .45, SAP: .25, NSR: .3 } },
+    SAP: { CAN: { NHA: .6, sink: .4 }, POA: { NHA: .7, CAN: .05, sink: .25 }, NHA: { CAN: .7, sink: .3 }, local: { NHA: .5, CAN: .5 } },
+    NHA: { SAP: { DOI: .45, sink: .55 }, DOI: { SAP: .7, sink: .3 }, local: { DOI: .4, SAP: .6 } },
+    NSR: { CAN: { TAB: .85, sink: .15 }, local: { TAB: 1 } },
+  };
+
+  // ---------- construção da rede ----------
+  const links = [];
+  for (const id in NODES) { NODES[id].id = id; NODES[id].in = []; NODES[id].out = {}; NODES[id].q = {}; }
+  for (const r of ROADS) {
+    for (const [f, t] of (r.oneway ? [[r.a, r.b]] : [[r.a, r.b], [r.b, r.a]])) {
+      const Q = r.lanes * (r.lanes >= 2 ? 2000 : 1600);
+      const kj = KJ * r.lanes;
+      const w = Q / (kj - Q / r.vf);
+      const nc = Math.round(r.km / DX);
+      const k = {
+        id: f + '>' + t, from: f, to: t, road: r, lanes: r.lanes, vf: r.vf, Q, nc,
+        N: kj * DX, qdt: Q * DT, vfr: r.vf * DT / DX, wr: w * DT / DX,
+        n: new Float64Array(nc), m: new Float64Array(nc).fill(1),
+        S: new Float64Array(nc), R: new Float64Array(nc), out: new Float64Array(nc),
+        v: new Float64Array(nc).fill(r.vf), phase: new Float64Array(nc),
+        inflow: 0, outflow: 0, geo: null,
+      };
+      links.push(k);
+      NODES[f].out[t] = k;
+      NODES[t].in.push(k);
+    }
+  }
+  for (const id in NODES) {
+    const nd = NODES[id];
+    const outs = Object.keys(nd.out);
+    nd.local = nd.bound ? (outs.length ? { [outs[0]]: 1 } : {}) : SPLIT[id].local;
+    for (const t in nd.local) nd.q[t] = 0;
+  }
+  const linkById = Object.fromEntries(links.map(k => [k.id, k]));
+
+  // ---------- estado ----------
+  const S = {
+    t: 0, mult: 1, playing: true, rate: 20, acc: 0, tool: 'total',
+    delay: 0, cong: 0, wait: 0, baseCong: 0, baseWait: 0,
+    hist: [], events: [], restrictStart: null, releaseAt: null, normalAt: null,
+    hover: null,
+  };
+
+  // ---------- passo do modelo de células ----------
+  function nodeStep(nd) {
+    for (const t in nd.local) nd.q[t] += DEMAND[nd.id] * S.mult * nd.local[t] * DT;
+    const entries = [];
+    for (const lk of nd.in) {
+      entries.push({ S: lk.S[lk.nc - 1], beta: nd.bound ? { sink: 1 } : SPLIT[nd.id][lk.from], fifo: lk.lanes === 1, lk });
+    }
+    for (const t in nd.local) entries.push({ S: nd.q[t], beta: { [t]: 1 }, fifo: false, src: t });
+    const D = {};
+    for (const e of entries) for (const t in e.beta) if (t !== 'sink') D[t] = (D[t] || 0) + e.S * e.beta[t];
+    const r = {};
+    for (const t in D) { const R0 = nd.out[t].R[0]; r[t] = D[t] > 1e-9 ? Math.min(1, R0 / D[t]) : 1; }
+    for (const e of entries) {
+      let f = 1;
+      if (e.fifo) for (const t in e.beta) if (t !== 'sink' && e.beta[t] > 0) f = Math.min(f, r[t]);
+      let tot = 0;
+      for (const t in e.beta) {
+        const factor = e.fifo ? f : (t === 'sink' ? 1 : r[t]);
+        const fl = e.S * e.beta[t] * factor;
+        tot += fl;
+        if (t !== 'sink') nd.out[t].inflow += fl;
+      }
+      if (e.lk) e.lk.outflow = tot; else nd.q[e.src] = Math.max(0, nd.q[e.src] - tot);
+    }
+  }
+
+  function step(record) {
+    for (const k of links) {
+      for (let i = 0; i < k.nc; i++) {
+        k.S[i] = Math.min(k.vfr * k.n[i], k.qdt * k.m[i]);
+        k.R[i] = Math.min(k.qdt * k.m[i], k.wr * (k.N - k.n[i]));
+      }
+      k.inflow = 0; k.outflow = 0;
+    }
+    for (const id in NODES) nodeStep(NODES[id]);
+    let delay = 0, cong = 0, wait = 0;
+    for (const k of links) {
+      for (let i = 0; i < k.nc; i++) k.out[i] = i < k.nc - 1 ? Math.min(k.S[i], k.R[i + 1]) : k.outflow;
+      for (let i = 0; i < k.nc; i++) {
+        const before = k.n[i];
+        k.n[i] = Math.max(0, before + (i === 0 ? k.inflow : k.out[i - 1]) - k.out[i]);
+        delay += before * DT - k.out[i] * DX / k.vf;
+        k.v[i] = before > 0.3 ? Math.min(k.vf, (k.out[i] / before) * DX / DT) : k.vf;
+        if (k.v[i] < 0.5 * k.vf) cong += DX;
+      }
+    }
+    for (const id in NODES) for (const t in NODES[id].q) wait += NODES[id].q[t];
+    S.t += DT;
+    S.cong = cong; S.wait = wait;
+    if (record) {
+      S.delay += Math.max(0, delay) + wait * DT;
+      if (S.releaseAt !== null && S.normalAt === null && cong <= S.baseCong + 0.6 && wait <= S.baseWait + 15) S.normalAt = S.t;
+      S.stepCount = (S.stepCount || 0) + 1;
+      if (S.stepCount % 5 === 0) {
+        S.hist.push({ t: S.t, c: cong });
+        while (S.hist.length && S.hist[0].t < S.t - 4.2) S.hist.shift();
+      }
+    }
+  }
+
+  function restrictionCount() {
+    let c = 0;
+    for (const k of links) for (let i = 0; i < k.nc; i++) if (k.m[i] < 1) c++;
+    return c;
+  }
+
+  function resetState(silent) {
+    for (const k of links) { k.n.fill(0); k.m.fill(1); k.v.fill(k.vf); }
+    for (const id in NODES) for (const t in NODES[id].q) NODES[id].q[t] = 0;
+    S.t = 0;
+    for (let i = 0; i < 480; i++) step(false);
+    S.t = 0; S.delay = 0; S.hist = []; S.events = []; S.stepCount = 0;
+    S.restrictStart = null; S.releaseAt = null; S.normalAt = null;
+    let c = 0, w = 0;
+    for (let i = 0; i < 20; i++) { step(false); c = Math.max(c, S.cong); w = Math.max(w, S.wait); }
+    S.t = 0; S.baseCong = c; S.baseWait = w;
+    S.hist.push({ t: 0, c: S.cong });
+    if (!silent) render();
+  }
+
+  // ---------- ações ----------
+  function partialFactor(k) { return k.lanes === 3 ? 2 / 3 : k.lanes === 2 ? 0.5 : 0.4; }
+  function applyTool(k, i, tool) {
+    const targets = [[k, i]];
+    if (document.getElementById('both').checked) {
+      const opp = linkById[k.to + '>' + k.from];
+      if (opp) targets.push([opp, opp.nc - 1 - i]);
+    }
+    const before = restrictionCount();
+    let action = tool;
+    const want = tool === 'total' ? 0 : tool === 'partial' ? partialFactor(k) : 1;
+    if (tool !== 'free' && Math.abs(k.m[i] - want) < 1e-9) action = 'free'; // clicar de novo libera
+    for (const [lk, j] of targets) {
+      lk.m[j] = action === 'total' ? 0 : action === 'partial' ? partialFactor(lk) : 1;
+    }
+    const after = restrictionCount();
+    if (after === before && action === 'free') return;
+    S.events.push({ t: S.t, kind: action === 'free' ? 'free' : 'block' });
+    if (before === 0 && after > 0) { S.restrictStart = S.t; S.releaseAt = null; S.normalAt = null; }
+    else if (after > 0 && action !== 'free') { S.releaseAt = null; S.normalAt = null; }
+    if (before > 0 && after === 0) { S.releaseAt = S.t; S.normalAt = null; }
+    render();
+  }
+  function clearAll() {
+    if (restrictionCount() === 0) return;
+    for (const k of links) k.m.fill(1);
+    S.events.push({ t: S.t, kind: 'free' });
+    S.releaseAt = S.t; S.normalAt = null;
+    render();
+  }
+  function scenario(n) {
+    resetState(true);
+    if (n === 1) { linkById['POA>ELD'].m[14] = 0; linkById['ELD>POA'].m[9] = 0; }
+    if (n === 2) { linkById['POA>SAP'].m[20] = 0; }
+    if (n === 3) { linkById['CAN>SAP'].m[6] = 0; }
+    if (n === 4) { const k = linkById['NSR>TAB']; k.m[60] = partialFactor(k); setDemand(1.3); }
+    S.events.push({ t: 0, kind: 'block' });
+    S.restrictStart = 0;
+    setPlaying(true);
+    render();
+  }
+
+  // ---------- desenho ----------
+  const map = document.getElementById('map');
+  const ctx = map.getContext('2d');
+  const chart = document.getElementById('chart');
+  const cctx = chart.getContext('2d');
+  let W = 0, H = 0, sc = 1, dpr = 1, T = {};
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  function readTokens() {
+    const cs = getComputedStyle(document.documentElement);
+    for (const n of ['bg', 'surface', 'fg', 'muted', 'line', 'accent', 'map-bg', 'asphalt', 'node', 'free', 'slow', 'jam', 'stop', 'dash'])
+      T[n] = cs.getPropertyValue('--' + n).trim();
+  }
+
+  function layout() {
+    dpr = window.devicePixelRatio || 1;
+    W = map.clientWidth;
+    H = Math.round(W * 0.62);
+    map.style.height = H + 'px';
+    map.width = Math.round(W * dpr); map.height = Math.round(H * dpr);
+    sc = W / 1000;
+    const cw = chart.clientWidth;
+    chart.width = Math.round(cw * dpr); chart.height = Math.round(150 * dpr);
+    const u = Math.max(0.65, Math.min(1.2, sc));
+    for (const k of links) {
+      const A = NODES[k.from], B = NODES[k.to];
+      const ax = A.x * sc, ay = A.y * H / 620, bx = B.x * sc, by = B.y * H / 620;
+      const len = Math.hypot(bx - ax, by - ay);
+      const dx = (bx - ax) / len, dy = (by - ay) / len;
+      const nx = -dy, ny = dx; // lado direito de quem trafega
+      const width = (k.lanes === 3 ? 8 : k.lanes === 2 ? 6.4 : 4.4) * u;
+      const off = k.road.oneway ? 0 : width / 2 + 0.8 * u;
+      const trim = 11 * u;
+      const x0 = ax + dx * trim + nx * off, y0 = ay + dy * trim + ny * off;
+      const L = len - 2 * trim;
+      const cells = [];
+      for (let i = 0; i < k.nc; i++) {
+        const a = L * i / k.nc, b = L * (i + 1) / k.nc;
+        cells.push({ x1: x0 + dx * a, y1: y0 + dy * a, x2: x0 + dx * b, y2: y0 + dy * b, cum: a });
+      }
+      k.geo = { cells, width, off, dx, dy, nx, ny, u };
+    }
+  }
+
+  function speedColor(k, i) {
+    const r = k.v[i] / k.vf;
+    if (k.m[i] === 0) return T.stop;
+    if (r >= 0.75) return T.free;
+    if (r >= 0.45) return T.slow;
+    if (r >= 0.12) return T.jam;
+    return T.stop;
+  }
+
+  function queueInfo(k, i) {
+    let len = 0, j = i - 1;
+    while (j >= 0 && k.v[j] < 0.5 * k.vf) { len += DX; j--; }
+    return { len, reached: j < 0 && len > 0 };
+  }
+
+  function drawMap(dtReal) {
+    const u = Math.max(0.65, Math.min(1.2, sc));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = T['map-bg']; ctx.fillRect(0, 0, W, H);
+    // leito da estrada
+    ctx.lineCap = 'round';
+    for (const r of ROADS) {
+      const A = NODES[r.a], B = NODES[r.b];
+      ctx.strokeStyle = T.asphalt;
+      const w0 = (r.lanes === 3 ? 8 : r.lanes === 2 ? 6.4 : 4.4);
+      ctx.lineWidth = (r.oneway ? w0 + 6 : 2 * w0 + 7.6) * u;
+      ctx.beginPath(); ctx.moveTo(A.x * sc, A.y * H / 620); ctx.lineTo(B.x * sc, B.y * H / 620); ctx.stroke();
+    }
+    // células
+    ctx.lineCap = 'butt';
+    for (const k of links) {
+      const g = k.geo;
+      for (let i = 0; i < k.nc; i++) {
+        const c = g.cells[i];
+        ctx.strokeStyle = speedColor(k, i);
+        ctx.lineWidth = g.width;
+        ctx.beginPath(); ctx.moveTo(c.x1, c.y1); ctx.lineTo(c.x2, c.y2); ctx.stroke();
+      }
+      // traços em movimento indicam sentido e velocidade
+      ctx.strokeStyle = T.dash; ctx.lineWidth = Math.max(1, g.width * 0.35);
+      ctx.setLineDash([2.5 * u, 7 * u]);
+      for (let i = 0; i < k.nc; i++) {
+        const c = g.cells[i];
+        if (!reduce.matches && S.playing) k.phase[i] += (k.v[i] / k.vf) * 26 * u * dtReal;
+        ctx.lineDashOffset = -(k.phase[i]) + c.cum;
+        ctx.beginPath(); ctx.moveTo(c.x1, c.y1); ctx.lineTo(c.x2, c.y2); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      if (k.road.oneway) {
+        const c0 = g.cells[0], c1 = g.cells[k.nc - 1];
+        const L = Math.hypot(c1.x2 - c0.x1, c1.y2 - c0.y1);
+        const nA = Math.max(2, Math.floor(L / (70 * u)));
+        ctx.fillStyle = T.accent;
+        for (let a = 1; a <= nA; a++) {
+          const f = a / (nA + 1);
+          const px = c0.x1 + (c1.x2 - c0.x1) * f + g.nx * (g.width / 2 + 7 * u);
+          const py = c0.y1 + (c1.y2 - c0.y1) * f + g.ny * (g.width / 2 + 7 * u);
+          const s2 = 5 * u;
+          ctx.beginPath();
+          ctx.moveTo(px + g.dx * s2, py + g.dy * s2);
+          ctx.lineTo(px - g.dx * s2 + g.nx * s2 * .8, py - g.dy * s2 + g.ny * s2 * .8);
+          ctx.lineTo(px - g.dx * s2 - g.nx * s2 * .8, py - g.dy * s2 - g.ny * s2 * .8);
+          ctx.closePath(); ctx.fill();
+        }
+      }
+    }
+    // destaque do trecho sob o cursor
+    if (S.hover) {
+      const { k, i } = S.hover; const c = k.geo.cells[i];
+      ctx.strokeStyle = T.fg; ctx.lineWidth = k.geo.width + 4 * u; ctx.globalAlpha = 0.35; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(c.x1, c.y1); ctx.lineTo(c.x2, c.y2); ctx.stroke();
+      ctx.globalAlpha = 1; ctx.lineCap = 'butt';
+    }
+    // rótulos das rodovias
+    ctx.font = `600 ${Math.round(11 * u)}px ${getComputedStyle(document.body).getPropertyValue('--font-display') || 'sans-serif'}`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (const r of ROADS) {
+      const A = NODES[r.a], B = NODES[r.b];
+      const lt = r.lt || 0.5; const mx = (A.x + (B.x - A.x) * lt) * sc, my = (A.y + (B.y - A.y) * lt) * H / 620;
+      const label = r.br + (r.oneway ? ' · sentido único' : '') + ' · ' + r.km + ' km';
+      const tw = ctx.measureText(label).width + 10 * u;
+      const ax = A.x * sc, ay = A.y * H / 620, bx = B.x * sc, by = B.y * H / 620;
+      const ll = Math.hypot(bx - ax, by - ay);
+      let nx = -(by - ay) / ll, ny = (bx - ax) / ll;
+      if (r.ls ? Math.sign(nx) !== r.ls : (Math.abs(ny) > 0.3 ? ny > 0 : nx < 0)) { nx = -nx; ny = -ny; }
+      const dist = 14 * u + Math.abs(nx) * tw / 2 + Math.abs(ny) * 8 * u;
+      const px = mx + nx * dist, py = my + ny * dist;
+      ctx.fillStyle = T['map-bg']; ctx.globalAlpha = .85;
+      ctx.fillRect(px - tw / 2, py - 8 * u, tw, 16 * u); ctx.globalAlpha = 1;
+      ctx.fillStyle = T.muted; ctx.fillText(label, px, py);
+    }
+    // interdições
+    for (const k of links) {
+      for (let i = 0; i < k.nc; i++) {
+        if (k.m[i] >= 1) continue;
+        const c = k.geo.cells[i], g = k.geo;
+        const cx = (c.x1 + c.x2) / 2 + g.nx * 9 * u, cy = (c.y1 + c.y2) / 2 + g.ny * 9 * u;
+        const s = 13 * u;
+        ctx.fillStyle = k.m[i] === 0 ? T.stop : T.slow;
+        roundRect(cx - s / 2, cy - s / 2, s, s, 3 * u); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.fillRect(cx - s / 2 + 2.5 * u, cy - 1.2 * u, s - 5 * u, 2.4 * u);
+        const qi = queueInfo(k, i);
+        if (qi.len >= 1) {
+          const txt = 'fila ' + fmtNum(qi.len, 1) + ' km' + (qi.reached ? ' · chegou ao cruzamento' : '');
+          ctx.font = `500 ${Math.round(11 * u)}px ${'IBM Plex Mono, ui-monospace, monospace'}`;
+          const tw = ctx.measureText(txt).width + 10 * u;
+          const tx = cx + g.nx * 16 * u, ty = cy + g.ny * 16 * u;
+          ctx.fillStyle = T.surface; ctx.strokeStyle = T.line; ctx.lineWidth = 1;
+          roundRect(tx - tw / 2, ty - 9 * u, tw, 18 * u, 4 * u); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = T.fg; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, tx, ty);
+        }
+      }
+    }
+    // nós
+    for (const id in NODES) {
+      const nd = NODES[id]; const x = nd.x * sc, y = nd.y * H / 620;
+      ctx.beginPath(); ctx.arc(x, y, (nd.bound ? 6.5 : 8.5) * u, 0, Math.PI * 2);
+      ctx.fillStyle = nd.bound ? T.node : T.accent; ctx.fill();
+      ctx.lineWidth = 2 * u; ctx.strokeStyle = nd.bound ? T.fg : T.node; ctx.stroke();
+      ctx.font = `600 ${Math.round(13.5 * u)}px Barlow Semi Condensed, Arial Narrow, sans-serif`;
+      ctx.fillStyle = T.fg; ctx.textAlign = nd.align; ctx.textBaseline = 'middle';
+      ctx.fillText(nd.name, x + nd.lx * u, y + nd.ly * u);
+      let q = 0; for (const t in nd.q) q += nd.q[t];
+      if (q > 25) {
+        const txt = Math.round(q) + ' esperando';
+        ctx.font = `600 ${Math.round(11 * u)}px Barlow, sans-serif`;
+        const tw = ctx.measureText(txt).width + 12 * u;
+        const bx = x + nd.lx * u + (nd.align === 'right' ? -tw : nd.align === 'left' ? 0 : -tw / 2);
+        const by = y + nd.ly * u + (nd.ly > 0 ? 12 : -30) * u;
+        ctx.fillStyle = T.jam; roundRect(bx, by, tw, 17 * u, 8.5 * u); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText(txt, bx + 6 * u, by + 8.5 * u);
+      }
+    }
+  }
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  function drawChart() {
+    const cw = chart.width / dpr, ch = 150;
+    cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cctx.clearRect(0, 0, cw, ch);
+    const pl = 42, pr = 22, pt = 8, pb = 22;
+    const t1 = Math.max(4, S.t), t0 = t1 - 4;
+    let maxC = 5; for (const p of S.hist) maxC = Math.max(maxC, p.c);
+    const step = niceStep(maxC / 3);
+    const yMax = Math.ceil(maxC * 1.1 / step) * step;
+    const X = t => pl + (t - t0) / (t1 - t0) * (cw - pl - pr);
+    const Y = v => pt + (1 - v / yMax) * (ch - pt - pb);
+    cctx.font = '11px IBM Plex Mono, ui-monospace, monospace';
+    cctx.textBaseline = 'middle'; cctx.textAlign = 'right';
+    for (let v = 0; v <= yMax + 1e-9; v += step) {
+      cctx.strokeStyle = T.line; cctx.lineWidth = 1;
+      cctx.beginPath(); cctx.moveTo(pl, Math.round(Y(v)) + .5); cctx.lineTo(cw - pr, Math.round(Y(v)) + .5); cctx.stroke();
+      cctx.fillStyle = T.muted; cctx.fillText(fmtNum(v, 0) + ' km', pl - 6, Y(v));
+    }
+    cctx.textAlign = 'center'; cctx.textBaseline = 'top';
+    for (let h = Math.ceil(t0); h <= t1 + 1e-9; h++) {
+      if (h < 0) continue;
+      cctx.fillStyle = T.muted; cctx.fillText(clockStr(h), X(h), ch - pb + 6);
+    }
+    for (const e of S.events) {
+      if (e.t < t0) continue;
+      cctx.strokeStyle = e.kind === 'block' ? T.jam : T.free; cctx.lineWidth = 1.5; cctx.setLineDash([4, 3]);
+      cctx.beginPath(); cctx.moveTo(X(e.t), pt); cctx.lineTo(X(e.t), ch - pb); cctx.stroke(); cctx.setLineDash([]);
+    }
+    const pts = S.hist.filter(p => p.t >= t0 - 0.05);
+    if (pts.length > 1) {
+      cctx.beginPath(); cctx.moveTo(X(Math.max(t0, pts[0].t)), Y(0));
+      for (const p of pts) cctx.lineTo(X(Math.max(t0, p.t)), Y(p.c));
+      cctx.lineTo(X(pts[pts.length - 1].t), Y(0)); cctx.closePath();
+      cctx.fillStyle = T.jam; cctx.globalAlpha = .18; cctx.fill(); cctx.globalAlpha = 1;
+      cctx.beginPath();
+      pts.forEach((p, i) => i ? cctx.lineTo(X(Math.max(t0, p.t)), Y(p.c)) : cctx.moveTo(X(Math.max(t0, p.t)), Y(p.c)));
+      cctx.strokeStyle = T.jam; cctx.lineWidth = 2; cctx.stroke();
+      const last = pts[pts.length - 1];
+      cctx.beginPath(); cctx.arc(X(last.t), Y(last.c), 3.5, 0, Math.PI * 2); cctx.fillStyle = T.jam; cctx.fill();
+    }
+  }
+  function niceStep(x) {
+    const p = Math.pow(10, Math.floor(Math.log10(x)));
+    for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= x) return m * p;
+    return 10 * p;
+  }
+
+  // ---------- textos ----------
+  function fmtNum(v, d) { return v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  function clockStr(t) {
+    const total = Math.round((16 + t) * 60);
+    const hh = Math.floor(total / 60) % 24, mm = total % 60;
+    return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+  }
+  function durStr(h) {
+    const m = Math.round(h * 60);
+    if (m < 60) return m + ' min';
+    return Math.floor(m / 60) + ' h ' + String(m % 60).padStart(2, '0') + ' min';
+  }
+  const el = id => document.getElementById(id);
+  function updatePanel() {
+    const day = Math.floor((16 + S.t) / 24);
+    el('clock').innerHTML = ['sex', 'sáb', 'dom', 'seg'][Math.min(day, 3)] + ' <b>' + clockStr(S.t) + '</b>';
+    el('mCong').textContent = fmtNum(S.cong, 1) + ' km';
+    el('mWait').textContent = fmtNum(Math.round(S.wait), 0);
+    el('mDelay').textContent = fmtNum(S.delay, 0) + ' h';
+    const rc = restrictionCount();
+    if (rc > 0) {
+      el('mState').innerHTML = '<span class="pill alert">' + (rc === 1 ? '1 interdição ativa' : rc + ' interdições ativas') + '</span>';
+      el('mTimeK').textContent = 'Interditado há';
+      el('mTime').textContent = durStr(S.t - (S.restrictStart ?? S.t));
+    } else if (S.releaseAt !== null && S.normalAt === null) {
+      el('mState').innerHTML = '<span class="pill warn">Liberado, fila se desfazendo</span>';
+      el('mTimeK').textContent = 'Desde a liberação';
+      el('mTime').textContent = durStr(S.t - S.releaseAt);
+    } else if (S.normalAt !== null) {
+      el('mState').innerHTML = '<span class="pill">Normal</span>';
+      el('mTimeK').textContent = 'Voltou ao normal após a liberação em';
+      el('mTime').textContent = durStr(S.normalAt - S.releaseAt);
+    } else {
+      el('mState').innerHTML = '<span class="pill">Normal</span>';
+      el('mTimeK').textContent = 'Desde a última mudança';
+      el('mTime').textContent = '—';
+    }
+  }
+  function updateStatus() {
+    const st = el('status');
+    if (!S.hover) return;
+    const { k, i } = S.hover;
+    const A = NODES[k.from].name, B = NODES[k.to].name;
+    const km = fmtNum((i + 0.5) * DX, 1);
+    const tipo = (k.road.oneway ? 'sentido único, ' : '') + (k.lanes === 1 ? 'pista simples' : k.lanes + ' faixas');
+    const sit = k.m[i] === 0 ? 'interditado' : k.m[i] < 1 ? 'meia pista' : Math.round(k.v[i]) + ' km/h';
+    const acao = { total: 'Clique para interditar', partial: 'Clique para reduzir a meia pista', free: 'Clique para liberar' }[S.tool];
+    st.innerHTML = '<strong>' + k.road.br + ' · ' + A + ' → ' + B + '</strong> · km ' + km + ' · ' + tipo + ' · ' + sit + ' · ' + acao;
+  }
+
+  function render(dtReal = 0) { drawMap(dtReal); drawChart(); updatePanel(); updateStatus(); }
+
+  // ---------- interação ----------
+  function hitTest(ev) {
+    const rect = map.getBoundingClientRect();
+    const px = ev.clientX - rect.left, py = ev.clientY - rect.top;
+    let best = null, bd = 14 * Math.max(0.8, sc);
+    for (const k of links) for (let i = 0; i < k.nc; i++) {
+      const c = k.geo.cells[i];
+      const vx = c.x2 - c.x1, vy = c.y2 - c.y1;
+      const t = Math.max(0, Math.min(1, ((px - c.x1) * vx + (py - c.y1) * vy) / (vx * vx + vy * vy)));
+      const d = Math.hypot(px - (c.x1 + vx * t), py - (c.y1 + vy * t));
+      if (d < bd) { bd = d; best = { k, i }; }
+    }
+    return best;
+  }
+  map.addEventListener('pointermove', ev => { S.hover = hitTest(ev); map.style.cursor = S.hover ? 'pointer' : 'crosshair'; if (!S.playing) render(); });
+  map.addEventListener('pointerleave', () => { S.hover = null; if (!S.playing) render(); });
+  map.addEventListener('click', ev => { const h = hitTest(ev); if (h) { S.hover = h; applyTool(h.k, h.i, S.tool); } });
+
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+    S.tool = b.dataset.tool;
+    document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    updateStatus();
+  }));
+  function setPlaying(p) { S.playing = p; el('play').textContent = p ? 'Pausar' : 'Continuar'; }
+  function setDemand(v) { S.mult = v; el('demand').value = String(v); }
+  el('play').addEventListener('click', () => setPlaying(!S.playing));
+  el('reset').addEventListener('click', () => { resetState(); });
+  el('clearAll').addEventListener('click', clearAll);
+  el('speed').addEventListener('change', e => { S.rate = +e.target.value; });
+  el('demand').addEventListener('change', e => { S.mult = +e.target.value; });
+  el('sc1').addEventListener('click', () => scenario(1));
+  el('sc2').addEventListener('click', () => scenario(2));
+  el('sc3').addEventListener('click', () => scenario(3));
+  el('sc4').addEventListener('click', () => scenario(4));
+
+  // ---------- laço ----------
+  let last = performance.now();
+  function frame(now) {
+    const dtReal = Math.min(0.1, (now - last) / 1000); last = now;
+    if (S.playing) {
+      S.acc += dtReal * S.rate;
+      let n = 0;
+      while (S.acc >= 1 && n < 40) { step(true); S.acc -= 1; n++; }
+    }
+    render(dtReal);
+    requestAnimationFrame(frame);
+  }
+
+  readTokens();
+  new MutationObserver(readTokens).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTokens);
+  window.addEventListener('resize', () => { layout(); render(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => render());
+  layout();
+  resetState(true);
+  if (reduce.matches) setPlaying(false);
+  render();
+  requestAnimationFrame(frame);
+})();
+</script>

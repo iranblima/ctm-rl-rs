@@ -1,0 +1,57 @@
+[    50s] Re-rank lambdas (0, 0, 0)
+[    64s] seed 0 episode 250
+[    77s] seed 0 episode 500
+[    91s] seed 0 episode 750
+[   106s] seed 0 episode 1000
+[   121s] seed 0 episode 1250
+[   136s] seed 0 episode 1500
+[   138s]   val seed 0 ep 250: mean 48.88 gap -1.64 lo -2.32
+[   140s]   val seed 0 ep 500: mean 50.90 gap +0.38 lo -0.02
+[   142s]   val seed 0 ep 750: mean 51.04 gap +0.52 lo +0.01
+[   145s]   val seed 0 ep 1000: mean 50.67 gap +0.15 lo -0.42
+[   147s]   val seed 0 ep 1250: mean 50.73 gap +0.21 lo -0.30
+[   149s]   val seed 0 ep 1500: mean 51.08 gap +0.56 lo +0.11
+[   161s] seed 1 episode 250
+[   174s] seed 1 episode 500
+[   188s] seed 1 episode 750
+[   202s] seed 1 episode 1000
+[   216s] seed 1 episode 1250
+[   231s] seed 1 episode 1500
+[   233s]   val seed 1 ep 250: mean 48.24 gap -2.28 lo -2.89
+[   235s]   val seed 1 ep 500: mean 49.98 gap -0.54 lo -1.11
+[   238s]   val seed 1 ep 750: mean 49.86 gap -0.66 lo -1.40
+[   240s]   val seed 1 ep 1000: mean 50.53 gap +0.01 lo -0.57
+[   242s]   val seed 1 ep 1250: mean 50.64 gap +0.12 lo -0.49
+[   244s]   val seed 1 ep 1500: mean 50.54 gap +0.02 lo -0.57
+[   256s] seed 2 episode 250
+[   269s] seed 2 episode 500
+[   283s] seed 2 episode 750
+[   297s] seed 2 episode 1000
+[   311s] seed 2 episode 1250
+[   326s] seed 2 episode 1500
+[   328s]   val seed 2 ep 250: mean 50.83 gap +0.31 lo -0.25
+[   330s]   val seed 2 ep 500: mean 50.69 gap +0.17 lo -0.38
+[   332s]   val seed 2 ep 750: mean 49.86 gap -0.66 lo -1.23
+[   335s]   val seed 2 ep 1000: mean 50.37 gap -0.15 lo -0.77
+[   337s]   val seed 2 ep 1250: mean 50.75 gap +0.23 lo -0.15
+[   339s]   val seed 2 ep 1500: mean 50.75 gap +0.23 lo -0.34
+[   339s] selected seed 0 ep 1500 val gap +0.56
+[   348s] test RL (Dueling DDQN): 50.72 (9s)
+[   356s] test Improved Re-rank: 50.37 (8s)
+[   371s] test Temporal Strength: 50.80 (15s)
+[   384s] test PageRank: 42.36 (13s)
+[   395s] test Degree: 11.10 (10s)
+[   411s] test Betweenness: 45.01 (16s)
+[   441s] test Greedy MC: 49.02 (30s)
+[   453s] test Random: 20.79 (12s)
+[   453s] paired RL-RR {'mean': 0.35, 'lo': 0.04, 'hi': 0.67, 'win': 0.62, 'rl': 50.72, 'rr': 50.37} ; RL-Greedy {'mean': 1.7, 'lo': 1.35, 'hi': 2.06, 'win': 0.92}
+[   455s] show 2024-12-12
+[   457s] show 2025-02-14
+[   459s] show 2025-04-19
+[   462s] show 2025-06-22
+[   464s] show 2025-08-26
+[   466s] show 2024-05-02
+[   467s] show 2024-05-05
+[   469s] show 2024-05-10
+[   471s] show 2024-05-15
+[   471s] done

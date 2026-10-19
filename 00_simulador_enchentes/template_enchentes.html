@@ -1,0 +1,877 @@
+<title>Malha Federal do RS nas Enchentes de 2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: mapa da malha como palco, com barra de tempo acima; painel de comando à direita. Paleta de sinalização rodoviária. */
+:root{
+  --bg:#eef2ef; --surface:#ffffff; --fg:#16201b; --muted:#5a6861; --line:#d3dcd6;
+  --accent:#0d6a42; --accent-fg:#ffffff; --accent-soft:#dcefe4;
+  --map-bg:#f7f9f7; --asphalt:#c3ccc7; --asphalt-off:#dfe5e1; --node:#ffffff; --city:#3c4a43;
+  --free:#2e9d5a; --slow:#dba110; --jam:#d9492c; --stop:#7c1f14; --station:#2563a8; --flood:#1d6fb8;
+  --font-display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --font-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1411; --surface:#161e1a; --fg:#e5ece8; --muted:#95a39c; --line:#28332e;
+    --accent:#3cbf80; --accent-fg:#06140d; --accent-soft:#173427;
+    --map-bg:#111814; --asphalt:#36413c; --asphalt-off:#232c28; --node:#161e1a; --city:#b8c6bf;
+    --free:#37b068; --slow:#e8b02a; --jam:#ef5a3c; --stop:#ff8f7a; --station:#6aa6e8; --flood:#5aa9ec;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1411; --surface:#161e1a; --fg:#e5ece8; --muted:#95a39c; --line:#28332e;
+  --accent:#3cbf80; --accent-fg:#06140d; --accent-soft:#173427;
+  --map-bg:#111814; --asphalt:#36413c; --asphalt-off:#232c28; --node:#161e1a; --city:#b8c6bf;
+  --free:#37b068; --slow:#e8b02a; --jam:#ef5a3c; --stop:#ff8f7a; --station:#6aa6e8; --flood:#5aa9ec;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:16px;padding-block:24px 40px}
+header{display:grid;gap:6px;margin-bottom:16px;max-width:820px}
+.eyebrow{font-family:var(--font-display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--accent)}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,3.6vw,38px);line-height:1.05;margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:72ch}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.stage{display:grid;gap:10px;min-width:0}
+.timebar{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px}
+.timehead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+.now{font-family:var(--font-display);font-weight:700;font-size:24px;letter-spacing:.01em}
+.now small{font-family:var(--font-body);font-weight:500;font-size:14px;color:var(--muted);margin-left:6px}
+.timehead .hint{font-size:13px;color:var(--muted)}
+#timeline{display:block;width:100%;height:58px;cursor:pointer;touch-action:none}
+.mapbox{position:relative;background:var(--map-bg);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+#map{display:block;width:100%;touch-action:none;cursor:grab}
+#map.drag{cursor:grabbing}
+.zoombtns{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px}
+.zoombtns button{width:34px;height:34px;font:600 18px/1 var(--font-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;cursor:pointer}
+.views{position:absolute;top:10px;left:10px;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 60px)}
+.views button{font:500 13px var(--font-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:4px 10px;cursor:pointer}
+.views button:hover,.zoombtns button:hover{border-color:var(--accent)}
+.busy{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--map-bg) 70%,transparent);font:600 16px var(--font-display);letter-spacing:.04em;color:var(--fg)}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.4;max-width:300px;box-shadow:0 4px 18px rgba(0,0,0,.14);z-index:3}
+.tip b{font-weight:600}
+.tip .t{font-family:var(--font-display);font-weight:700;font-size:15px}
+.tip .m{color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:22px;height:6px;border-radius:3px;display:inline-block}
+.mk{width:12px;height:12px;border-radius:3px;display:inline-block;position:relative}
+.mk::after{content:"";position:absolute;left:2px;right:2px;top:5px;height:2px;background:#fff}
+.dm{width:10px;height:10px;transform:rotate(45deg);display:inline-block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px;min-width:0}
+.card h2{font-family:var(--font-display);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.07em;margin:0;color:var(--muted)}
+aside{display:grid;gap:14px;min-width:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-weight:500;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.seg button:focus-visible,.views button:focus-visible,.zoombtns button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.field{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+select{font:inherit;font-size:14px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 8px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-size:13px;line-height:1.25;font-weight:500;border:0;border-right:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 6px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);box-shadow:inset 0 -3px 0 var(--accent)}
+.seg.two{grid-template-columns:repeat(2,1fr)}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+.check input{margin-top:4px}
+.metrics{display:grid}
+.metric{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.metric:last-child{border-bottom:0}
+.metric .k{font-size:13px;color:var(--muted)}
+.metric .v{font-family:var(--font-data);font-size:15px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.list{display:grid;gap:0;max-height:300px;overflow:auto;margin:0 -4px;padding:0 4px}
+.item{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;padding:7px 2px;border-bottom:1px solid var(--line);cursor:pointer;text-align:left;background:none;border-left:0;border-right:0;border-top:0;color:inherit;font:inherit}
+.item:hover{background:var(--accent-soft)}
+.item .br{font-family:var(--font-display);font-weight:700;font-size:15px;grid-row:span 2;align-self:center;color:var(--fg);min-width:72px}
+.item .a{font-size:14px}
+.item .b{font-size:12px;color:var(--muted);font-family:var(--font-data)}
+.empty{font-size:14px;color:var(--muted)}
+#stchart{display:block;width:100%;height:170px}
+.chlegend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted)}
+.chlegend i{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.small{font-size:13px;color:var(--muted);margin:0}
+footer{margin-top:22px;font-size:13px;color:var(--muted);max-width:92ch;display:grid;gap:6px}
+footer p{margin:0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Dados reais · SNV 2023, PNCT e interdições da PRF · abril a junho de 2024</div>
+    <h1>Malha Federal do RS nas Enchentes de 2024</h1>
+    <p class="lead">Replay das 88 interdições totais registradas nas rodovias federais gaúchas durante as chuvas de 2024, sobre a malha real com número de faixas e volume diário de cada trecho. As interdições entram e saem na data e hora em que ocorreram. Você também pode interditar trechos à mão e comparar o fluxo simulado com o que os postos de contagem registraram.</p>
+  </header>
+
+  <div class="grid">
+    <section class="stage">
+      <div class="timebar">
+        <div class="timehead">
+          <div class="now" id="now">—</div>
+          <div class="hint">Clique na barra para ir a outra data · em vermelho: interdições ativas</div>
+        </div>
+        <canvas id="timeline" aria-label="Linha do tempo das interdições"></canvas>
+      </div>
+      <div class="mapbox" id="mapbox">
+        <canvas id="map" aria-label="Mapa da malha rodoviária federal do Rio Grande do Sul"></canvas>
+        <div class="views">
+          <button type="button" data-view="rs">RS inteiro</button>
+          <button type="button" data-view="poa">Grande Porto Alegre</button>
+          <button type="button" data-view="taq">Vale do Taquari e Serra</button>
+          <button type="button" data-view="sm">Região Central</button>
+        </div>
+        <div class="zoombtns">
+          <button type="button" id="zin" aria-label="Aproximar">+</button>
+          <button type="button" id="zout" aria-label="Afastar">−</button>
+        </div>
+        <div class="tip" id="tip" hidden></div>
+        <div class="busy" id="busy" hidden>Calculando…</div>
+      </div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--free)"></i>Livre</span>
+        <span><i class="sw" style="background:var(--slow)"></i>Lento</span>
+        <span><i class="sw" style="background:var(--jam)"></i>Congestionado</span>
+        <span><i class="sw" style="background:var(--stop)"></i>Parado</span>
+        <span><i class="mk" style="background:var(--stop)"></i>Interdição real ativa</span>
+        <span><i class="mk" style="background:var(--slow)"></i>Interdição manual</span>
+        <span><i class="dm" style="background:var(--station)"></i>Posto de contagem (clique)</span>
+        <span>Traço grosso: pista dupla</span>
+      </div>
+      <div class="card">
+        <h2 id="stTitle">Posto de contagem</h2>
+        <p class="small" id="stHint">Clique num losango azul no mapa para comparar o fluxo observado pelo posto com o fluxo simulado no mesmo ponto.</p>
+        <canvas id="stchart" hidden></canvas>
+        <div class="chlegend" id="stLegend" hidden>
+          <span><i style="background:var(--station)"></i>Observado em 2024 (dois sentidos)</span>
+          <span><i style="background:var(--muted)"></i>Típico de 2023, mesmo dia da semana</span>
+          <span><i style="background:var(--jam)"></i>Simulado</span>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <h2>Situação agora</h2>
+        <div class="metrics">
+          <div class="metric"><span class="k">Interdições reais ativas</span><span class="v" id="mInt">0</span></div>
+          <div class="metric"><span class="k">Interdições manuais</span><span class="v" id="mMan">0</span></div>
+          <div class="metric"><span class="k">Extensão congestionada</span><span class="v" id="mCong">0 km</span></div>
+          <div class="metric"><span class="k">Veículos em fila</span><span class="v" id="mQueue">0</span></div>
+          <div class="metric"><span class="k">Viagens desviadas desde 29/04</span><span class="v" id="mDiv">0</span></div>
+          <div class="metric"><span class="k">Viagens interrompidas ou canceladas desde 29/04</span><span class="v" id="mCan">0</span></div>
+          <div class="metric"><span class="k">Tempo perdido somado desde 29/04</span><span class="v" id="mDelay">0 h</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Simulação</h2>
+        <div class="row">
+          <button type="button" class="btn primary" id="play">Pausar</button>
+          <button type="button" class="btn" id="restart">Voltar a 29/04</button>
+        </div>
+        <label class="field" for="speed">Velocidade
+          <select id="speed">
+            <option value="60">1 hora por segundo</option>
+            <option value="360" selected>6 horas por segundo</option>
+            <option value="1440">1 dia por segundo</option>
+            <option value="4320">3 dias por segundo</option>
+          </select>
+        </label>
+        <label class="field" for="demand">Demanda de tráfego
+          <select id="demand">
+            <option value="real" selected>Real de 2024 (ajustada pelos postos)</option>
+            <option value="normal">Normal (perfil típico de 2023)</option>
+          </select>
+        </label>
+        <div class="field">Quando um trecho está interditado, os motoristas
+          <div class="seg two" role="group" aria-label="Comportamento dos motoristas">
+            <button type="button" id="rrOn" aria-pressed="true">desviam no entroncamento</button>
+            <button type="button" id="rrOff" aria-pressed="false">seguem e formam fila</button>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="realOn" checked> Aplicar as interdições reais da linha do tempo</label>
+      </div>
+
+      <div class="card">
+        <h2>Ao clicar num trecho</h2>
+        <div class="seg" role="group" aria-label="Ação ao clicar">
+          <button type="button" data-tool="total" aria-pressed="true">Interditar</button>
+          <button type="button" data-tool="partial" aria-pressed="false">Meia pista</button>
+          <button type="button" data-tool="free" aria-pressed="false">Liberar</button>
+        </div>
+        <label class="check"><input type="checkbox" id="both" checked> Aplicar nos dois sentidos</label>
+        <button type="button" class="btn" id="clearMan">Remover interdições manuais</button>
+      </div>
+
+      <div class="card">
+        <h2 id="listTitle">Interdições ativas</h2>
+        <div class="list" id="list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <p><b>Malha:</b> 315 trechos federais do Sistema Nacional de Viação (2023) com número de faixas, tipo de pista e volume diário médio de cada trecho. Trechos apenas planejados foram excluídos, exceto dois que fecham lacunas na própria rodovia. 18 trechos sem volume receberam a média dos vizinhos. Os trechos são desenhados como retas entre seus pontos extremos.</p>
+    <p><b>Demanda:</b> perfil por hora e dia da semana calculado nos postos do Plano Nacional de Contagem de Tráfego em 2023. No modo "real de 2024", a demanda de cada hora é multiplicada pela razão entre o que os postos contaram em 2024 e o típico de 2023. Nos entroncamentos, o tráfego se divide proporcionalmente ao volume dos trechos de saída, porque não há matriz origem-destino.</p>
+    <p><b>Interdições:</b> 89 registros de interdição total da PRF (30/04 a 22/06/2024). 82 foram localizados por rodovia e quilômetro; 5 pela coincidência da BR-290 com a BR-116 entre Porto Alegre e Eldorado do Sul ou pela coordenada; 1 (BR-392 km 345, Santa Maria) fica fora da malha e não entra na simulação.</p>
+    <p><b>Modelo:</b> transmissão por células (Daganzo, 1994), células de cerca de 2 km, passo de 1 minuto. Capacidade: 2.000 veículos/hora por faixa em pista dupla (100 km/h), 1.500 em pista simples (80 km/h). No modo de desvio, quem chega a um entroncamento cujo trecho seguinte está interditado escolhe outra saída; se não houver, a viagem é contada como interrompida. Quem já estava entre o entroncamento e o bloqueio retorna aos poucos (cerca de 3% por minuto). Não há cálculo de rotas completas.</p>
+  </footer>
+</div>
+
+<script type="application/json" id="rsdata">__DATA__</script>
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById('rsdata').textContent);
+  const DT = 1 / 60;          // h (1 minuto)
+  const KJ = 130;             // veíc/km/faixa
+  const WARM = 1.5 * 1440;    // 28/04 12:00
+  const START = 2 * 1440;     // 29/04 00:00
+  const END = D.nh * 60;      // 24/06 00:00
+  const T0 = new Date(2024, 3, 27, 0, 0, 0);
+  const SUP = { DUP: { vf: 100, q: 2000 }, PAV: { vf: 80, q: 1500 }, IMP: { vf: 50, q: 700 }, TRV: { vf: 60, q: 1500 }, PLA: { vf: 80, q: 1500 } };
+  const SUPNAME = { DUP: 'pista dupla', PAV: 'pista simples', IMP: 'não pavimentada', TRV: 'travessia urbana', PLA: 'cadastro "planejado" (mantido para continuidade)' };
+
+  // ---------- geometria ----------
+  const lat0 = -30.4, lon0 = -53.6, kx = Math.cos(lat0 * Math.PI / 180);
+  const P = D.nodes.map(([la, lo]) => [(lo - lon0) * kx, -(la - lat0)]);
+  const proj = (la, lo) => [(lo - lon0) * kx, -(la - lat0)];
+
+  // ---------- demanda: perfil e fator real ----------
+  const dowOf = m => (5 + Math.floor(m / 1440)) % 7;   // 27/04/2024 = sábado (seg = 0)
+  const hourOf = m => Math.floor(m / 60) % 24;
+  const gReal = new Float64Array(D.nh).fill(1);
+  for (let h = 0; h < D.nh; h++) {
+    const dow = (5 + Math.floor(h / 24)) % 7, hr = h % 24;
+    let so = 0, sr = 0, n = 0;
+    for (const s of D.stations) {
+      const o = s.obs[h];
+      if (o == null || !s.ref) continue;
+      const r = s.ref[dow][hr];
+      if (r <= 0) continue;
+      so += o; sr += r; n++;
+    }
+    if (n >= 6 && sr > 0) gReal[h] = Math.max(0.15, Math.min(1.6, so / sr));
+  }
+
+  // ---------- links e células ----------
+  const links = [];
+  const nodes = D.nodes.map((_, i) => ({ i, ins: [], outs: [] }));
+  D.edges.forEach((e, ei) => {
+    const sp = SUP[e.sup] || SUP.PAV;
+    const lanes = e.lanes;
+    const Q = lanes * sp.q;
+    const L = Math.max(e.km, 0.1);
+    const nc = Math.max(1, Math.round(L / 2));
+    const cl = L / nc;
+    const w = Q / (KJ * lanes - Q / sp.vf);
+    e.links = [];
+    for (const dir of [0, 1]) {
+      const from = dir ? e.b : e.a, to = dir ? e.a : e.b;
+      const k = {
+        id: links.length, e, ei, dir, from, to, lanes, vf: sp.vf, Q, nc, cl,
+        N: KJ * lanes * Math.max(cl, 1.5), qdt: Q * DT, vfr: Math.min(1, sp.vf * DT / cl), wr: Math.min(1, w * DT / cl),
+        T: e.vdm / 2, cres: (e.o >= 0) ? dir === 0 : dir === 1,
+        n: new Float64Array(nc), auto: new Int16Array(nc), man: new Float64Array(nc).fill(1),
+        S: new Float64Array(nc), R: new Float64Array(nc), out: new Float64Array(nc), v: new Float64Array(nc).fill(sp.vf),
+        inflow: 0, outflow: 0, closed: false, src: 0, q: 0, rev: null,
+      };
+      links.push(k); e.links.push(k);
+      nodes[from].outs.push(k); nodes[to].ins.push(k);
+    }
+    e.links[0].rev = e.links[1]; e.links[1].rev = e.links[0];
+  });
+  const DM = new Float64Array(links.length), RR = new Float64Array(links.length);
+  // divisões estáticas: preenchimento proporcional sem retorno (U) e sem exceder o volume de cada saída
+  for (const nd of nodes) {
+    const X = new Map();
+    const col = f => { let c = 0; for (const k of nd.ins) c += (X.get(k) && X.get(k).get(f)) || 0; return c; };
+    for (const k of nd.ins) X.set(k, new Map());
+    for (let it = 0; it < 4; it++) {
+      for (const k of nd.ins) {
+        const row = X.get(k);
+        let rs = 0; for (const v of row.values()) rs += v;
+        const slack = k.T - rs; if (slack <= 1e-6) continue;
+        const cands = nd.outs.filter(f => f.e !== k.e);
+        const cs = cands.map(f => Math.max(0, f.T - col(f)));
+        const tot = cs.reduce((a, b) => a + b, 0); if (tot <= 1e-6) continue;
+        cands.forEach((f, j) => { const add = Math.min(cs[j], slack * cs[j] / tot); row.set(f, (row.get(f) || 0) + add); });
+      }
+    }
+    for (const k of nd.ins) {
+      const row = X.get(k);
+      k.split = [...row.entries()].filter(([, v]) => v > 1e-6).map(([f, v]) => ({ f, b: k.T > 0 ? v / k.T : 0 }));
+      k.fifo = k.lanes === 1;
+    }
+    for (const f of nd.outs) f.src = Math.max(0, f.T - col(f));
+  }
+  // posição de cada evento e posto nos links
+  function cellsAt(e, frKm, d) {
+    // frKm: fração ao longo do sentido crescente do km; devolve [link, célula]
+    const fromA = e.o === -1 ? 1 - frKm : frKm;
+    const out = [];
+    for (const k of e.links) {
+      if (d !== 0 && e.o !== 0 && (d === 1) !== k.cres) continue;
+      const pos = k.dir === 0 ? fromA : 1 - fromA;
+      out.push([k, Math.min(k.nc - 1, Math.max(0, Math.floor(pos * k.nc)))]);
+    }
+    return out;
+  }
+  const INTS = D.ints.map((it, idx) => {
+    const e = D.edges[it.e];
+    const cells = cellsAt(e, it.fr, it.d);
+    const a = P[e.a], b = P[e.b];
+    const fromA = e.o === -1 ? 1 - it.fr : it.fr;
+    return { ...it, idx, cells, x: a[0] + (b[0] - a[0]) * fromA, y: a[1] + (b[1] - a[1]) * fromA, active: false };
+  });
+  const byStart = [...INTS].sort((p, q) => p.s - q.s), byEnd = [...INTS].sort((p, q) => p.f - q.f);
+  const STATIONS = D.stations.map((s, i) => {
+    const e = D.edges[s.e];
+    const fr = Math.min(1, Math.max(0, (s.km - e.ki) / Math.max(1e-6, e.kf - e.ki)));
+    const [x, y] = proj(s.lat, s.lon);
+    return { ...s, i, cells: cellsAt(e, fr, 0), x, y, sim: new Float64Array(D.nh).fill(NaN) };
+  });
+
+  // ---------- estado ----------
+  const S = {
+    t: WARM, playing: true, rate: 360, acc: 0, tool: 'total', reroute: true, realOn: true, demand: 'real',
+    cong: 0, queue: 0, delay: 0, div: 0, can: 0, ps: 0, pe: 0, manual: [], selSt: null, busy: false,
+    stAcc: new Float64Array(STATIONS.length), hover: null,
+  };
+
+  function mult(k, i) {
+    if (S.realOn && k.auto[i] > 0) return 0;
+    return k.man[i];
+  }
+  function refreshClosed(k) {
+    let c = false, fc = -1;
+    for (let i = 0; i < k.nc; i++) if (mult(k, i) === 0) { c = true; fc = i; break; }
+    k.closed = c; k.fc = fc;
+  }
+  function applyEvents() {
+    while (S.ps < byStart.length && byStart[S.ps].s <= S.t) {
+      const it = byStart[S.ps++];
+      if (it.f > S.t) { it.active = true; for (const [k, c] of it.cells) { k.auto[c]++; refreshClosed(k); } }
+    }
+    while (S.pe < byEnd.length && byEnd[S.pe].f <= S.t) {
+      const it = byEnd[S.pe++];
+      if (it.active) { it.active = false; for (const [k, c] of it.cells) { k.auto[c]--; refreshClosed(k); } }
+    }
+  }
+
+  function demandFactor(m) {
+    const h = Math.floor(m / 60);
+    const p = D.prof[dowOf(m)][hourOf(m)];
+    const g = S.demand === 'real' && h >= 0 && h < D.nh ? gReal[h] : 1;
+    return p * g;
+  }
+
+  function nodeStep(nd, F, rec) {
+    const rr = S.reroute;
+    const E = [];
+    for (const k of nd.ins) {
+      const Sx = k.S[k.nc - 1];
+      let sp = k.split, cancel = 0;
+      if (rr && sp.some(s => s.f.closed)) {
+        let openB = 0, closedB = 0;
+        for (const s of sp) (s.f.closed ? (closedB += s.b) : (openB += s.b));
+        if (openB > 0) {
+          const scale = (openB + closedB) / openB;
+          sp = sp.filter(s => !s.f.closed).map(s => ({ f: s.f, b: s.b * scale }));
+          if (rec) S.div += Sx * closedB;
+        } else { sp = []; cancel = closedB; }
+      }
+      E.push({ k, S: Sx, sp, fifo: k.fifo, cancel });
+    }
+    for (const f of nd.outs) {
+      f.q += f.src * F * DT;
+      if (rr && f.closed) { if (rec) S.can += f.q; f.q = 0; continue; }
+      E.push({ src: f, S: f.q, sp: [{ f, b: 1 }], fifo: false, cancel: 0 });
+    }
+    for (const f of nd.outs) DM[f.id] = 0;
+    for (const e of E) for (const s of e.sp) DM[s.f.id] += e.S * s.b;
+    for (const f of nd.outs) { const d = DM[f.id]; RR[f.id] = d > 1e-9 ? Math.min(1, f.R[0] / d) : 1; }
+    for (const e of E) {
+      let ff = 1;
+      if (e.fifo) for (const s of e.sp) if (s.b > 0) ff = Math.min(ff, RR[s.f.id]);
+      let moved = 0, bsum = 0;
+      for (const s of e.sp) {
+        const fl = e.S * s.b * (e.fifo ? ff : RR[s.f.id]);
+        s.f.inflow += fl; moved += fl; bsum += s.b;
+      }
+      if (e.k) {
+        const sink = Math.max(0, 1 - bsum - e.cancel);
+        const fac = e.fifo ? ff : 1;
+        const sunk = e.S * sink * fac, canc = e.S * e.cancel * fac;
+        if (rec) S.can += canc;
+        e.k.outflow = moved + sunk + canc;
+      } else {
+        e.src.q = Math.max(0, e.src.q - moved);
+      }
+    }
+  }
+
+  function step(rec) {
+    applyEvents();
+    const F = demandFactor(S.t);
+    for (const k of links) {
+      for (let i = 0; i < k.nc; i++) {
+        const m = mult(k, i);
+        k.S[i] = Math.min(k.vfr * k.n[i], k.qdt * m);
+        k.R[i] = Math.min(k.qdt * m, k.wr * (k.N - k.n[i]));
+      }
+      k.inflow = 0; k.outflow = 0;
+    }
+    for (const nd of nodes) nodeStep(nd, F, rec);
+    let cong = 0, queue = 0, delay = 0;
+    for (const k of links) {
+      const n = k.n, out = k.out, nc = k.nc;
+      if (S.reroute && k.closed) {
+        // quem já estava no trecho antes do bloqueio retorna aos poucos (cerca de 3% por minuto)
+        for (let i = 0; i <= k.fc; i++) { const r = n[i] * 0.03; n[i] -= r; if (rec) S.can += r; }
+      }
+      for (let i = 0; i < nc; i++) out[i] = i < nc - 1 ? Math.min(k.S[i], k.R[i + 1]) : k.outflow;
+      for (let i = 0; i < nc; i++) {
+        const before = n[i];
+        n[i] = Math.max(0, before + (i === 0 ? k.inflow : out[i - 1]) - out[i]);
+        delay += before * DT - out[i] * Math.max(k.cl / k.vf, DT);
+        const v = before > 0.3 ? Math.min(k.vf, (out[i] / before) * k.cl / DT) : k.vf;
+        k.v[i] = v;
+        if (v < 0.5 * k.vf && before > 0.5) { cong += k.cl; queue += before; }
+      }
+    }
+    let wait = 0;
+    for (const k of links) wait += k.q;
+    S.cong = cong; S.queue = queue + wait;
+    if (rec) {
+      S.delay += Math.max(0, delay) + wait * DT;
+      for (const st of STATIONS) for (const [k, c] of st.cells) S.stAcc[st.i] += k.out[c];
+    }
+    S.t += 1;
+    if (S.t % 60 === 0) {
+      const h = S.t / 60 - 1;
+      if (h >= 0 && h < D.nh) for (const st of STATIONS) { st.sim[h] = S.stAcc[st.i]; S.stAcc[st.i] = 0; }
+    }
+  }
+
+  function resetState() {
+    for (const k of links) { k.n.fill(0); k.auto.fill(0); k.q = 0; k.v.fill(k.vf); }
+    for (const it of INTS) it.active = false;
+    S.t = WARM; S.ps = 0; S.pe = 0; S.delay = 0; S.div = 0; S.can = 0; S.stAcc.fill(0);
+    for (const st of STATIONS) st.sim.fill(NaN);
+    for (const k of links) refreshClosed(k);
+  }
+  function runTo(target, done) {
+    if (target < S.t) resetState();
+    S.busy = true; el('busy').hidden = false;
+    const chunk = () => {
+      const stop = performance.now() + 30;
+      while (S.t < target && performance.now() < stop) step(S.t >= START);
+      if (S.t < target) { el('busy').textContent = 'Calculando… ' + fmtDate(S.t); requestAnimationFrame(chunk); }
+      else { S.busy = false; el('busy').hidden = true; el('busy').textContent = 'Calculando…'; if (done) done(); }
+    };
+    requestAnimationFrame(chunk);
+  }
+
+  // ---------- formatação ----------
+  const el = id => document.getElementById(id);
+  const DOWN = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  function dateOf(m) { return new Date(T0.getTime() + m * 60000); }
+  function fmtDate(m) {
+    const d = dateOf(m);
+    return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + ' ' +
+      String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+  function fmtDur(min) {
+    const h = Math.floor(min / 60);
+    if (h < 24) return h + ' h ' + String(Math.floor(min % 60)).padStart(2, '0') + ' min';
+    return Math.floor(h / 24) + ' d ' + (h % 24) + ' h';
+  }
+  const nf0 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+  const nf1 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const fmtBig = v => v >= 1e6 ? nf1.format(v / 1e6) + ' mi' : nf0.format(v);
+
+  // ---------- tema ----------
+  let T = {};
+  function readTokens() {
+    const cs = getComputedStyle(document.documentElement);
+    for (const n of ['bg', 'surface', 'fg', 'muted', 'line', 'accent', 'map-bg', 'asphalt', 'asphalt-off', 'node', 'city', 'free', 'slow', 'jam', 'stop', 'station', 'flood'])
+      T[n] = cs.getPropertyValue('--' + n).trim();
+  }
+
+  // ---------- vista ----------
+  const map = el('map'), ctx = map.getContext('2d');
+  let W = 0, H = 0, dpr = 1;
+  const V = { cx: 0, cy: 0, s: 100 };
+  const VIEWS = {
+    rs: [-33.8, -27.0, -57.7, -49.6], poa: [-30.3, -29.55, -51.85, -50.75], taq: [-29.8, -28.85, -52.45, -50.9], sm: [-30.25, -29.35, -54.3, -52.6],
+  };
+  function fit(b) {
+    const [la1, la2, lo1, lo2] = b;
+    const [x1, y1] = proj(la2, lo1), [x2, y2] = proj(la1, lo2);
+    V.cx = (x1 + x2) / 2; V.cy = (y1 + y2) / 2;
+    V.s = Math.min(W / (x2 - x1), H / (y2 - y1)) * 0.95;
+  }
+  const sx = x => (x - V.cx) * V.s + W / 2, sy = y => (y - V.cy) * V.s + H / 2;
+  const wx = X => (X - W / 2) / V.s + V.cx, wy = Y => (Y - H / 2) / V.s + V.cy;
+  function layout() {
+    dpr = window.devicePixelRatio || 1;
+    const oldW = W, oldS = V.s;
+    W = map.clientWidth; H = Math.round(Math.min(Math.max(W * 0.78, 360), 760));
+    map.style.height = H + 'px'; map.width = Math.round(W * dpr); map.height = Math.round(H * dpr);
+    if (!oldW) fit(VIEWS.rs); else V.s = oldS * W / oldW;
+    const tl = el('timeline'); tl.width = Math.round(tl.clientWidth * dpr); tl.height = Math.round(58 * dpr);
+    const sc = el('stchart'); sc.width = Math.round(sc.clientWidth * dpr); sc.height = Math.round(170 * dpr);
+  }
+
+  const CITIES = [
+    ['Porto Alegre', -30.03, -51.23], ['Caxias do Sul', -29.17, -51.18], ['Pelotas', -31.77, -52.34], ['Santa Maria', -29.69, -53.81],
+    ['Passo Fundo', -28.26, -52.41], ['Uruguaiana', -29.75, -57.09], ['Lajeado', -29.47, -51.96], ['Osório', -29.89, -50.27],
+    ['Santa Cruz do Sul', -29.72, -52.43], ['Rio Grande', -32.03, -52.10], ['Bagé', -31.33, -54.10], ['Erechim', -27.63, -52.27],
+    ['Santo Ângelo', -28.30, -54.26], ['Torres', -29.33, -49.73], ['Vacaria', -28.51, -50.93], ['Alegrete', -29.78, -55.79],
+    ['Santana do Livramento', -30.89, -55.53], ['Cruz Alta', -28.64, -53.61], ['Camaquã', -30.85, -51.81], ['Novo Hamburgo', -29.68, -51.13],
+    ['Canoas', -29.92, -51.18], ['Eldorado do Sul', -30.08, -51.62], ['Bento Gonçalves', -29.17, -51.52], ['Cachoeira do Sul', -30.04, -52.89],
+    ['Montenegro', -29.69, -51.46], ['Estrela', -29.50, -51.96], ['Soledade', -28.83, -52.51],
+  ].map(([n, la, lo]) => ({ n, la, lo, p: proj(la, lo) }));
+
+  function speedColor(k, i) {
+    if (mult(k, i) === 0) return 3;
+    const r = k.v[i] / k.vf;
+    return r >= 0.75 ? 0 : r >= 0.45 ? 1 : r >= 0.12 ? 2 : 3;
+  }
+
+  function drawMap() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = T['map-bg']; ctx.fillRect(0, 0, W, H);
+    const z = Math.max(0.6, Math.min(3, V.s / 160));
+    ctx.lineCap = 'round';
+    // leito
+    for (const e of D.edges) {
+      const a = P[e.a], b = P[e.b];
+      ctx.strokeStyle = e.sup === 'PLA' || e.sup === 'IMP' ? T['asphalt-off'] : T.asphalt;
+      ctx.lineWidth = (e.lanes >= 2 ? 7 : 4.6) * z;
+      ctx.beginPath(); ctx.moveTo(sx(a[0]), sy(a[1])); ctx.lineTo(sx(b[0]), sy(b[1])); ctx.stroke();
+    }
+    // células agrupadas por cor e largura
+    const cols = [T.free, T.slow, T.jam, T.stop];
+    ctx.lineCap = 'butt';
+    for (const wide of [false, true]) {
+      const paths = [new Path2D(), new Path2D(), new Path2D(), new Path2D()];
+      for (const k of links) {
+        if ((k.lanes >= 2) !== wide) continue;
+        const A = P[k.from], B = P[k.to];
+        const ax = sx(A[0]), ay = sy(A[1]), bx = sx(B[0]), by = sy(B[1]);
+        const len = Math.hypot(bx - ax, by - ay) || 1;
+        const dx = (bx - ax) / len, dy = (by - ay) / len, nx = -dy, ny = dx;
+        const off = (wide ? 1.9 : 1.25) * z;
+        for (let i = 0; i < k.nc; i++) {
+          const c = speedColor(k, i);
+          const t1 = i / k.nc, t2 = (i + 1) / k.nc;
+          paths[c].moveTo(ax + (bx - ax) * t1 + nx * off, ay + (by - ay) * t1 + ny * off);
+          paths[c].lineTo(ax + (bx - ax) * t2 + nx * off, ay + (by - ay) * t2 + ny * off);
+        }
+      }
+      ctx.lineWidth = (wide ? 2.6 : 1.8) * z;
+      for (let c = 0; c < 4; c++) { ctx.strokeStyle = cols[c]; ctx.stroke(paths[c]); }
+    }
+    // cidades
+    ctx.font = `600 ${Math.round(11.5 * Math.min(1.3, Math.max(0.85, z)))}px Barlow Semi Condensed, Arial Narrow, sans-serif`;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    for (const c of CITIES) {
+      const X = sx(c.p[0]), Y = sy(c.p[1]);
+      if (X < -40 || X > W + 40 || Y < -20 || Y > H + 20) continue;
+      if (V.s < 140 && !['Porto Alegre', 'Caxias do Sul', 'Pelotas', 'Santa Maria', 'Passo Fundo', 'Uruguaiana', 'Lajeado', 'Osório', 'Rio Grande', 'Bagé', 'Erechim', 'Santo Ângelo'].includes(c.n)) continue;
+      ctx.fillStyle = T.city; ctx.beginPath(); ctx.arc(X, Y, 2.4, 0, Math.PI * 2); ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = T['map-bg']; ctx.strokeText(c.n, X + 5, Y - 6); ctx.fillText(c.n, X + 5, Y - 6);
+    }
+    // postos
+    for (const st of STATIONS) {
+      const X = sx(st.x), Y = sy(st.y), r = 4.2 * Math.min(1.3, z);
+      ctx.save(); ctx.translate(X, Y); ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = T.station; ctx.fillRect(-r, -r, 2 * r, 2 * r);
+      if (S.selSt === st) { ctx.strokeStyle = T.fg; ctx.lineWidth = 2; ctx.strokeRect(-r - 2, -r - 2, 2 * r + 4, 2 * r + 4); }
+      ctx.restore();
+    }
+    // interdições manuais
+    for (const mk of S.manual) {
+      const k = mk.k; const A = P[k.from], B = P[k.to]; const t = (mk.i + 0.5) / k.nc;
+      marker(sx(A[0] + (B[0] - A[0]) * t), sy(A[1] + (B[1] - A[1]) * t), mk.v === 0 ? T.stop : T.slow, z, mk.v === 0);
+    }
+    // interdições reais ativas
+    if (S.realOn) for (const it of INTS) if (it.active) marker(sx(it.x), sy(it.y), T.stop, z, true);
+    // destaque
+    if (S.hover && S.hover.type === 'link') {
+      const { k, i } = S.hover; const A = P[k.from], B = P[k.to];
+      const t1 = i / k.nc, t2 = (i + 1) / k.nc;
+      ctx.strokeStyle = T.fg; ctx.globalAlpha = .45; ctx.lineWidth = 7 * z; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(sx(A[0] + (B[0] - A[0]) * t1), sy(A[1] + (B[1] - A[1]) * t1)); ctx.lineTo(sx(A[0] + (B[0] - A[0]) * t2), sy(A[1] + (B[1] - A[1]) * t2)); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  }
+  function marker(X, Y, col, z, bar) {
+    const s = 10 * Math.min(1.25, Math.max(0.9, z));
+    ctx.fillStyle = col; ctx.strokeStyle = T['map-bg']; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.roundRect(X - s / 2, Y - s / 2, s, s, 2.5); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.fillRect(X - s / 2 + 2, Y - 1, s - 4, 2);
+  }
+
+  // ---------- linha do tempo ----------
+  const activeByHour = new Int16Array(D.nh);
+  for (const it of INTS) for (let h = Math.max(0, Math.floor(it.s / 60)); h < Math.min(D.nh, Math.ceil(it.f / 60)); h++) activeByHour[h]++;
+  function drawTimeline() {
+    const c = el('timeline'), g = c.getContext('2d');
+    const w = c.width / dpr, h = 58;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+    const X = m => 6 + (m - START) / (END - START) * (w - 12);
+    let mx = 1; for (let i = 0; i < D.nh; i++) mx = Math.max(mx, activeByHour[i]);
+    const base = h - 18;
+    g.fillStyle = T.jam; g.globalAlpha = .8;
+    for (let i = START / 60; i < END / 60; i++) {
+      const v = activeByHour[i]; if (!v) continue;
+      const x1 = X(i * 60), x2 = X((i + 1) * 60);
+      const hh = v / mx * (base - 16);
+      g.fillRect(x1, base - hh, Math.max(1, x2 - x1 + .5), hh);
+    }
+    g.globalAlpha = 1;
+    g.strokeStyle = T.line; g.beginPath(); g.moveTo(6, base + .5); g.lineTo(w - 6, base + .5); g.stroke();
+    g.font = '11px IBM Plex Mono, ui-monospace, monospace'; g.fillStyle = T.muted; g.textAlign = 'center'; g.textBaseline = 'top';
+    for (let d = 2; d < D.nh / 24; d++) {
+      const m = d * 1440, dt = dateOf(m);
+      g.strokeStyle = T.line; g.beginPath(); g.moveTo(X(m) + .5, base); g.lineTo(X(m) + .5, base + 3); g.stroke();
+      if (dt.getDay() === 1) { g.textAlign = X(m) < 24 ? 'left' : 'center'; } if (dt.getDay() === 1) g.fillText(String(dt.getDate()).padStart(2, '0') + '/' + String(dt.getMonth() + 1).padStart(2, '0'), X(m), base + 5);
+    }
+    g.textAlign = 'left'; g.fillText('máx. ' + mx + ' simultâneas', 8, 2);
+    const cx = X(Math.min(END, Math.max(START, S.t)));
+    g.strokeStyle = T.fg; g.lineWidth = 2; g.beginPath(); g.moveTo(cx, 0); g.lineTo(cx, base + 4); g.stroke(); g.lineWidth = 1;
+    g.fillStyle = T.fg; g.beginPath(); g.moveTo(cx - 5, 0); g.lineTo(cx + 5, 0); g.lineTo(cx, 6); g.fill();
+  }
+
+  // ---------- gráfico do posto ----------
+  function drawStation() {
+    const st = S.selSt; if (!st) return;
+    const c = el('stchart'), g = c.getContext('2d');
+    const w = c.width / dpr, h = 170;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+    const hNow = Math.min(D.nh - 1, Math.floor(S.t / 60));
+    const h1 = Math.max(hNow, START / 60 + 24 * 4), h0 = h1 - 24 * 4;
+    const pl = 46, pr = 10, pt = 8, pb = 22;
+    let mx = 50;
+    for (let i = h0; i <= h1; i++) {
+      const o = st.obs[i]; if (o != null) mx = Math.max(mx, o);
+      if (st.ref) mx = Math.max(mx, st.ref[(5 + Math.floor(i / 24)) % 7][i % 24]);
+      if (!isNaN(st.sim[i])) mx = Math.max(mx, st.sim[i]);
+    }
+    mx *= 1.1;
+    const X = i => pl + (i - h0) / (h1 - h0) * (w - pl - pr), Y = v => pt + (1 - v / mx) * (h - pt - pb);
+    g.font = '11px IBM Plex Mono, ui-monospace, monospace'; g.textAlign = 'right'; g.textBaseline = 'middle';
+    const step = mx > 4000 ? 1000 : mx > 1600 ? 500 : mx > 800 ? 200 : 100;
+    for (let v = 0; v <= mx; v += step) {
+      g.strokeStyle = T.line; g.beginPath(); g.moveTo(pl, Math.round(Y(v)) + .5); g.lineTo(w - pr, Math.round(Y(v)) + .5); g.stroke();
+      g.fillStyle = T.muted; g.fillText(nf0.format(v), pl - 6, Y(v));
+    }
+    g.textAlign = 'center'; g.textBaseline = 'top';
+    for (let i = Math.ceil(h0 / 24) * 24; i <= h1; i += 24) { const d = dateOf(i * 60); g.fillText(String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0'), X(i), h - pb + 6); }
+    const line = (fn, col, dash, wdt) => {
+      g.strokeStyle = col; g.lineWidth = wdt; g.setLineDash(dash); g.beginPath(); let on = false;
+      for (let i = h0; i <= h1; i++) { const v = fn(i); if (v == null || isNaN(v)) { on = false; continue; } on ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v)); on = true; }
+      g.stroke(); g.setLineDash([]);
+    };
+    if (st.ref) line(i => st.ref[(5 + Math.floor(i / 24)) % 7][i % 24], T.muted, [4, 3], 1.4);
+    line(i => st.obs[i], T.station, [], 1.8);
+    line(i => i <= hNow ? st.sim[i] : NaN, T.jam, [], 1.8);
+    g.strokeStyle = T.fg; g.beginPath(); g.moveTo(X(hNow) + .5, pt); g.lineTo(X(hNow) + .5, h - pb); g.stroke();
+    g.textAlign = 'left'; g.textBaseline = 'top'; g.fillStyle = T.muted; g.fillText('veículos/hora', pl + 4, pt);
+  }
+
+  // ---------- painel ----------
+  function updatePanel() {
+    const d = dateOf(S.t);
+    el('now').innerHTML = fmtDate(S.t) + '<small>' + DOWN[d.getDay()] + ' · ' + d.getFullYear() + '</small>';
+    const act = INTS.filter(i => i.active);
+    el('mInt').textContent = S.realOn ? act.length : '0 (desligadas)';
+    el('mMan').textContent = S.manual.length;
+    el('mCong').textContent = nf0.format(S.cong) + ' km';
+    el('mQueue').textContent = fmtBig(S.queue);
+    el('mDiv').textContent = fmtBig(S.div);
+    el('mCan').textContent = fmtBig(S.can);
+    el('mDelay').textContent = fmtBig(S.delay) + ' h';
+    const list = el('list');
+    el('listTitle').textContent = 'Interdições reais ativas (' + (S.realOn ? act.length : 0) + ')';
+    const key = (S.realOn ? act.map(i => i.idx).join(',') : '') + '|' + Math.floor(S.t / 60);
+    if (list.dataset.key === key) return;
+    list.dataset.key = key;
+    if (!S.realOn || !act.length) { list.innerHTML = '<p class="empty">' + (S.realOn ? 'Nenhuma interdição real neste momento.' : 'Interdições reais desligadas.') + '</p>'; return; }
+    act.sort((a, b) => a.s - b.s);
+    list.innerHTML = act.map(i => `<button type="button" class="item" data-int="${i.idx}"><span class="br">BR-${i.br}</span><span class="a">km ${nf1.format(i.km).replace(',0', '')} · ${i.mun}</span><span class="b">${fmtDate(i.s)} → ${fmtDate(i.f)} · ${i.d === 0 ? 'dois sentidos' : i.d === 1 ? 'crescente' : 'decrescente'}</span></button>`).join('');
+  }
+  el('list').addEventListener('click', ev => {
+    const b = ev.target.closest('[data-int]'); if (!b) return;
+    const it = INTS[+b.dataset.int];
+    V.cx = it.x; V.cy = it.y; V.s = Math.max(V.s, 900);
+  });
+
+  // ---------- interação no mapa ----------
+  function hit(X, Y) {
+    for (const st of STATIONS) if (Math.hypot(sx(st.x) - X, sy(st.y) - Y) < 9) return { type: 'st', st };
+    if (S.realOn) for (const it of INTS) if (it.active && Math.hypot(sx(it.x) - X, sy(it.y) - Y) < 9) return { type: 'int', it };
+    let best = null, bd = 10;
+    for (const e of D.edges) {
+      const a = P[e.a], b = P[e.b];
+      const ax = sx(a[0]), ay = sy(a[1]), bx = sx(b[0]), by = sy(b[1]);
+      const vx = bx - ax, vy = by - ay, L2 = vx * vx + vy * vy || 1;
+      const t = Math.max(0, Math.min(1, ((X - ax) * vx + (Y - ay) * vy) / L2));
+      const d = Math.hypot(X - ax - vx * t, Y - ay - vy * t);
+      if (d < bd) {
+        bd = d;
+        const side = (vx * (Y - ay) - vy * (X - ax)) > 0 ? 0 : 1; // lado direito de a→b => link 0
+        const k = e.links[side];
+        const pos = k.dir === 0 ? t : 1 - t;
+        best = { type: 'link', e, k, i: Math.min(k.nc - 1, Math.floor(pos * k.nc)) };
+      }
+    }
+    return best;
+  }
+  function tipHTML(h) {
+    if (h.type === 'st') {
+      return `<div class="t">Posto de contagem · BR-${h.st.br} km ${nf1.format(h.st.km)}</div><div class="m">Clique para comparar observado e simulado.</div>`;
+    }
+    if (h.type === 'int') {
+      const it = h.it;
+      return `<div class="t">BR-${it.br} km ${it.km} · ${it.mun}</div>
+        <div>Interdição total, ${it.d === 0 ? 'dois sentidos' : it.d === 1 ? 'sentido crescente' : 'sentido decrescente'}</div>
+        <div class="m">${fmtDate(it.s)} → ${fmtDate(it.f)} (${fmtDur(it.f - it.s)})</div>
+        ${it.txt ? `<div style="margin-top:4px">${it.txt.replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c])}</div>` : ''}
+        ${it.ap ? `<div class="m" style="margin-top:4px">Localização aproximada${it.ap === 'BR-116' ? ' (trecho coincidente com a BR-116)' : ' (pela coordenada)'}.</div>` : ''}`;
+    }
+    const { e, k, i } = h;
+    const kmA = e.o === -1 ? e.kf : e.ki, kmB = e.o === -1 ? e.ki : e.kf;
+    const kmCell = k.dir === 0 ? kmA + (kmB - kmA) * (i + 0.5) / k.nc : kmB + (kmA - kmB) * (i + 0.5) / k.nc;
+    const m = mult(k, i);
+    const st = m === 0 ? 'interditado' : Math.round(k.v[i]) + ' km/h';
+    return `<div class="t">BR-${e.br} · km ${nf1.format(kmCell)}</div>
+      <div>${e.lanes >= 2 ? e.lanes + ' faixas por sentido, ' : ''}${SUPNAME[e.sup] || e.sup} · sentido ${e.o === 0 ? '—' : (k.cres ? 'crescente' : 'decrescente')}</div>
+      <div>Agora: <b>${st}</b>${m > 0 && m < 1 ? ' (meia pista)' : ''}</div>
+      <div class="m">Trecho ${e.snv}, km ${e.ki}–${e.kf} · volume diário ${nf0.format(e.vdm)}${e.imp ? ' (estimado pelos vizinhos)' : ''} · ${e.sin} sinistros em 2023</div>`;
+  }
+  let drag = null;
+  map.addEventListener('pointerdown', ev => { drag = { x: ev.clientX, y: ev.clientY, cx: V.cx, cy: V.cy, moved: false }; map.setPointerCapture(ev.pointerId); });
+  map.addEventListener('pointermove', ev => {
+    const r = map.getBoundingClientRect(), X = ev.clientX - r.left, Y = ev.clientY - r.top;
+    if (drag) {
+      const dx = ev.clientX - drag.x, dy = ev.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; map.classList.add('drag'); }
+      if (drag.moved) { V.cx = drag.cx - dx / V.s; V.cy = drag.cy - dy / V.s; el('tip').hidden = true; return; }
+    }
+    const h = hit(X, Y); S.hover = h;
+    const tip = el('tip');
+    if (h) {
+      tip.innerHTML = tipHTML(h); tip.hidden = false;
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      tip.style.left = Math.min(W - tw - 6, X + 14) + 'px';
+      tip.style.top = (Y + 14 + th > H ? Y - th - 10 : Y + 14) + 'px';
+    } else tip.hidden = true;
+  });
+  map.addEventListener('pointerup', ev => {
+    const r = map.getBoundingClientRect(), X = ev.clientX - r.left, Y = ev.clientY - r.top;
+    const wasDrag = drag && drag.moved; drag = null; map.classList.remove('drag');
+    if (wasDrag || S.busy) return;
+    const h = hit(X, Y); if (!h) return;
+    if (h.type === 'st') { selectStation(h.st); return; }
+    if (h.type === 'link') applyTool(h.k, h.i);
+  });
+  map.addEventListener('pointerleave', () => { S.hover = null; el('tip').hidden = true; });
+  map.addEventListener('wheel', ev => {
+    ev.preventDefault();
+    const r = map.getBoundingClientRect(), X = ev.clientX - r.left, Y = ev.clientY - r.top;
+    zoomAt(X, Y, Math.exp(-ev.deltaY * 0.0015));
+  }, { passive: false });
+  function zoomAt(X, Y, f) {
+    const x = wx(X), y = wy(Y);
+    V.s = Math.max(40, Math.min(6000, V.s * f));
+    V.cx = x - (X - W / 2) / V.s; V.cy = y - (Y - H / 2) / V.s;
+  }
+  el('zin').addEventListener('click', () => zoomAt(W / 2, H / 2, 1.6));
+  el('zout').addEventListener('click', () => zoomAt(W / 2, H / 2, 1 / 1.6));
+  document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => fit(VIEWS[b.dataset.view])));
+
+  function applyTool(k, i) {
+    const targets = [[k, i]];
+    if (el('both').checked) targets.push([k.rev, k.rev.nc - 1 - i]);
+    const want = S.tool === 'total' ? 0 : S.tool === 'partial' ? (k.lanes >= 2 ? 0.5 : 0.4) : 1;
+    const same = S.tool !== 'free' && Math.abs(k.man[i] - want) < 1e-9;
+    for (const [lk, j] of targets) {
+      const v = same ? 1 : (S.tool === 'total' ? 0 : S.tool === 'partial' ? (lk.lanes >= 2 ? 0.5 : 0.4) : 1);
+      lk.man[j] = v;
+      S.manual = S.manual.filter(m => !(m.k === lk && m.i === j));
+      if (v < 1) S.manual.push({ k: lk, i: j, v });
+      refreshClosed(lk);
+    }
+  }
+  el('clearMan').addEventListener('click', () => {
+    for (const m of S.manual) { m.k.man[m.i] = 1; refreshClosed(m.k); }
+    S.manual = [];
+  });
+  document.querySelectorAll('.seg [data-tool]').forEach(b => b.addEventListener('click', () => {
+    S.tool = b.dataset.tool;
+    document.querySelectorAll('.seg [data-tool]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+  function setRR(v) { S.reroute = v; el('rrOn').setAttribute('aria-pressed', String(v)); el('rrOff').setAttribute('aria-pressed', String(!v)); }
+  el('rrOn').addEventListener('click', () => setRR(true));
+  el('rrOff').addEventListener('click', () => setRR(false));
+  el('realOn').addEventListener('change', e => { S.realOn = e.target.checked; for (const k of links) refreshClosed(k); });
+  el('demand').addEventListener('change', e => { S.demand = e.target.value; });
+  el('speed').addEventListener('change', e => { S.rate = +e.target.value; });
+  function setPlaying(p) { S.playing = p; el('play').textContent = p ? 'Pausar' : 'Continuar'; }
+  el('play').addEventListener('click', () => setPlaying(!S.playing));
+  el('restart').addEventListener('click', () => { if (!S.busy) runTo(START - 1, () => {}); });
+  el('timeline').addEventListener('pointerdown', ev => {
+    if (S.busy) return;
+    const r = el('timeline').getBoundingClientRect();
+    const m = START + (ev.clientX - r.left - 6) / (r.width - 12) * (END - START);
+    runTo(Math.round(Math.max(START, Math.min(END - 1, m)) / 60) * 60);
+  });
+  function selectStation(st) {
+    S.selSt = st;
+    el('stTitle').textContent = 'Posto de contagem · BR-' + st.br + ' km ' + nf1.format(st.km);
+    el('stHint').textContent = 'Fluxo por hora nos dois sentidos, últimos 4 dias até o momento simulado.';
+    el('stchart').hidden = false; el('stLegend').hidden = false;
+    layout();
+  }
+
+  // ---------- laço ----------
+  let last = performance.now(), panelT = 0;
+  function frame(now) {
+    const dtr = Math.min(0.1, (now - last) / 1000); last = now;
+    if (S.playing && !S.busy && S.t < END) {
+      S.acc += dtr * S.rate;
+      let n = 0;
+      while (S.acc >= 1 && n < 600 && S.t < END) { step(S.t >= START); S.acc -= 1; n++; }
+      if (n >= 600) S.acc = 0;
+      if (S.t >= END) setPlaying(false);
+    }
+    drawMap();
+    if (now - panelT > 200) { panelT = now; updatePanel(); drawTimeline(); drawStation(); }
+    requestAnimationFrame(frame);
+  }
+
+  readTokens();
+  new MutationObserver(readTokens).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTokens);
+  window.addEventListener('resize', layout);
+  layout();
+  resetState();
+  // abre em 03/05 18:00, com a crise em curso, e com o posto da BR-386 em Montenegro selecionado
+  const pre = STATIONS.find(s => s.br === 386 && Math.abs(s.km - 422.6) < 0.5) || STATIONS[0];
+  selectStation(pre);
+  fit(VIEWS.rs);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false);
+  runTo(6 * 1440 + 18 * 60, () => {});
+  requestAnimationFrame(frame);
+})();
+</script>

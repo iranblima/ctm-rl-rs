@@ -1,0 +1,11 @@
+{
+  "name": "andina-ctm-rl",
+  "private": true,
+  "description": "Simulador CTM e Dueling DDQN para desobstrução da malha federal do RS (etapas 02 e 03)",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "scan": "node 03_desobstrucao_ctm_rl/scan.js",
+    "select": "node 03_desobstrucao_ctm_rl/select.js",
+    "valref": "node 03_desobstrucao_ctm_rl/valref.js"
+  }
+}
