@@ -68,11 +68,45 @@ python tools/embed.py 02_ordem_liberacao/viewer.html 02_ordem_liberacao/results/
 node 03_desobstrucao_ctm_rl/scan.js         # replay com e sem interdições; fluxos de referência dos postos → results/scan.json (~1 min)
 node 03_desobstrucao_ctm_rl/train.js 0 2400 & node 03_desobstrucao_ctm_rl/train.js 1 2400 & wait   # (~16 min cada)
 node 03_desobstrucao_ctm_rl/select.js       # menor KPI médio na validação → results/selected.json
-node 03_desobstrucao_ctm_rl/valref.js       # Esperar e Guloso na validação (referência)
+node 03_desobstrucao_ctm_rl/valref.js       # Esperar e Guloso na validação → results/valref.json (~6 min; já incluído)
 node 03_desobstrucao_ctm_rl/test.js 0 2 & node 03_desobstrucao_ctm_rl/test.js 1 2 & wait            # teste, uma única vez (~6 min)
 python 03_desobstrucao_ctm_rl/build.py      # tabelas por K, diferença pareada, IC → results/summary.json e viz.json
 python tools/embed.py 03_desobstrucao_ctm_rl/viewer.html 03_desobstrucao_ctm_rl/results/viz.json paginas/desobstrucao-rs.html
 ```
+
+### Acompanhar o treino ao vivo
+
+Em outro terminal, enquanto o treino roda:
+
+```bash
+node 03_desobstrucao_ctm_rl/monitor.js      # abra http://localhost:8765 no navegador
+```
+
+A página se atualiza a cada 5 segundos e mostra:
+
+- **KPI na validação** a cada 300 episódios, por semente. Aparecem também, tracejados, o treino de referência e as linhas de Esperar e Guloso na validação.
+- **Retorno médio** por episódio de treino.
+- **Exploração (ε).**
+- **Erro da rede.**
+- **Ações gastas** por episódio.
+
+Os dados vêm de `results/train_log_<semente>.jsonl`. O treino grava uma linha a cada 50 episódios; para mudar, use `node train.js 0 2400 --log 10`.
+
+### Voltar ao treino de referência (reset)
+
+A pasta `03_desobstrucao_ctm_rl/baseline/` guarda uma cópia protegida do treino que gerou os resultados publicados: checkpoints, rede escolhida, testes e página. Para desfazer qualquer treino ou teste novo e voltar exatamente a esse estado:
+
+```bash
+node 03_desobstrucao_ctm_rl/reset.js        # pede confirmação (ou --sim para não pedir)
+```
+
+O botão **Voltar ao treino de referência** do monitor faz o mesmo. Em ambos os casos:
+
+- o reset é recusado enquanto houver treino rodando;
+- `results/scan.json` e `results/valref.json` são mantidos, porque dependem só dos dados e não do treino;
+- `paginas/desobstrucao-rs.html` também volta à versão publicada.
+
+Um treino novo substitui os checkpoints da semente que está treinando, e só dela. Não altere a pasta `baseline/`.
 
 ## Etapa 03 por dentro
 
@@ -86,6 +120,10 @@ python tools/embed.py 03_desobstrucao_ctm_rl/viewer.html 03_desobstrucao_ctm_rl/
 | `results/ckpt_*.json` | Todos os checkpoints, com o desempenho na validação. |
 | `results/test_*.json` | Cada episódio de teste: KPI, veículo-hora, decisões hora a hora e quadros do mapa. |
 | `results/summary.json` | Números finais (por K, agregados, correlação Q × KPI). |
+| `results/valref.json` | Esperar e Guloso na validação: KPI de 7,05 h e 2,51 h. |
+| `monitor.js`, `monitor.html` | Monitor do treino ao vivo, com o botão de reset. |
+| `reset.js` | Volta ao treino de referência guardado em `baseline/`. |
+| `baseline/` | Cópia protegida do treino de referência (18/10/2026). |
 
 ### Resultado principal (teste: 39 momentos × 4 orçamentos)
 

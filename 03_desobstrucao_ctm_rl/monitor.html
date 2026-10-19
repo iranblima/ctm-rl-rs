@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Monitor do Treino</title>
+<style>
+:root{
+  --bg:#eef1f2; --surface:#ffffff; --fg:#15201f; --muted:#5b6969; --line:#d4dcdc; --grid:#e6ebeb;
+  --accent:#0d6a5e; --accent-fg:#fff; --s0:#2563c9; --s1:#d4741c; --s2:#7a4cc2; --s3:#1b8a4c;
+  --ref:#9aa6a6; --good:#1b8a4c; --warn:#b7791f; --bad:#c0392b;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#0e1414; --surface:#161e1e; --fg:#e4ecec; --muted:#93a3a2; --line:#283434; --grid:#1f2929;
+    --accent:#3cc0ae; --accent-fg:#051412; --s0:#6aa3ff; --s1:#ffa04d; --s2:#b28cff; --s3:#4fd18b; --ref:#5f6d6d; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --bg:#0e1414; --surface:#161e1e; --fg:#e4ecec; --muted:#93a3a2; --line:#283434; --grid:#1f2929;
+  --accent:#3cc0ae; --accent-fg:#051412; --s0:#6aa3ff; --s1:#ffa04d; --s2:#b28cff; --s3:#4fd18b; --ref:#5f6d6d; color-scheme:dark; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--font)}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 40px;display:grid;gap:14px}
+h1{margin:0;font-size:clamp(24px,3.4vw,34px);line-height:1.1}
+.lead{margin:0;color:var(--muted);max-width:80ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px;min-width:0}
+.card h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;display:flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.live{animation:pulse 1.4s infinite}@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion: reduce){.live{animation:none}}
+.btn{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;padding:7px 12px;cursor:pointer}
+.btn.danger{border-color:var(--bad);color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.msg{font-size:13px;color:var(--muted);margin:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.grid2{grid-template-columns:minmax(0,1fr)}}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--font)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.sw{width:18px;height:0;border-top:2.5px solid;display:inline-block}
+.sw.dash{border-top-style:dashed}
+code,pre{font-family:var(--mono);font-size:13px}
+pre{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto}
+.note{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:grid;gap:6px">
+    <h1>Monitor do Treino</h1>
+    <p class="lead">Curvas do Dueling DDQN MLP da etapa 03, atualizadas a cada 5 segundos enquanto o treino roda. As linhas tracejadas mostram o treino de referência (o que gerou os resultados publicados) e os resultados de Esperar e Guloso na validação.</p>
+  </header>
+
+  <div class="card">
+    <div class="row">
+      <div class="pills" id="pills"></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <span class="msg" id="upd"></span>
+        <button class="btn danger" id="reset" type="button">Voltar ao treino de referência</button>
+      </div>
+    </div>
+    <p class="msg" id="msg" aria-live="polite"></p>
+  </div>
+
+  <div class="card">
+    <h2>KPI na validação a cada 300 episódios (horas; menor é melhor)</h2>
+    <div id="cVal"></div>
+    <div class="legend" id="lgVal"></div>
+    <p class="note">Eixo horizontal: episódio de treino. É este número que escolhe o checkpoint final: o menor entre todas as sementes.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h2>Retorno médio por episódio de treino</h2><div id="cRet"></div><p class="note">−1 por hora até estabilizar: −2 significa que estabilizou em 2 h. Subir é bom.</p></div>
+    <div class="card"><h2>Exploração (ε)</h2><div id="cEps"></div><p class="note">Chance de escolher ao acaso. Cai de 1 para 0,05 nos primeiros 60% dos episódios.</p></div>
+    <div class="card"><h2>Erro da rede (escala log)</h2><div id="cLoss"></div><p class="note">Diferença média ao quadrado entre o Q previsto e o alvo.</p></div>
+    <div class="card"><h2>Ações gastas por episódio</h2><div id="cAct"></div><p class="note">Quanto do orçamento K o agente usa.</p></div>
+  </div>
+
+  <div class="card">
+    <h2>Como usar</h2>
+    <pre>node train.js 0 2400 &amp;   # semente 0 (registro a cada 50 episódios; --log N muda)
+node train.js 1 2400 &amp;   # semente 1, em paralelo
+node select.js            # escolhe o melhor checkpoint na validação
+node test.js 0 2 &amp; node test.js 1 2 &amp; wait
+python build.py           # tabelas e página</pre>
+    <p class="note">Voltar ao treino de referência apaga os checkpoints, registros e testes atuais e restaura os da pasta <code>baseline/</code>. O botão fica desligado enquanto houver treino rodando. No terminal: <code>node reset.js</code>.</p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const el = id => document.getElementById(id);
+  const nf = (v, d = 2) => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const SC = s => css(`--s${s % 4}`);
+  let last = null;
+
+  // gráfico de linhas simples em SVG
+  function chart(target, series, opt = {}) {
+    const W = opt.w || 760, H = opt.h || 260, L = 56, R = 16, T = 14, B = 30;
+    const pts = series.flatMap(s => s.pts);
+    const hl = opt.hlines || [];
+    if (!pts.length) { el(target).innerHTML = `<p class="note" style="margin:8px 0">Sem dados ainda. Comece um treino com <code>node train.js 0 2400</code>.</p>`; return; }
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]).concat(hl.map(h => h.y));
+    const x0 = 0, x1 = Math.max(...xs, opt.xmax || 0);
+    const tf = opt.log ? v => Math.log10(Math.max(v, 1e-6)) : v => v;
+    let y0 = opt.ymin != null ? opt.ymin : Math.min(...ys.map(tf)), y1 = opt.ymax != null ? opt.ymax : Math.max(...ys.map(tf));
+    if (y1 - y0 < 1e-9) { y0 -= 1; y1 += 1; } const pad = (y1 - y0) * 0.08; if (opt.ymin == null) y0 -= pad; if (opt.ymax == null) y1 += pad;
+    const X = v => L + (W - L - R) * (v - x0) / (x1 - x0 || 1), Y = v => T + (H - T - B) * (1 - (tf(v) - y0) / (y1 - y0));
+    const yt = []; for (let i = 0; i <= 4; i++) yt.push(y0 + (y1 - y0) * i / 4);
+    const step = Math.pow(10, Math.floor(Math.log10(x1 / 4 || 1))); const xs1 = Math.ceil((x1 / 5) / step) * step; const xt = []; for (let v = 0; v <= x1; v += xs1) xt.push(v);
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opt.label || ''}">`;
+    for (const v of yt) s += `<line x1="${L}" x2="${W - R}" y1="${Y(opt.log ? 10 ** v : v)}" y2="${Y(opt.log ? 10 ** v : v)}" stroke="${css('--grid')}"/><text x="${L - 8}" y="${Y(opt.log ? 10 ** v : v) + 4}" text-anchor="end" font-size="11.5" fill="${css('--muted')}">${opt.log ? (10 ** v).toPrecision(2) : nf(v, opt.yd ?? 1)}</text>`;
+    for (const v of xt) s += `<text x="${X(v)}" y="${H - 12}" text-anchor="middle" font-size="11.5" fill="${css('--muted')}">${v.toLocaleString('pt-BR')}</text>`;
+    for (const h of hl) s += `<line x1="${L}" x2="${W - R}" y1="${Y(h.y)}" y2="${Y(h.y)}" stroke="${h.color}" stroke-dasharray="2 4" stroke-width="1.5"/><text x="${W - R - 4}" y="${Y(h.y) - 5}" text-anchor="end" font-size="11.5" fill="${css('--muted')}">${h.label} ${nf(h.y)}</text>`;
+    for (const se of series) {
+      if (!se.pts.length) continue;
+      const d = se.pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`).join('');
+      s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="${se.w || 2}" ${se.dash ? 'stroke-dasharray="6 4"' : ''} opacity="${se.op || 1}"/>`;
+      if (se.dots) for (const p of se.pts) s += `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="${se.mark && se.mark(p) ? 6 : 3.5}" fill="${se.mark && se.mark(p) ? 'none' : se.color}" stroke="${se.color}" stroke-width="2"><title>${se.name} · episódio ${p[0]}: ${nf(p[1], 3)}</title></circle>`;
+    }
+    s += `</svg>`;
+    el(target).innerHTML = s;
+  }
+
+  function render(d) {
+    last = d;
+    const busy = d.seeds.some(s => s.running);
+    el('pills').innerHTML = d.seeds.length ? d.seeds.map(s => {
+      const lr = s.log.at(-1), tot = s.lock ? s.lock.total : (lr && lr.total);
+      const st = s.running ? `<span class="dot live" style="background:${css('--good')}"></span>treinando` : '<span class="dot" style="background:var(--ref)"></span>parado';
+      return `<span class="pill"><span class="dot" style="background:${SC(s.seed)}"></span><b>Semente ${s.seed}</b> ${st} · ${lr ? `episódio ${lr.ep.toLocaleString('pt-BR')}${tot ? ' de ' + tot.toLocaleString('pt-BR') : ''} · ε ${nf(lr.eps)} · ${nf(lr.min, 1)} min` : 'sem registro detalhado'}</span>`;
+    }).join('') + (d.selected ? `<span class="pill">Escolhido: semente ${d.selected.seed}, ep. ${d.selected.ep.toLocaleString('pt-BR')}</span>` : '') : '<span class="pill">Nenhum treino em results/</span>';
+    el('reset').disabled = busy;
+    el('reset').title = busy ? 'Interrompa o treino antes' : '';
+    el('upd').textContent = 'atualizado ' + new Date(d.now).toLocaleTimeString('pt-BR');
+
+    const hl = [];
+    if (d.ref) { hl.push({ y: d.ref.wait.kpi, label: 'Esperar', color: css('--ref') }); if (d.ref.greedy) hl.push({ y: d.ref.greedy.kpi, label: 'Guloso', color: css('--muted') }); }
+    const bs = d.baselineSelected;
+    const vs = d.baseline.map(b => ({ name: `referência s${b.seed}`, color: SC(b.seed), dash: true, op: 0.45, w: 1.5, dots: true, pts: b.val.map(v => [v.ep, v.kpi]), mark: p => bs && bs.seed === b.seed && bs.ep === p[0] }))
+      .concat(d.seeds.map(s => ({ name: `semente ${s.seed}`, color: SC(s.seed), dots: true, w: 2.5, pts: s.val.map(v => [v.ep, v.kpi]), mark: p => d.selected && d.selected.seed === s.seed && d.selected.ep === p[0] })));
+    chart('cVal', vs, { label: 'KPI na validação por checkpoint', hlines: hl, h: 300 });
+    el('lgVal').innerHTML = d.seeds.map(s => `<span><i class="sw" style="border-color:${SC(s.seed)}"></i>semente ${s.seed} (atual)</span>`).join('')
+      + d.baseline.map(b => `<span><i class="sw dash" style="border-color:${SC(b.seed)};opacity:.6"></i>semente ${b.seed} (referência)</span>`).join('')
+      + '<span>○ checkpoint escolhido</span>';
+    const ser = (k, f = v => v) => d.seeds.map(s => ({ name: `semente ${s.seed}`, color: SC(s.seed), pts: s.log.filter(r => r[k] != null).map(r => [r.ep, f(r[k])]) }));
+    chart('cRet', ser('ret'), { label: 'Retorno médio', yd: 1, w: 520, h: 250 });
+    chart('cEps', ser('eps'), { label: 'Exploração', ymin: 0, ymax: 1, yd: 2, w: 520, h: 250 });
+    chart('cLoss', ser('loss'), { label: 'Erro da rede', log: true, w: 520, h: 250 });
+    chart('cAct', ser('acts'), { label: 'Ações por episódio', ymin: 0, yd: 1, w: 520, h: 250 });
+  }
+
+  async function poll() {
+    try { const r = await fetch('/api/status', { cache: 'no-store' }); render(await r.json()); }
+    catch (e) { el('upd').textContent = 'sem conexão com o monitor (node monitor.js está rodando?)'; }
+  }
+  el('reset').addEventListener('click', async () => {
+    if (!confirm('Apagar checkpoints, registros e testes atuais da etapa 03 e voltar ao treino de referência?')) return;
+    el('reset').disabled = true;
+    const r = await fetch('/api/reset', { method: 'POST' }); const j = await r.json();
+    el('msg').textContent = j.msg; poll();
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => last && render(last));
+  poll(); setInterval(poll, 5000);
+})();
+</script>
+</body>
+</html>

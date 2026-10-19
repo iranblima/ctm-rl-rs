@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 node_modules/
 .DS_Store
+03_desobstrucao_ctm_rl/results/.training_*.lock

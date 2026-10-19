@@ -1,0 +1,16 @@
+{
+ "label": "treino de 18/10/2026: 2 sementes × 2.400 episódios, escolhido semente 1, episódio 2.100",
+ "results": [
+  "ckpt_0.json",
+  "ckpt_1.json",
+  "selected.json",
+  "summary.json",
+  "test_0.json",
+  "test_1.json",
+  "test_0.log",
+  "test_1.log",
+  "train_0.log",
+  "train_1.log",
+  "viz.json"
+ ]
+}
