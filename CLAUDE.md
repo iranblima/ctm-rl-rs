@@ -12,15 +12,27 @@ O dono do repositório é desenvolvedor e policial rodoviário federal. Ele conh
 - Respostas objetivas. Mostre números com unidade e diga de onde vieram.
 
 ## Estrutura
-- `simulador/`: tudo do experimento, em Node.js sem dependências.
-  - `sim.js` = M3, modelo de transmissão por células (CTM).
-  - `env.js` = M1/M2/M4/M5: ações, observação causal, KPI, Guloso.
-  - `rl.js` = M6, rede neural; `train.js` = treino.
-  - `baseline/` = treino de referência (não alterar).
+- `simulador/`: tudo do experimento, em Node.js sem dependências. Correspondência com os módulos da proposta CTM–RL:
+
+| Módulo da proposta | Papel na proposta | Onde está no código |
+|---|---|---|
+| M1 Scenario | Cenário: rede de base, interrupções, trechos, observabilidade | `env.js`: `starts()` (replay real até cada instante) + `sim.SITES` (interdições) + `scan.json` (referência sem interdições) |
+| M2 CausalObservationModel | Observação causal, só com histórico | `env.js`: `Ep.feats()` (18 atributos por candidato) |
+| M3 PhysicalSimulator | `reset(scenario)`, `advance(cmd, 1 h)` | `sim.js` (CTM); `Ep.advance()` chama 60 passos de 1 min |
+| M4 ActionModule | `legal_mask`, `to_command` | `env.js`: `Ep.legal()` (candidatos + lista curta) e `Ep.apply()` (ação → multiplicador de capacidade) |
+| M5 ModularTrafficEnv | `reset`, `step`, orçamento, horizonte | `env.js`: classe `Ep` + `runEpisode()` |
+| M6 DQNPolicy | Escolhe a ação pelo Q, com máscara legal | `rl.js` (`Net`, `makePolicy`); treino em `train.js` |
+| M7 GreedyPolicy | `clone(env)`, 1 passo à frente | `env.js`: `P.greedy` (snap/restore do simulador) |
+| M8 | Não definido no material da proposta | — |
+| M9 factory.make_env | Cria e liga os componentes | Não existe como função; hoje `env.js` monta tudo ao ser carregado |
+| Tracker | Estabilização e KPI | `env.js`: `stableFrac()`, `stFlags()`, dentro de `Ep.advance()` |
+
+- `simulador/baseline/`: treino de referência (não alterar).
 - `preparacao/prep.py`: gera `data/derived/rsdata.json`.
 - `data/raw/`: dados de entrada (SNV/DNIT, PNCT, PRF). **Não alterar.**
 - `paginas/desobstrucao-rs.html`: o simulador com os dados embutidos. `tools/embed.py` gera a página.
 - Detalhes: `README.md`. Treino, monitor e reset: `TREINO.md`.
+- Tamanho da rede no simulador: 308 nós, 630 sentidos de trecho (links), 5.744 células, 32 postos com referência, 88 interdições.
 
 ## Comandos principais
 ```
@@ -37,8 +49,36 @@ node simulador/reset.js            # volta ao treino de referência
 - Teste (39 momentos × K ∈ {1, 3, 5, 10}): Guloso 1,69 a 2,54 h; DDQN 4,46 a 4,90 h; Esperar 4,97 h. DDQN − Guloso = +2,88 h (IC 95% +2,44 a +3,33).
 - Verificação rápida: com o momento de teste 0 e K = 3, Esperar estabiliza em 8 h (9.223 v·h), Guloso em 4 h (8.048 v·h) e DDQN em 7 h (8.800 v·h).
 
+## Suposições do modelo (todas documentadas aqui; não vêm dos dados)
+- Quem fica parado (velocidade < 20% da livre) desiste a 3%/min e sai da simulação. Na fila de entrada da rede, a desistência é 3%/min × fração bloqueada.
+- Desobstruir vale na hora; não há tempo de trabalho da equipe.
+- Não há escolha de rota. A divisão nos entroncamentos é fixa, calculada por preenchimento proporcional (4 rodadas) sobre o volume médio diário ÷ 2 de cada sentido, sem meia-volta. A demanda que sobra nasce nos nós de origem.
+- A demanda segue o perfil horário por dia da semana e, em 2024, é multiplicada pelo fator real dos postos (limitado a 0,15–1,6; só com ≥ 6 postos com dado).
+- O dia da semana é calculado como (5 + dia) % 7 porque o dia 0 (27/04/2024) é um sábado e o perfil usa segunda = 0 (convenção do pandas).
+- FIFO (quem não segue trava quem vem atrás) só em pista simples.
+- Estável = fluxo do posto a ±20% ou ±30 veículos/h da simulação sem interdições. Limiares de "parado" (20%) e "lento" (50%) da velocidade livre.
+- Interromper e Controle 50% atuam só na primeira célula do trecho que chega ao entroncamento de uma interdição ativa.
+- 36 links têm célula mais curta que a distância percorrida em 1 min (condição CFL do CTM violada; a fração é cortada em 1) e 40 têm armazenamento mínimo de 1,5 km.
+- "Greedy MC" é o nome do artigo inicial; aqui o simulador é determinista e o Guloso faz uma única simulação de 1 h por candidato.
+
+## Limitações e pendências conhecidas (backlog)
+Não mudam os resultados atuais. Corrigir só como mudança declarada, revalidando os números de referência.
+1. Estado global: `env.js` usa um único `sim` compartilhado; dois ambientes no mesmo processo se corrompem. Resolver no porte (cada ambiente com seu simulador).
+2. Após `restore`, os objetos de interdição são cópias; `bindEv`/`apply` religam pelo índice da interdição. No porte, endereçar sempre pelo índice.
+3. `makeSim` altera os dados de entrada (`e.links` em `D.edges`); `scan.js` cria dois simuladores sobre o mesmo `D`.
+4. Comentário em `sim.js` fala em velocidade < 50% para desistência; o código usa 20%.
+5. Replay priorizado simplificado: sem pesos de importância, registro novo com prioridade 1 (não a máxima), substituição aleatória com a memória cheia, sorteio O(N).
+6. O fim do horizonte (hora 12) é tratado como terminal. Isso é coerente com um problema de horizonte fixo, porque o progresso h/H está na observação. No Gymnasium, usar `terminated=True` na hora 12, não `truncated`.
+7. B = 32 gera até 33 candidatos (com Esperar). Normalizações `left/10` e `nAct/30` são escalas fixas, sem outra justificativa.
+8. Código morto: `stNode` e `sc` em `env.js`.
+9. `'use strict'` vem depois de `process.chdir` em vários scripts e por isso não tem efeito.
+10. Constante `T0 = 1,5 dia` duplicada em `scan.js` e `env.js`; sementes `[0, 1]` fixas em `select.js`.
+11. Validação e teste são vizinhos no tempo (último instante de validação 13/05 17h, primeiro de teste 13/05 18h), e os episódios de 12 h se sobrepõem. Citar como limitação; para a tese, considerar um intervalo de separação.
+12. Sem teste automático: a verificação rápida acima ainda é manual.
+
 ## Regras de trabalho
 - O teste é rodado **uma única vez** por modelo. Não escolha hiperparâmetros olhando o teste; use a validação.
+- Reproduzir o teste com o **mesmo modelo** (por exemplo, para validar um porte de código) é permitido: não há escolha nova.
 - Toda mudança no simulador ou no ambiente precisa reproduzir os números de referência, ou explicar por que mudaram.
 - Suposições atuais, que não vêm dos dados:
   - quem fica parado desiste a 3% por minuto;
