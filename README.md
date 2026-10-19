@@ -74,6 +74,8 @@ python 03_desobstrucao_ctm_rl/build.py      # tabelas por K, diferença pareada,
 python tools/embed.py 03_desobstrucao_ctm_rl/viewer.html 03_desobstrucao_ctm_rl/results/viz.json paginas/desobstrucao-rs.html
 ```
 
+> Passo a passo completo, com interpretação dos gráficos e solução de problemas: [TREINO.md](TREINO.md).
+
 ### Acompanhar o treino ao vivo
 
 Em outro terminal, enquanto o treino roda:
