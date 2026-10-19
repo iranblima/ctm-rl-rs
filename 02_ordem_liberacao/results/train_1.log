@@ -1,6 +1,0 @@
-seed 1 ep 200 val mean 15932 (3.9 min)
-seed 1 ep 400 val mean 15331 (7.5 min)
-seed 1 ep 600 val mean 15149 (11.3 min)
-seed 1 ep 800 val mean 15411 (15.1 min)
-seed 1 ep 1000 val mean 15339 (19.2 min)
-seed 1 ep 1200 val mean 15352 (23.0 min)

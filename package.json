@@ -1,17 +1,17 @@
 {
   "name": "ctm-rl-rs",
   "private": true,
-  "description": "Simulador CTM e Dueling DDQN para desobstrução da malha federal do RS (etapas 02 e 03)",
+  "description": "Simulador CTM e Dueling DDQN para desobstrução da malha federal do RS",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "monitor": "node 03_desobstrucao_ctm_rl/monitor.js",
-    "reset": "node 03_desobstrucao_ctm_rl/reset.js",
-    "train:0": "node 03_desobstrucao_ctm_rl/train.js 0 2400",
-    "train:1": "node 03_desobstrucao_ctm_rl/train.js 1 2400",
-    "select": "node 03_desobstrucao_ctm_rl/select.js",
-    "scan": "node 03_desobstrucao_ctm_rl/scan.js",
-    "valref": "node 03_desobstrucao_ctm_rl/valref.js"
+    "monitor": "node simulador/monitor.js",
+    "reset": "node simulador/reset.js",
+    "train:0": "node simulador/train.js 0 2400",
+    "train:1": "node simulador/train.js 1 2400",
+    "select": "node simulador/select.js",
+    "scan": "node simulador/scan.js",
+    "valref": "node simulador/valref.js"
   }
 }

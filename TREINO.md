@@ -1,6 +1,6 @@
 # Guia do treino: rodar, acompanhar e voltar ao estado de referência
 
-Este guia cobre a **etapa 03** (`03_desobstrucao_ctm_rl/`): a proposta CTM–RL, em que o Dueling DDQN MLP (método proposto) é comparado com o Guloso e com Esperar.
+Este guia cobre o simulador da pasta `simulador/`: a proposta CTM–RL, em que o Dueling DDQN MLP (método proposto) é comparado com o Guloso e com Esperar.
 
 Os comandos são para o **PowerShell no Windows** e partem sempre da pasta do repositório:
 
@@ -49,13 +49,13 @@ Use **dois terminais**, os dois abertos na pasta do repositório.
 ### Terminal 1: o treino
 
 ```powershell
-node 03_desobstrucao_ctm_rl/train.js 0 2400
+node simulador/train.js 0 2400
 ```
 
 - `0` é a **semente**, o número que fixa o sorteio. A mesma semente dá sempre o mesmo treino.
 - `2400` é o número de **episódios**. Cada semente leva cerca de 16 minutos.
-- Para registrar com mais frequência no monitor: `node 03_desobstrucao_ctm_rl/train.js 0 2400 --log 10`. O padrão é a cada 50 episódios.
-- Para treinar uma segunda semente ao mesmo tempo, abra um **terceiro terminal** e rode `node 03_desobstrucao_ctm_rl/train.js 1 2400`.
+- Para registrar com mais frequência no monitor: `node simulador/train.js 0 2400 --log 10`. O padrão é a cada 50 episódios.
+- Para treinar uma segunda semente ao mesmo tempo, abra um **terceiro terminal** e rode `node simulador/train.js 1 2400`.
 - Para interromper: **Ctrl+C**.
 
 A cada 300 episódios aparece uma linha como esta:
@@ -69,7 +69,7 @@ Ela mostra o tempo médio até estabilizar nos 38 instantes de validação. **Me
 ### Terminal 2: o monitor
 
 ```powershell
-node 03_desobstrucao_ctm_rl/monitor.js
+node simulador/monitor.js
 ```
 
 Abra **http://localhost:8765** no navegador. A página se atualiza sozinha a cada 5 segundos e pode ficar aberta durante todo o treino. Para fechar o monitor, use **Ctrl+C** no terminal 2. Isso não afeta o treino.
@@ -92,11 +92,11 @@ Abra **http://localhost:8765** no navegador. A página se atualiza sozinha a cad
 Rode na ordem:
 
 ```powershell
-node 03_desobstrucao_ctm_rl/select.js
-node 03_desobstrucao_ctm_rl/test.js 0 2
-node 03_desobstrucao_ctm_rl/test.js 1 2
-python 03_desobstrucao_ctm_rl/build.py
-python tools/embed.py 03_desobstrucao_ctm_rl/viewer.html 03_desobstrucao_ctm_rl/results/viz.json paginas/desobstrucao-rs.html
+node simulador/select.js
+node simulador/test.js 0 2
+node simulador/test.js 1 2
+python simulador/build.py
+python tools/embed.py simulador/viewer.html simulador/results/viz.json paginas/desobstrucao-rs.html
 ```
 
 1. `select.js` escolhe o checkpoint com menor KPI na validação e grava `results\selected.json`.
@@ -110,17 +110,17 @@ python tools/embed.py 03_desobstrucao_ctm_rl/viewer.html 03_desobstrucao_ctm_rl/
 
 ## 5. Voltar ao estado de referência (reset)
 
-O treino que gerou os resultados publicados está guardado em `03_desobstrucao_ctm_rl\baseline\`. O reset apaga os checkpoints, registros e testes novos e restaura essa cópia, inclusive a página `paginas\desobstrucao-rs.html`.
+O treino que gerou os resultados publicados está guardado em `simulador\baseline\`. O reset apaga os checkpoints, registros e testes novos e restaura essa cópia, inclusive a página `paginas\desobstrucao-rs.html`.
 
 **Pelo monitor:** clique em **Voltar ao treino de referência** e confirme.
 
 **Pelo terminal:**
 
 ```powershell
-node 03_desobstrucao_ctm_rl/reset.js
+node simulador/reset.js
 ```
 
-O terminal pede confirmação (digite `s`). Para não pedir: `node 03_desobstrucao_ctm_rl/reset.js --sim`.
+O terminal pede confirmação (digite `s`). Para não pedir: `node simulador/reset.js --sim`.
 
 Cuidados:
 
@@ -139,14 +139,14 @@ Para conferir que voltou ao estado de referência: no monitor, o selo deve dizer
 |---|---|
 | `node` ou `python` não é reconhecido | Instale ou reinicie o terminal. No Windows, tente `py` no lugar de `python` |
 | `Já existe um treino da semente 0 rodando` | Já há um treino dessa semente aberto em outro terminal. Use outra semente ou interrompa o primeiro |
-| Monitor diz "sem conexão" | O terminal do monitor foi fechado. Rode `node 03_desobstrucao_ctm_rl/monitor.js` de novo |
-| Porta 8765 ocupada | Use outra porta: `node 03_desobstrucao_ctm_rl/monitor.js 8770` e abra `http://localhost:8770` |
+| Monitor diz "sem conexão" | O terminal do monitor foi fechado. Rode `node simulador/monitor.js` de novo |
+| Porta 8765 ocupada | Use outra porta: `node simulador/monitor.js 8770` e abra `http://localhost:8770` |
 | O gráfico de validação fica vazio no começo | É normal: o primeiro ponto só sai no episódio 300 (cerca de 2 minutos) |
 | Números diferentes dos publicados após retreinar | É esperado: houve uma pequena correção no código depois do treino de referência (ver README). Para voltar aos números publicados, use o reset |
 
 ---
 
-## Arquivos gerados pelo treino (em `03_desobstrucao_ctm_rl\results\`)
+## Arquivos gerados pelo treino (em `simulador\results\`)
 
 | Arquivo | Conteúdo |
 |---|---|

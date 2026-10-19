@@ -12,26 +12,24 @@ O dono do repositório é desenvolvedor e policial rodoviário federal. Ele conh
 - Respostas objetivas. Mostre números com unidade e diga de onde vieram.
 
 ## Estrutura
-- `00_simulador_enchentes/`: `prep.py` gera `data/derived/rsdata.json`; modelos HTML dos simuladores das enchentes.
-- `01_reproducao_artigo/`: reprodução do artigo base em Python (cascata independente, K = 5, Dueling DDQN em NumPy).
-- `02_ordem_liberacao/`: primeira adaptação (liberar trechos a cada 6 h), Node.js.
-- `03_desobstrucao_ctm_rl/`: **versão atual**, Node.js sem dependências.
+- `simulador/`: tudo do experimento, em Node.js sem dependências.
   - `sim.js` = M3, modelo de transmissão por células (CTM).
   - `env.js` = M1/M2/M4/M5: ações, observação causal, KPI, Guloso.
   - `rl.js` = M6, rede neural; `train.js` = treino.
   - `baseline/` = treino de referência (não alterar).
+- `preparacao/prep.py`: gera `data/derived/rsdata.json`.
 - `data/raw/`: dados de entrada (SNV/DNIT, PNCT, PRF). **Não alterar.**
-- `paginas/`: simuladores em HTML com os dados embutidos. `tools/embed.py` gera essas páginas.
-- Detalhes e comandos de cada etapa: `README.md`.
+- `paginas/desobstrucao-rs.html`: o simulador com os dados embutidos. `tools/embed.py` gera a página.
+- Detalhes: `README.md`. Treino, monitor e reset: `TREINO.md`.
 
-## Comandos principais (etapa 03)
+## Comandos principais
 ```
-node 03_desobstrucao_ctm_rl/train.js 0 2400     # treino de uma semente (~16 min)
-node 03_desobstrucao_ctm_rl/monitor.js          # curvas ao vivo em http://localhost:8765
-node 03_desobstrucao_ctm_rl/select.js           # escolhe o checkpoint na validação
-node 03_desobstrucao_ctm_rl/test.js 0 2         # teste (rodar também com 1 2)
-python 03_desobstrucao_ctm_rl/build.py          # tabelas, IC bootstrap, viz.json
-node 03_desobstrucao_ctm_rl/reset.js            # volta ao treino de referência
+node simulador/train.js 0 2400     # treino de uma semente (~16 min)
+node simulador/monitor.js          # curvas ao vivo em http://localhost:8765
+node simulador/select.js           # escolhe o checkpoint na validação
+node simulador/test.js 0 2         # teste (rodar também com 1 2)
+python simulador/build.py          # tabelas, IC bootstrap, viz.json
+node simulador/reset.js            # volta ao treino de referência
 ```
 
 ## Resultados de referência (para conferir se nada quebrou)
