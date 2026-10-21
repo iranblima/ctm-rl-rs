@@ -87,5 +87,12 @@ Não mudam os resultados atuais. Corrigir só como mudança declarada, revalidan
   - estável = ±20% ou ±30 veículos/h da simulação sem interdições.
 - Commits pequenos, com mensagem em português.
 
+## Cenário C (branch `cenario-c-interdicoes-sinteticas`, criada a partir de `cobertura-vdm-dnit`)
+- Código em `simulador_c/` (parte do B; não mexe em `simulador/` nem em `simulador_b/`). Documentação e resultados em `CENARIO_C.md`.
+- Tipos de interdição e tempos de remoção em `TIPOS` (env.js) — todos suposições. Desobstruir não é instantâneo. 22 atributos (18 do B + 4 do tipo).
+- Métodos: Esperar, Guloso (1 h), Guloso (3 h), DDQN treinado no C, rede do B (`simulador_b/baseline/total/selected.json`).
+- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 1 h 4,62; Guloso 3 h 4,20; DDQN C 5,10; rede do B 4,40.
+- Pendência: o treino do zero no C não aprendeu; testar ajuste a partir dos pesos do B.
+
 ## Próximo passo planejado
 Portar `sim.js` e `env.js` para Python, com interface Gymnasium e os contratos M1–M9 da proposta. Vetorizar a física com NumPy ou Numba e passar a rede para PyTorch. Antes de qualquer melhoria, validar que a versão portada reproduz os números acima.

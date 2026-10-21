@@ -1,0 +1,401 @@
+<title>Desobstrução RS Cenário C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Dois mapas no mesmo relógio (1 decisão por hora, 12 h). Cinza = livre, laranja → vinho = fila; X vermelho = interdição (âmbar = meia pista; anel tracejado = em remoção); verde = desobstrução; roxo/âmbar = controles do agente; quadradinhos = postos (verde estável, vermelho instável). */
+:root{
+  --bg:#eef1f2; --surface:#ffffff; --fg:#15201f; --muted:#5b6969; --line:#d4dcdc;
+  --accent:#0d6a5e; --accent-fg:#ffffff; --accent-soft:#dcefeb;
+  --map-bg:#f7f9f9; --edge0:#cfd8d8; --slow1:#f0a43a; --slow2:#8e1b3a; --stop:#d0342c; --rel:#1b8a4c; --ctl:#6b3fb5; --ctl2:#b7791f; --city:#3c4a49; --ok:#1b8a4c; --bad:#d0342c;
+  --font-display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --font-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1414; --surface:#161e1e; --fg:#e4ecec; --muted:#93a3a2; --line:#283434;
+    --accent:#3cc0ae; --accent-fg:#051412; --accent-soft:#163430;
+    --map-bg:#111818; --edge0:#2f3b3b; --slow1:#ffb04d; --slow2:#ff5c8a; --stop:#ff6b5e; --rel:#4fd18b; --ctl:#b28cff; --ctl2:#f2c14e; --city:#b5c5c4; --ok:#4fd18b; --bad:#ff6b5e;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1414; --surface:#161e1e; --fg:#e4ecec; --muted:#93a3a2; --line:#283434;
+  --accent:#3cc0ae; --accent-fg:#051412; --accent-soft:#163430;
+  --map-bg:#111818; --edge0:#2f3b3b; --slow1:#ffb04d; --slow2:#ff5c8a; --stop:#ff6b5e; --rel:#4fd18b; --ctl:#b28cff; --ctl2:#f2c14e; --city:#b5c5c4; --ok:#4fd18b; --bad:#ff6b5e;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.5;margin:0}
+a{color:var(--accent)}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:16px;padding-block:24px 40px}
+header{display:grid;gap:6px;margin-bottom:16px;max-width:920px}
+.eyebrow{font-family:var(--font-display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--accent)}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,3.6vw,38px);line-height:1.05;margin:0;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:82ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px;min-width:0}
+.card h2{font-family:var(--font-display);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.07em;margin:0;color:var(--muted)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.field{display:grid;gap:4px;font-size:13px;color:var(--muted);min-width:0;max-width:100%}
+.controls>*{min-width:0;max-width:100%}
+#start{width:100%;text-overflow:ellipsis}
+select{font:inherit;font-size:14px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 8px;max-width:100%}
+.btn{font:inherit;font-weight:500;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:flex;gap:4px}
+.seg button{font:600 14px var(--font-data);min-width:40px;height:34px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.clock{display:grid;gap:4px;flex:1 1 280px;min-width:0}
+.clock input{width:100%;accent-color:var(--accent)}
+.clock .lbl{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.clock .now{font:500 14px var(--font-data);color:var(--fg)}
+.views{display:flex;flex-wrap:wrap;gap:6px}
+.views button{font:500 13px var(--font-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:4px 10px;cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.maps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+@media (max-width:900px){.maps{grid-template-columns:minmax(0,1fr)}}
+.mapcol{display:grid;gap:8px;min-width:0;align-content:start}
+.mhead{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap}
+.mhead select{font-family:var(--font-display);font-weight:600;font-size:16px}
+.mhead .cost{text-align:right}
+.mhead .cost .v{font:600 20px var(--font-data);display:block;line-height:1.1}
+.mhead .cost .k{font-size:12px;color:var(--muted)}
+.mapbox{position:relative;background:var(--map-bg);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+canvas.map{display:block;width:100%;touch-action:none;cursor:grab}
+canvas.strip{display:block;width:100%;height:96px}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.4;max-width:280px;box-shadow:0 4px 18px rgba(0,0,0,.14);z-index:3}
+.tip .t{font-family:var(--font-display);font-weight:700;font-size:15px}
+.tip .m{color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);align-items:center;margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.grad{width:80px;height:7px;border-radius:4px;background:linear-gradient(90deg,var(--edge0),var(--slow1),var(--slow2))}
+.xm{width:12px;height:12px;display:inline-block;position:relative}
+.xm::before,.xm::after{content:"";position:absolute;left:5px;top:-1px;width:2.5px;height:14px;background:var(--stop);border-radius:1px}
+.xm::before{transform:rotate(45deg)}.xm::after{transform:rotate(-45deg)}
+.xm.half::before,.xm.half::after{background:var(--slow1)}
+.ring{width:12px;height:12px;display:inline-block;border:2px dashed var(--rel);border-radius:50%}
+.rel{width:17px;height:17px;border-radius:50%;background:var(--rel);color:#fff;font:700 10px/17px var(--font-data);text-align:center;display:inline-block;flex:none}
+.cl{width:22px;height:0;border-top:4px dashed var(--ctl);display:inline-block}
+.cl2{width:22px;height:0;border-top:4px dashed var(--ctl2);display:inline-block}
+.sq{width:9px;height:9px;display:inline-block;background:var(--ok)}
+.sq.bad{background:none;border:2px solid var(--bad)}
+.un{width:22px;height:0;border-top:2.5px solid var(--bad);display:inline-block}
+.dec{display:grid;gap:0;font-size:13px}
+.dec .r{display:grid;grid-template-columns:40px 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);align-items:start}
+.dec .r:last-child{border-bottom:0}
+.dec .r.fut{color:var(--muted)}
+.dec .h{font-family:var(--font-data);color:var(--muted)}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:999px;margin-right:4px;vertical-align:1px;white-space:nowrap}
+.tag.DESOB{background:color-mix(in srgb,var(--rel) 18%,transparent);color:var(--fg)}
+.tag.INTERR{background:color-mix(in srgb,var(--ctl) 18%,transparent);color:var(--fg)}
+.tag.CTRL50{background:color-mix(in srgb,var(--ctl2) 22%,transparent);color:var(--fg)}
+.tag.LIBERAR{background:color-mix(in srgb,var(--muted) 18%,transparent);color:var(--fg)}
+.num{font-family:var(--font-data);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.muted{color:var(--muted);font-size:13px}
+.below{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px;align-items:start}
+@media (max-width:900px){.below{grid-template-columns:minmax(0,1fr)}}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{font-weight:600;color:var(--muted);font-size:12px}
+.tbl td.b{font-weight:700}
+.tblwrap{overflow-x:auto}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.pair{grid-template-columns:minmax(0,1fr)}}
+.pair div{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:2px}
+.pair .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-family:var(--font-display);font-weight:600}
+.pair .v{font-family:var(--font-data);font-size:18px}
+.pair .s{font-size:12px;color:var(--muted)}
+ul.flat{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px}
+footer{margin-top:22px;font-size:13px;color:var(--muted);max-width:96ch;display:grid;gap:6px}
+footer p{margin:0}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Proposta CTM–RL · cenário C: interdições sintéticas de quatro tipos</div>
+    <h1>Desobstrução RS · Cenário C</h1>
+    <p class="lead">Mesma malha, demanda (VDM do DNIT por sentido) e medida do cenário B, com <b>todos os 630 sentidos de trecho observáveis</b>. A diferença: cada obstrução sorteada é de um de quatro tipos — <b>acidente</b>, <b>queda de barreira</b>, <b>dano na estrutura</b> ou <b>água na pista</b> — com duração, bloqueio (total ou meia pista) e <b>tempo de remoção</b> próprios. Desobstruir não é mais instantâneo. A cada hora, durante 12 horas, quem decide pode <b>esperar</b>, <b>desobstruir</b>, <b>interromper</b>, <b>controlar a 50%</b> ou <b>liberar</b> um controle. Objetivo: pelo menos 80% dos trechos de volta ao fluxo normal o quanto antes.</p>
+  </header>
+
+  <div class="card">
+    <div class="controls">
+      <label class="field" for="start">Cenário de teste
+        <select id="start"></select>
+      </label>
+      <div class="field">Orçamento K
+        <div class="seg" id="kseg" role="group" aria-label="Orçamento"></div>
+      </div>
+      <div class="clock">
+        <div class="lbl"><span>Relógio (uma decisão por hora)</span><span class="now" id="now">—</span></div>
+        <input type="range" id="clock" min="0" max="12" step="1" value="0" aria-label="Hora do episódio">
+      </div>
+      <button type="button" class="btn primary" id="play">Animar as 12 horas</button>
+    </div>
+    <div class="views" id="views">
+      <button type="button" data-view="fit" aria-pressed="true">Ao redor das interdições</button>
+      <button type="button" data-view="rs" aria-pressed="false">RS inteiro</button>
+      <button type="button" data-view="poa" aria-pressed="false">Grande Porto Alegre</button>
+      <button type="button" data-view="taq" aria-pressed="false">Vale do Taquari e Serra</button>
+    </div>
+  </div>
+
+  <div class="maps" id="maps"></div>
+  <div class="legend">
+    <span><i class="grad"></i>Fila no trecho</span>
+    <span><i class="xm"></i>Interdição ativa (bloqueio total)</span>
+    <span><i class="xm half"></i>Meia pista</span>
+    <span><i class="ring"></i>Em remoção</span>
+    <span><i class="rel">1</i>Desobstrução e sua ordem</span>
+    <span><i class="cl"></i>Trecho interrompido pelo agente</span>
+    <span><i class="cl2"></i>Controle de fluxo 50%</span>
+    <span><i class="un"></i>Sentido de trecho instável (fluxo fora do normal)</span>
+  </div>
+
+  <div class="below">
+    <div class="card">
+      <h2>Resultado no teste</h2>
+      <p class="muted" id="testNote"></p>
+      <div class="pair" id="pair"></div>
+      <div class="tblwrap" id="kpiTbl"></div>
+      <div class="tblwrap" id="secTbl"></div>
+    </div>
+    <div class="card">
+      <h2>Como ler e o que foi suposto</h2>
+      <ul class="flat">
+        <li><b>Estável:</b> o fluxo de um sentido de trecho na hora fica a menos de 20% (ou de 30 veículos/h) do que seria sem obstrução, no mesmo horário.</li>
+        <li><b>KPI:</b> horas até ≥ 80% dos sentidos de trecho estarem estáveis; quem não chega em 12 h recebe 13. Recompensa do agente: −1 por hora até estabilizar.</li>
+        <li><b>Guloso (1 h):</b> clona o ambiente e testa cada ação por 1 hora; fica com a que deixa mais trechos estáveis (empate: menos veículo-hora; empate total: esperar). É o mesmo dos cenários anteriores.</li>
+        <li><b>Guloso (3 h):</b> igual, mas olha 3 horas à frente (a ação e depois esperar). Entra porque, com remoção demorada, o efeito de desobstruir pode não aparecer em 1 hora.</li>
+        <li><b>DDQN treinado no C:</b> Dueling DDQN MLP (método proposto) treinado nos cenários C. Além do que via no cenário B, vê o tipo da interdição e o tempo típico de remoção. Não simula.</li>
+        <li><b>Rede do B:</b> a rede escolhida no cenário B, sem novo treino, aplicada ao cenário C. Não vê o tipo. Mede se o que ela aprendeu vale para situações mais diversas.</li>
+        <li><b>Tipos (suposições):</b> acidente 40% (duração típica 2,5 h, metade com meia pista, remoção 30–90 min); queda de barreira 25% (remoção 2–6 h); dano na estrutura 15% (obra provisória 6–12 h, depois meia pista); água na pista 20% (não desobstruível). Barreira, estrutura e água usam as durações das interdições reais de 2024 do mesmo tipo.</li>
+        <li><b>Cenários:</b> 4 a 12 obstruções sorteadas (peso pelo volume); 300 de treino, 40 de validação e 60 de teste, independentes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script type="application/json" id="vdata">__DATA__</script>
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById('vdata').textContent);
+  const el = id => document.getElementById(id);
+  const nf0 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+  const nf1 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const nf2 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const sg = (v, f = nf2) => (v > 0 ? '+' : v < 0 ? '−' : '') + f.format(Math.abs(v));
+  const [WAIT, GREEDY, GREEDY3, AGENT, AGENTB] = D.methods;
+  const DOW = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+  const fmt = m => `${DOW.at((5 + Math.floor(m / 1440)) % 7)} ${String(Math.floor(m / 60) % 24).padStart(2, '0')}h`;
+  const CLSN = { acidente: 'Acidente', barreira: 'Queda de barreira', estrutura: 'Dano na estrutura', agua: 'Água na pista' };
+  const remTxt = v => v.rm == null ? 'não desobstruível' : (v.rm < 120 ? `remoção em ${v.rm} min` : `remoção em ${nf1.format(v.rm / 60)} h`) + (v.cls === 'estrutura' ? ' (vira meia pista)' : '');
+  const TYN = { WAIT: 'Esperar', DESOB: 'Desobstruir', INTERR: 'Interromper', CTRL50: 'Controle 50%', LIBERAR: 'Liberar controle' };
+
+  const lat0 = -30.4, lon0 = -53.6, kx = Math.cos(lat0 * Math.PI / 180);
+  const proj = (la, lo) => [(lo - lon0) * kx, -(la - lat0)];
+  const P = D.nodes.map(([la, lo]) => proj(la, lo));
+  const evOf = i => ep().evs.find(v => v.i === i);
+  const SITEXY = new Proxy({}, { get: (_, i) => { const v = evOf(+i), e = D.edges[v.e], a = P[e.a], b = P[e.b]; return [a[0] + (b[0] - a[0]) * v.fa, a[1] + (b[1] - a[1]) * v.fa]; } });
+  const CITIES = [['Porto Alegre', -30.03, -51.23], ['Caxias do Sul', -29.17, -51.18], ['Santa Maria', -29.69, -53.81], ['Pelotas', -31.77, -52.34], ['Passo Fundo', -28.26, -52.41], ['Lajeado', -29.47, -51.96], ['Uruguaiana', -29.75, -57.09]].map(([n, la, lo]) => ({ n, p: proj(la, lo) }));
+  const bbox = pts => { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (const [x, y] of pts) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); } return [x0, y0, x1, y1]; };
+  const box = (la0, lo0, la1, lo1) => { const a = proj(la0, lo0), b = proj(la1, lo1); return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[0], b[0]), Math.max(a[1], b[1])]; };
+  const VIEWS = { rs: bbox(P), poa: box(-29.55, -51.75, -30.35, -50.75), taq: box(-28.95, -52.4, -29.85, -51.0) };
+
+  // episódios agrupados por momento
+  const STARTS = [...new Set(D.eps.map(e => e.i))].sort((a, b) => a - b);
+  const KS = [1, 3, 5, 10];
+  const S = { i: STARTS[0], K: 5, h: 0, view: 'fit', timer: null, left: GREEDY, right: AGENT };
+  const ep = () => D.eps.find(e => e.i === S.i && e.K === S.K);
+
+  let T = {};
+  const hex = c => { c = c.trim(); if (c.startsWith('#')) { const n = c.length === 4 ? c.slice(1).split('').map(x => x + x).join('') : c.slice(1); return [0, 2, 4].map(i => parseInt(n.slice(i, i + 2), 16)); } const m = c.match(/\d+/g); return m ? m.slice(0, 3).map(Number) : [0, 0, 0]; };
+  function readTokens() { const cs = getComputedStyle(document.documentElement); for (const k of ['map-bg', 'edge0', 'slow1', 'slow2', 'stop', 'rel', 'ctl', 'ctl2', 'city', 'fg', 'muted', 'surface', 'ok', 'bad', 'line', 'accent']) T[k] = cs.getPropertyValue('--' + k).trim(); }
+  readTokens();
+  const mix = (a, b, t) => { const pa = hex(a), pb = hex(b); return `rgb(${pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(',')})`; };
+  const slowCol = s => s <= 0 ? T.edge0 : s < 5 ? mix(T.edge0, T.slow1, s / 4.5) : mix(T.slow1, T.slow2, (s - 4.5) / 4.5);
+
+  const OPTS = D.methods.map(m => `<option value="${m}">${m}</option>`).join('');
+  el('maps').innerHTML = ['left', 'right'].map(side => `
+    <div class="mapcol">
+      <div class="mhead">
+        <label class="field" for="m_${side}">Quem decide<select id="m_${side}">${OPTS}</select></label>
+        <div class="cost"><span class="v" id="c_${side}">—</span><span class="k" id="ck_${side}">trechos estáveis agora</span></div>
+      </div>
+      <div class="mapbox"><canvas class="map" id="cv_${side}" aria-label="Mapa de filas, obstruções e trechos instáveis"></canvas><div class="tip" id="tip_${side}" hidden></div></div>
+      <div class="card"><h2 id="sh_${side}">Trechos estáveis hora a hora</h2><canvas class="strip" id="st_${side}" aria-label="Fração de trechos estáveis por hora"></canvas></div>
+      <div class="card"><h2>Decisões</h2><div class="dec" id="d_${side}"></div></div>
+    </div>`).join('');
+  el('m_left').value = S.left; el('m_right').value = S.right;
+  el('m_left').addEventListener('change', e => { S.left = e.target.value; render(); });
+  el('m_right').addEventListener('change', e => { S.right = e.target.value; render(); });
+
+  const V = { cx: 0, cy: 0, s: 1 };
+  const panes = {};
+  for (const side of ['left', 'right']) panes[side] = { cv: el('cv_' + side), st: el('st_' + side), tip: el('tip_' + side), W: 0, H: 0 };
+  function fitBox(b) { const p = panes.left; const w = Math.max(0.3, b[2] - b[0]), h = Math.max(0.3, b[3] - b[1]); V.s = Math.min(p.W / (w * 1.08), p.H / (h * 1.1)); V.cx = (b[0] + b[2]) / 2; V.cy = (b[1] + b[3]) / 2; }
+  function layout() {
+    for (const side in panes) {
+      const p = panes[side], w = p.cv.parentElement.clientWidth, h = Math.max(300, Math.min(540, Math.round(w * 0.82)));
+      const dpr = window.devicePixelRatio || 1;
+      p.cv.width = w * dpr; p.cv.height = h * dpr; p.cv.style.height = h + 'px'; p.W = w; p.H = h; p.dpr = dpr;
+      const sw = p.st.clientWidth; p.st.width = sw * dpr; p.st.height = 96 * dpr; p.SW = sw;
+    }
+    setView(S.view, true);
+  }
+  function fitSites() {
+    const e = ep(); const ids = new Set(e.m[GREEDY].frames[0].on);
+    const pts = [...ids].map(i => SITEXY[i]); if (!pts.length) return VIEWS.rs;
+    const b = bbox(pts), pad = 0.3; return [b[0] - pad, b[1] - pad, b[2] + pad, b[3] + pad];
+  }
+  function setView(v, quiet) {
+    S.view = v; fitBox(v === 'fit' ? fitSites() : VIEWS[v]);
+    document.querySelectorAll('#views button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+    if (!quiet) render(); else draw();
+  }
+  el('views').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.view); });
+  const sx = (p, x) => (x - V.cx) * V.s + p.W / 2, sy = (p, y) => (y - V.cy) * V.s + p.H / 2;
+  const M = side => ep().m[S[side]];
+  const frameOf = side => { const fr = M(side).frames; return fr[Math.min(S.h, fr.length - 1)]; };
+  function desobs(side) { const out = []; let k = 0; for (const l of M(side).log) { if (l.type !== 'WAIT') k++; if (l.type === 'DESOB' && l.h < S.h) out.push([l.ev, k]); } return out; }
+
+  function drawPane(side) {
+    const p = panes[side], ctx = p.cv.getContext('2d');
+    if (!p.W) return;
+    ctx.setTransform(p.dpr, 0, 0, p.dpr, 0, 0);
+    ctx.fillStyle = T['map-bg']; ctx.fillRect(0, 0, p.W, p.H);
+    const z = Math.max(0.7, Math.min(2.4, V.s / 160));
+    const f = frameOf(side), st = f.s;
+    ctx.lineCap = 'round';
+    const order = D.edges.map((e, i) => [Math.max(+st[2 * i], +st[2 * i + 1]), i]).sort((a, b) => a[0] - b[0]);
+    for (const [s, i] of order) {
+      const e = D.edges[i], a = P[e.a], b = P[e.b];
+      ctx.strokeStyle = slowCol(s); ctx.lineWidth = (s > 0 ? 2.2 + 0.45 * s : (e.sup === 'DUP' ? 1.8 : 1.1)) * z;
+      ctx.beginPath(); ctx.moveTo(sx(p, a[0]), sy(p, a[1])); ctx.lineTo(sx(p, b[0]), sy(p, b[1])); ctx.stroke();
+    }
+    // controles do agente (metade do trecho que chega ao entroncamento)
+    ctx.setLineDash([6, 4]); ctx.lineWidth = 4.5;
+    for (const [ei, dir, ty] of f.ctrl) {
+      const e = D.edges[ei], from = dir ? P[e.b] : P[e.a], to = dir ? P[e.a] : P[e.b];
+      const mx = (from[0] + to[0]) / 2, my = (from[1] + to[1]) / 2;
+      ctx.strokeStyle = ty === 'INTERR' ? T.ctl : T.ctl2;
+      ctx.beginPath(); ctx.moveTo(sx(p, mx), sy(p, my)); ctx.lineTo(sx(p, to[0]), sy(p, to[1])); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.font = `500 ${Math.round(11 * Math.min(1.3, z))}px ${getComputedStyle(document.body).fontFamily}`;
+    for (const c of CITIES) { const X = sx(p, c.p[0]), Y = sy(p, c.p[1]); if (X < -40 || X > p.W + 40 || Y < -20 || Y > p.H + 20) continue; ctx.fillStyle = T.city; ctx.lineWidth = 3; ctx.strokeStyle = T['map-bg']; ctx.strokeText(c.n, X + 5, Y - 7); ctx.fillText(c.n, X + 5, Y - 7); ctx.beginPath(); ctx.arc(X, Y, 2.5, 0, 7); ctx.fill(); }
+    // sentidos de trecho instáveis (linha fina deslocada para o lado do sentido)
+    ctx.strokeStyle = T.bad; ctx.lineWidth = 1.6 * Math.min(1.3, z);
+    D.links.forEach(([ei, dir], j) => { if (f.st[j] !== '0') return; const e = D.edges[ei], a = P[e.a], b = P[e.b];
+      const ax = sx(p, a[0]), ay = sy(p, a[1]), bx = sx(p, b[0]), by = sy(p, b[1]), L = Math.hypot(bx - ax, by - ay) || 1, o = (dir ? -1 : 1) * 3.2 * Math.min(1.3, z), nx = -(by - ay) / L * o, ny = (bx - ax) / L * o;
+      ctx.beginPath(); ctx.moveTo(ax + nx, ay + ny); ctx.lineTo(bx + nx, by + ny); ctx.stroke(); });
+    // interdições ativas
+    const r = 5 * Math.min(1.4, z);
+    ctx.strokeStyle = T.stop; ctx.lineWidth = 2.6;
+    for (const i of f.on) { const [x, y] = SITEXY[i], X = sx(p, x), Y = sy(p, y); ctx.strokeStyle = (f.half || []).includes(i) ? T.slow1 : T.stop; ctx.lineWidth = 2.6; ctx.beginPath(); ctx.moveTo(X - r, Y - r); ctx.lineTo(X + r, Y + r); ctx.moveTo(X + r, Y - r); ctx.lineTo(X - r, Y + r); ctx.stroke();
+      if ((f.rm || []).includes(i)) { ctx.setLineDash([3, 3]); ctx.strokeStyle = T.rel; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(X, Y, r + 5, 0, 7); ctx.stroke(); ctx.setLineDash([]); } }
+    for (const [s, k] of desobs(side)) {
+      const [x, y] = SITEXY[s], X = sx(p, x), Y = sy(p, y), rr = 9 * Math.min(1.3, z);
+      ctx.fillStyle = T.rel; ctx.beginPath(); ctx.arc(X, Y, rr, 0, 7); ctx.fill(); ctx.strokeStyle = T['map-bg']; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.font = `700 ${Math.round(rr * 1.15)}px ${getComputedStyle(document.body).fontFamily}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(k, X, Y + 0.5); ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+    }
+  }
+  function drawStrip(side) {
+    const p = panes[side], ctx = p.st.getContext('2d'), W = p.SW; if (!W) return;
+    ctx.setTransform(p.dpr, 0, 0, p.dpr, 0, 0); ctx.clearRect(0, 0, W, 96);
+    const m = M(side), vals = [ep().stab0, ...m.stabs];
+    const x0 = 34, x1 = W - 22, y0 = 8, y1 = 74, X = h => x0 + (x1 - x0) * h / 12, Y = v => y1 - (y1 - y0) * (v - 0.5) / 0.5;
+    ctx.font = `11px ${getComputedStyle(document.body).fontFamily}`; ctx.fillStyle = T.muted;
+    for (const v of [0.5, 0.8, 1]) { ctx.fillText(nf0.format(v * 100) + '%', 2, Y(v) + 4); }
+    ctx.strokeStyle = T.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, Y(1)); ctx.lineTo(x1, Y(1)); ctx.moveTo(x0, Y(0.5)); ctx.lineTo(x1, Y(0.5)); ctx.stroke();
+    ctx.setLineDash([4, 3]); ctx.strokeStyle = T.muted; ctx.beginPath(); ctx.moveTo(x0, Y(0.8)); ctx.lineTo(x1, Y(0.8)); ctx.stroke(); ctx.setLineDash([]);
+    for (let h = 0; h <= 12; h += 2) ctx.fillText(h + 'h', X(h) - 6, 90);
+    ctx.strokeStyle = T.accent; ctx.lineWidth = 2; ctx.beginPath(); vals.forEach((v, h) => { const yy = Y(Math.max(0.5, v)); h ? ctx.lineTo(X(h), yy) : ctx.moveTo(X(h), yy); }); ctx.stroke();
+    vals.forEach((v, h) => { ctx.fillStyle = h <= S.h ? (v >= 0.8 ? T.ok : T.bad) : T.line; ctx.beginPath(); ctx.arc(X(h), Y(Math.max(0.5, v)), h === S.h ? 4.5 : 3, 0, 7); ctx.fill(); });
+    ctx.strokeStyle = T.fg; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(S.h), y0); ctx.lineTo(X(S.h), y1); ctx.stroke();
+  }
+  function draw() { drawPane('left'); drawPane('right'); drawStrip('left'); drawStrip('right'); }
+
+  const siteName = i => { const v = evOf(i), e = D.edges[v.e]; return `BR-${e.br} km ${nf1.format(e.ki + (e.kf - e.ki) * (e.o === -1 ? 1 - v.fa : v.fa))}`; };
+  const edgeName = ei => { const e = D.edges[ei]; return `BR-${e.br} km ${nf0.format(e.ki)}–${nf0.format(e.kf)}`; };
+  function panelText(side) {
+    const m = M(side), f = frameOf(side);
+    el('c_' + side).textContent = nf0.format(100 * f.stab) + '%';
+    el('ck_' + side).textContent = `trechos estáveis · estabilizou em ${m.kpi > 12 ? 'mais de 12 h' : m.kpi + ' h'} · ${nf0.format(m.vh)} v·h`;
+    let k = 0;
+    const rows = m.log.map(l => {
+      const fut = l.h >= S.h, hh = `<span class="h">${l.h}h</span>`;
+      if (l.type === 'WAIT') return null;
+      k++;
+      let what = '';
+      if (l.type === 'DESOB') { what = `<b>${siteName(l.ev)}</b> · ${(v => `${CLSN[v.cls].toLowerCase()}, ${remTxt(v)}`)(evOf(l.ev))}`; }
+      else what = `<b>${edgeName(l.edge)}</b>, sentido que chega a ${D.nodeNames[l.to] || 'entroncamento'}`;
+      return `<div class="r${fut ? ' fut' : ''}">${hh}<div><span class="tag ${l.type}">${k}. ${TYN[l.type]}</span>${what}</div></div>`;
+    }).filter(Boolean);
+    const waits = m.log.filter(l => l.type === 'WAIT').length;
+    el('d_' + side).innerHTML = (rows.join('') || '<div class="muted">Nenhuma intervenção: só esperou.</div>') + `<div class="muted" style="padding-top:6px">${waits} de 12 horas em espera · ${m.used} de ${S.K} do orçamento usados</div>`;
+  }
+  function testPanel() {
+    const t = D.test, k = (a, b) => t.pooled[`${a}|${b}`];
+    el('testNote').textContent = `${t.n_cenarios} cenários de teste sorteados × 4 orçamentos (${t.obstrucoes[0]} a ${t.obstrucoes[1]} obstruções; ${nf0.format(100 * t.stab0[0])}% a ${nf0.format(100 * t.stab0[1])}% dos trechos estáveis no início). KPI em horas até ≥ 80% dos trechos estáveis (13 = não estabilizou em 12 h); menor é melhor. Diferenças pareadas no mesmo cenário e orçamento.`;
+    const card = (lab, d, s2) => d ? `<div><span class="k">${lab}</span><span class="v">${sg(d.mean)} h</span><span class="s">IC 95%: ${sg(d.lo)} a ${sg(d.hi)} h · melhor/empate/pior ${nf0.format(100 * d.win)}/${nf0.format(100 * d.tie)}/${nf0.format(100 * d.loss)}%${s2 || ''}</span></div>` : '';
+    const vhc = (lab, d) => d ? `<div><span class="k">${lab}</span><span class="v">${sg(d.mean, nf0)} v·h</span><span class="s">IC 95%: ${sg(d.lo, nf0)} a ${sg(d.hi, nf0)} v·h por episódio · melhor/empate/pior ${nf0.format(100 * d.win)}/${nf0.format(100 * d.tie)}/${nf0.format(100 * d.loss)}%</span></div>` : '';
+    el('pair').innerHTML = card('DDQN treinado no C − Guloso (1 h)', k(AGENT, GREEDY)) + card('DDQN treinado no C − Guloso (3 h)', k(AGENT, GREEDY3)) + card('Rede do B (sem novo treino) − Guloso (1 h)', AGENTB ? k(AGENTB, GREEDY) : null) + card('DDQN treinado no C − rede do B', AGENTB ? k(AGENT, AGENTB) : null, ' · negativo = treinar no C ajudou') + card('Guloso (3 h) − Guloso (1 h)', k(GREEDY3, GREEDY), ' · negativo = olhar mais à frente ajudou') + vhc('Veículo-hora: DDQN treinado no C − Guloso (1 h)', t.pooled_vh[`${AGENT}|${GREEDY}`]);
+    const ab = m => m === WAIT ? 'Esperar' : m === GREEDY ? 'Guloso 1 h' : m === GREEDY3 ? 'Guloso 3 h' : m === AGENT ? 'DDQN treinado no C' : 'Rede do B';
+    el('kpiTbl').innerHTML = `<table class="tbl"><thead><tr><th>K</th>${D.methods.map(m => `<th>${ab(m)}</th>`).join('')}</tr></thead><tbody>${t.byK.map(r => { const best = Math.min(...D.methods.map(m => r.kpi[m]));
+      return `<tr><td>${r.K}</td>${D.methods.map(m => `<td class="${r.kpi[m] === best ? 'b' : ''}">${nf2.format(r.kpi[m])}</td>`).join('')}</tr>`; }).join('')}</tbody></table>`;
+    el('secTbl').innerHTML = `<table class="tbl"><thead><tr><th>K</th>${D.methods.map(m => `<th>${ab(m)}<br><span class="muted">v·h · ações</span></th>`).join('')}</tr></thead><tbody>${t.byK.map(r => `<tr><td>${r.K}</td>${D.methods.map(m => `<td>${nf0.format(r.vh[m])} · ${nf1.format(r.used[m])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  }
+  function render() {
+    el('clock').value = S.h;
+    el('now').textContent = `${fmt(ep().t + 60 * S.h)} · hora ${S.h} de 12`;
+    document.querySelectorAll('#kseg button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.k === S.K)));
+    panelText('left'); panelText('right'); draw();
+  }
+
+  el('start').innerHTML = STARTS.map(i => { const e = D.eps.find(x => x.i === i); return `<option value="${i}">Cenário ${i + 1} · ${e.n} obstruções · ${nf0.format(100 * e.stab0)}% dos trechos estáveis</option>`; }).join('');
+  el('kseg').innerHTML = KS.map(k => `<button type="button" data-k="${k}" aria-pressed="${k === S.K}">${k}</button>`).join('');
+  el('start').addEventListener('change', e => { S.i = +e.target.value; stop(); S.h = 0; if (S.view === 'fit') setView('fit'); else render(); });
+  el('kseg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.K = +b.dataset.k; stop(); S.h = 0; render(); });
+  el('clock').addEventListener('input', e => { stop(); S.h = +e.target.value; render(); });
+  function stop() { if (S.timer) { clearInterval(S.timer); S.timer = null; el('play').textContent = 'Animar as 12 horas'; } }
+  el('play').addEventListener('click', () => {
+    if (S.timer) { stop(); return; }
+    if (S.h >= 12) S.h = 0;
+    el('play').textContent = 'Pausar';
+    S.timer = setInterval(() => { if (S.h >= 12) { stop(); return; } S.h++; render(); }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 900 : 700);
+    render();
+  });
+
+  for (const side in panes) {
+    const p = panes[side]; let drag = null;
+    p.cv.addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY, V.cx, V.cy]; p.cv.setPointerCapture(e.pointerId); });
+    p.cv.addEventListener('pointerup', () => { drag = null; });
+    p.cv.addEventListener('pointermove', e => {
+      if (drag) { V.cx = drag[2] - (e.clientX - drag[0]) / V.s; V.cy = drag[3] - (e.clientY - drag[1]) / V.s; draw(); return; }
+      const r = p.cv.getBoundingClientRect(), X = e.clientX - r.left, Y = e.clientY - r.top, f = frameOf(side);
+      let best = null, bd = 13;
+      ep().evs.forEach(v => { const i = v.i, d = Math.hypot(sx(p, SITEXY[i][0]) - X, sy(p, SITEXY[i][1]) - Y); if (d < bd && (f.on.includes(i) || desobs(side).some(x => x[0] === i))) { bd = d; best = i; } });
+      if (best == null) { p.tip.hidden = true; return; }
+      { const v = evOf(best), on = f.on.includes(best); p.tip.innerHTML = `<div class="t">${siteName(best)}</div><div class="m">${CLSN[v.cls]} · ${v.cap ? 'meia pista' : 'bloqueio total'} · ${remTxt(v)}</div><div>${on ? ((f.rm || []).includes(best) ? 'Em remoção nesta hora' : ((f.half || []).includes(best) ? 'Meia pista nesta hora' : 'Obstruída nesta hora')) : 'Liberada'}</div>`; }
+      p.tip.hidden = false; p.tip.style.left = Math.min(X + 12, p.W - 290) + 'px'; p.tip.style.top = (Y + 12) + 'px';
+    });
+    p.cv.addEventListener('pointerleave', () => { p.tip.hidden = true; });
+    p.cv.addEventListener('wheel', e => { e.preventDefault(); const r = p.cv.getBoundingClientRect(), X = e.clientX - r.left, Y = e.clientY - r.top; const wx = (X - p.W / 2) / V.s + V.cx, wy = (Y - p.H / 2) / V.s + V.cy; V.s *= e.deltaY < 0 ? 1.2 : 1 / 1.2; V.cx = wx - (X - p.W / 2) / V.s; V.cy = wy - (Y - p.H / 2) / V.s; draw(); }, { passive: false });
+  }
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readTokens(); draw(); });
+  new ResizeObserver(() => layout()).observe(el('maps'));
+
+  const sel = D.test.selecionados || {}, vr = D.test.validacao;
+  el('foot').innerHTML = `<p><b>Dados:</b> malha SNV (308 nós, 315 trechos, 630 sentidos); demanda pelo VDM por sentido do DNIT (VDM Modelagem 2019, SNV 202001A) em 295 trechos e pelo VDM do cadastro nos outros 20; perfil horário dos postos PNCT (semana típica). Obstruções sintéticas de quatro tipos; durações de barreira, estrutura e água tiradas das interdições reais da PRF de 2024 do mesmo tipo.</p>
+  <p><b>Protocolo:</b> 300 cenários de treino, 40 de validação e ${D.test.n_cenarios} de teste, todos independentes (sementes distintas). DDQN escolhido na validação do cenário C${sel.c ? `: semente ${sel.c.seed}, episódio ${sel.c.ep} (${nf2.format(sel.c.kpi)} h)` : ''}; rede do B: a escolhida no cenário B${sel.b ? ` (semente ${sel.b.seed}, episódio ${sel.b.ep})` : ''}.${vr ? ` Na validação do C: Esperar ${nf2.format(vr.wait.kpi)} h, Guloso (1 h) ${nf2.format(vr.greedy.kpi)} h${vr.greedy3 ? `, Guloso (3 h) ${nf2.format(vr.greedy3.kpi)} h` : ''}.` : ''} Os mapas mostram ${STARTS.length} cenários; as tabelas usam todos.</p>`;
+
+  testPanel(); layout(); render();
+})();
+</script>

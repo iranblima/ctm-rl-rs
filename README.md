@@ -34,12 +34,18 @@ Compara três métodos nas mesmas situações:
 | `simulador/monitor.js`, `reset.js` | Monitor do treino ao vivo; volta ao treino de referência |
 | `simulador/viewer.html` | Modelo da página do simulador |
 | `simulador/results/` | Resultados atuais: checkpoints, rede escolhida, testes, resumo |
+| `simulador_c/`, `CENARIO_C.md` | **Cenário C**: interdições sintéticas de quatro tipos (acidente, barreira, estrutura, água), com remoção demorada (branch `cenario-c-interdicoes-sinteticas`) |
 | `simulador/baseline/` | Cópia protegida do treino de referência (não alterar) |
 | `preparacao/prep.py` | Gera `data/derived/rsdata.json` a partir dos dados brutos |
 | `data/raw/` | Malha SNV/DNIT, contagens PNCT e interdições da PRF (chuvas de 2024) |
 | `data/derived/` | `rsdata.json` (malha + postos + interdições) e `node_names.json` (nomes dos nós) |
+| `paginas/desobstrucao-rs-c.html` | Página do cenário C |
 | `paginas/desobstrucao-rs.html` | O simulador pronto para abrir no navegador |
 | `tools/embed.py` | Junta o modelo HTML com os dados e gera a página |
+
+## Cenário C (interdições sintéticas de quatro tipos)
+
+Testa o Dueling DDQN MLP com obstruções mais diversas e remoção demorada. Resultado: o Guloso que olha 3 h à frente foi o melhor (4,20 h); a rede do B, sem novo treino, venceu o Guloso de 1 h (−0,21 h) e teve a menor perda no trânsito; o DDQN treinado do zero no C não aprendeu (igual a Esperar). Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
 
 ## Requisitos
 
