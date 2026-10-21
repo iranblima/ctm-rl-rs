@@ -5,7 +5,8 @@
   "Guloso (1 h)",
   "Guloso (3 h)",
   "Dueling DDQN MLP — treinado no C",
-  "Dueling DDQN MLP — rede do B"
+  "Dueling DDQN MLP — rede do B",
+  "Dueling DDQN MLP — ajustado a partir do B"
  ],
  "byK": [
   {
@@ -15,28 +16,32 @@
     "Guloso (1 h)": 4.733333333333333,
     "Guloso (3 h)": 4.483333333333333,
     "Dueling DDQN MLP — treinado no C": 5.133333333333334,
-    "Dueling DDQN MLP — rede do B": 4.783333333333333
+    "Dueling DDQN MLP — rede do B": 4.783333333333333,
+    "Dueling DDQN MLP — ajustado a partir do B": 4.983333333333333
    },
    "sus": {
     "Esperar": 5.983333333333333,
     "Guloso (1 h)": 5.45,
     "Guloso (3 h)": 5.266666666666667,
     "Dueling DDQN MLP — treinado no C": 5.883333333333334,
-    "Dueling DDQN MLP — rede do B": 5.566666666666666
+    "Dueling DDQN MLP — rede do B": 5.566666666666666,
+    "Dueling DDQN MLP — ajustado a partir do B": 5.683333333333334
    },
    "vh": {
     "Esperar": 20428.27799512221,
     "Guloso (1 h)": 20389.733101612732,
     "Guloso (3 h)": 19873.525760027238,
     "Dueling DDQN MLP — treinado no C": 21061.669487804913,
-    "Dueling DDQN MLP — rede do B": 19515.306082044455
+    "Dueling DDQN MLP — rede do B": 19515.306082044455,
+    "Dueling DDQN MLP — ajustado a partir do B": 19946.705366782367
    },
    "used": {
     "Esperar": 0.0,
     "Guloso (1 h)": 0.9333333333333333,
     "Guloso (3 h)": 1.0,
     "Dueling DDQN MLP — treinado no C": 1.0,
-    "Dueling DDQN MLP — rede do B": 1.0
+    "Dueling DDQN MLP — rede do B": 1.0,
+    "Dueling DDQN MLP — ajustado a partir do B": 1.0
    },
    "d": {
     "Dueling DDQN MLP — treinado no C|Guloso (1 h)": {
@@ -92,6 +97,42 @@
      "tie": 0.85,
      "loss": 0.15,
      "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (1 h)": {
+     "mean": 0.25,
+     "lo": 0.05,
+     "hi": 0.4666666666666667,
+     "win": 0.1,
+     "tie": 0.6833333333333333,
+     "loss": 0.21666666666666667,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (3 h)": {
+     "mean": 0.5,
+     "lo": 0.18333333333333332,
+     "hi": 0.8833333333333333,
+     "win": 0.08333333333333333,
+     "tie": 0.65,
+     "loss": 0.26666666666666666,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Dueling DDQN MLP — rede do B": {
+     "mean": 0.2,
+     "lo": 0.016666666666666666,
+     "hi": 0.43333333333333335,
+     "win": 0.03333333333333333,
+     "tie": 0.85,
+     "loss": 0.11666666666666667,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Esperar": {
+     "mean": -0.016666666666666666,
+     "lo": -0.11666666666666667,
+     "hi": 0.08333333333333333,
+     "win": 0.06666666666666667,
+     "tie": 0.9,
+     "loss": 0.03333333333333333,
+     "n": 60
     }
    }
   },
@@ -102,28 +143,32 @@
     "Guloso (1 h)": 4.6,
     "Guloso (3 h)": 4.166666666666667,
     "Dueling DDQN MLP — treinado no C": 5.1,
-    "Dueling DDQN MLP — rede do B": 4.316666666666666
+    "Dueling DDQN MLP — rede do B": 4.316666666666666,
+    "Dueling DDQN MLP — ajustado a partir do B": 4.716666666666667
    },
    "sus": {
     "Esperar": 5.983333333333333,
     "Guloso (1 h)": 5.333333333333333,
     "Guloso (3 h)": 5.1,
     "Dueling DDQN MLP — treinado no C": 5.8,
-    "Dueling DDQN MLP — rede do B": 4.883333333333334
+    "Dueling DDQN MLP — rede do B": 4.883333333333334,
+    "Dueling DDQN MLP — ajustado a partir do B": 5.35
    },
    "vh": {
     "Esperar": 20428.27799512221,
     "Guloso (1 h)": 20143.945255558796,
     "Guloso (3 h)": 19271.49075402514,
     "Dueling DDQN MLP — treinado no C": 20833.659386650645,
-    "Dueling DDQN MLP — rede do B": 18479.260967566825
+    "Dueling DDQN MLP — rede do B": 18479.260967566825,
+    "Dueling DDQN MLP — ajustado a partir do B": 19460.9498374829
    },
    "used": {
     "Esperar": 0.0,
     "Guloso (1 h)": 2.183333333333333,
     "Guloso (3 h)": 2.4,
     "Dueling DDQN MLP — treinado no C": 2.7,
-    "Dueling DDQN MLP — rede do B": 2.6666666666666665
+    "Dueling DDQN MLP — rede do B": 2.6666666666666665,
+    "Dueling DDQN MLP — ajustado a partir do B": 2.65
    },
    "d": {
     "Dueling DDQN MLP — treinado no C|Guloso (1 h)": {
@@ -138,7 +183,7 @@
     "Dueling DDQN MLP — treinado no C|Guloso (3 h)": {
      "mean": 0.9333333333333333,
      "lo": 0.5333333333333333,
-     "hi": 1.4333333333333333,
+     "hi": 1.4166666666666667,
      "win": 0.016666666666666666,
      "tie": 0.5333333333333333,
      "loss": 0.45,
@@ -156,7 +201,7 @@
     "Dueling DDQN MLP — rede do B|Guloso (1 h)": {
      "mean": -0.2833333333333333,
      "lo": -0.7333333333333333,
-     "hi": 0.1,
+     "hi": 0.11666666666666667,
      "win": 0.2,
      "tie": 0.6,
      "loss": 0.2,
@@ -164,7 +209,7 @@
     },
     "Dueling DDQN MLP — rede do B|Guloso (3 h)": {
      "mean": 0.15,
-     "lo": -0.18333333333333332,
+     "lo": -0.16666666666666666,
      "hi": 0.43333333333333335,
      "win": 0.13333333333333333,
      "tie": 0.5666666666666667,
@@ -173,11 +218,47 @@
     },
     "Dueling DDQN MLP — treinado no C|Dueling DDQN MLP — rede do B": {
      "mean": 0.7833333333333333,
-     "lo": 0.38333333333333336,
-     "hi": 1.2504166666666605,
+     "lo": 0.36666666666666664,
+     "hi": 1.2333333333333334,
      "win": 0.03333333333333333,
      "tie": 0.65,
      "loss": 0.31666666666666665,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (1 h)": {
+     "mean": 0.11666666666666667,
+     "lo": -0.25,
+     "hi": 0.5333333333333333,
+     "win": 0.2,
+     "tie": 0.6,
+     "loss": 0.2,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (3 h)": {
+     "mean": 0.55,
+     "lo": 0.1,
+     "hi": 1.0166666666666666,
+     "win": 0.1,
+     "tie": 0.5666666666666667,
+     "loss": 0.3333333333333333,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Dueling DDQN MLP — rede do B": {
+     "mean": 0.4,
+     "lo": 0.05,
+     "hi": 0.8004166666666607,
+     "win": 0.1,
+     "tie": 0.7166666666666667,
+     "loss": 0.18333333333333332,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Esperar": {
+     "mean": -0.2833333333333333,
+     "lo": -0.65,
+     "hi": 0.08333333333333333,
+     "win": 0.2,
+     "tie": 0.7833333333333333,
+     "loss": 0.016666666666666666,
      "n": 60
     }
    }
@@ -189,34 +270,38 @@
     "Guloso (1 h)": 4.566666666666666,
     "Guloso (3 h)": 4.083333333333333,
     "Dueling DDQN MLP — treinado no C": 4.966666666666667,
-    "Dueling DDQN MLP — rede do B": 4.266666666666667
+    "Dueling DDQN MLP — rede do B": 4.266666666666667,
+    "Dueling DDQN MLP — ajustado a partir do B": 4.55
    },
    "sus": {
     "Esperar": 5.983333333333333,
     "Guloso (1 h)": 5.3,
     "Guloso (3 h)": 4.883333333333334,
     "Dueling DDQN MLP — treinado no C": 5.583333333333333,
-    "Dueling DDQN MLP — rede do B": 4.866666666666666
+    "Dueling DDQN MLP — rede do B": 4.866666666666666,
+    "Dueling DDQN MLP — ajustado a partir do B": 5.466666666666667
    },
    "vh": {
     "Esperar": 20428.27799512221,
     "Guloso (1 h)": 20103.7219740004,
     "Guloso (3 h)": 19107.388707905033,
     "Dueling DDQN MLP — treinado no C": 20931.894794625332,
-    "Dueling DDQN MLP — rede do B": 18069.46363842836
+    "Dueling DDQN MLP — rede do B": 18069.46363842836,
+    "Dueling DDQN MLP — ajustado a partir do B": 19486.290334654
    },
    "used": {
     "Esperar": 0.0,
     "Guloso (1 h)": 2.6,
     "Guloso (3 h)": 2.816666666666667,
     "Dueling DDQN MLP — treinado no C": 3.7,
-    "Dueling DDQN MLP — rede do B": 3.6166666666666667
+    "Dueling DDQN MLP — rede do B": 3.6166666666666667,
+    "Dueling DDQN MLP — ajustado a partir do B": 3.65
    },
    "d": {
     "Dueling DDQN MLP — treinado no C|Guloso (1 h)": {
      "mean": 0.4,
-     "lo": 0.0,
-     "hi": 0.85,
+     "lo": 0.016666666666666666,
+     "hi": 0.8333333333333334,
      "win": 0.1,
      "tie": 0.6333333333333333,
      "loss": 0.26666666666666666,
@@ -224,7 +309,7 @@
     },
     "Dueling DDQN MLP — treinado no C|Guloso (3 h)": {
      "mean": 0.8833333333333333,
-     "lo": 0.48333333333333334,
+     "lo": 0.5,
      "hi": 1.3333333333333333,
      "win": 0.05,
      "tie": 0.5166666666666667,
@@ -233,7 +318,7 @@
     },
     "Guloso (3 h)|Guloso (1 h)": {
      "mean": -0.48333333333333334,
-     "lo": -0.8333333333333334,
+     "lo": -0.85,
      "hi": -0.18333333333333332,
      "win": 0.23333333333333334,
      "tie": 0.7166666666666667,
@@ -242,8 +327,8 @@
     },
     "Dueling DDQN MLP — rede do B|Guloso (1 h)": {
      "mean": -0.3,
-     "lo": -0.7333333333333333,
-     "hi": 0.11666666666666667,
+     "lo": -0.7504166666666665,
+     "hi": 0.1,
      "win": 0.2,
      "tie": 0.5833333333333334,
      "loss": 0.21666666666666667,
@@ -266,6 +351,42 @@
      "tie": 0.65,
      "loss": 0.3,
      "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (1 h)": {
+     "mean": -0.016666666666666666,
+     "lo": -0.38333333333333336,
+     "hi": 0.3,
+     "win": 0.2,
+     "tie": 0.5333333333333333,
+     "loss": 0.26666666666666666,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (3 h)": {
+     "mean": 0.4666666666666667,
+     "lo": 0.03333333333333333,
+     "hi": 0.9166666666666666,
+     "win": 0.13333333333333333,
+     "tie": 0.48333333333333334,
+     "loss": 0.38333333333333336,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Dueling DDQN MLP — rede do B": {
+     "mean": 0.2833333333333333,
+     "lo": -0.03333333333333333,
+     "hi": 0.6333333333333333,
+     "win": 0.1,
+     "tie": 0.7,
+     "loss": 0.2,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Esperar": {
+     "mean": -0.45,
+     "lo": -0.8166666666666667,
+     "hi": -0.13333333333333333,
+     "win": 0.23333333333333334,
+     "tie": 0.7,
+     "loss": 0.06666666666666667,
+     "n": 60
     }
    }
   },
@@ -276,34 +397,38 @@
     "Guloso (1 h)": 4.566666666666666,
     "Guloso (3 h)": 4.083333333333333,
     "Dueling DDQN MLP — treinado no C": 5.2,
-    "Dueling DDQN MLP — rede do B": 4.25
+    "Dueling DDQN MLP — rede do B": 4.25,
+    "Dueling DDQN MLP — ajustado a partir do B": 4.916666666666667
    },
    "sus": {
     "Esperar": 5.983333333333333,
     "Guloso (1 h)": 5.3,
     "Guloso (3 h)": 4.883333333333334,
     "Dueling DDQN MLP — treinado no C": 5.85,
-    "Dueling DDQN MLP — rede do B": 5.083333333333333
+    "Dueling DDQN MLP — rede do B": 5.083333333333333,
+    "Dueling DDQN MLP — ajustado a partir do B": 5.766666666666667
    },
    "vh": {
     "Esperar": 20428.27799512221,
     "Guloso (1 h)": 20102.91707544983,
     "Guloso (3 h)": 19078.507227226408,
     "Dueling DDQN MLP — treinado no C": 21334.193782378163,
-    "Dueling DDQN MLP — rede do B": 18878.78468260208
+    "Dueling DDQN MLP — rede do B": 18878.78468260208,
+    "Dueling DDQN MLP — ajustado a partir do B": 20123.455474320916
    },
    "used": {
     "Esperar": 0.0,
     "Guloso (1 h)": 2.7,
     "Guloso (3 h)": 2.966666666666667,
     "Dueling DDQN MLP — treinado no C": 5.033333333333333,
-    "Dueling DDQN MLP — rede do B": 4.233333333333333
+    "Dueling DDQN MLP — rede do B": 4.233333333333333,
+    "Dueling DDQN MLP — ajustado a partir do B": 4.716666666666667
    },
    "d": {
     "Dueling DDQN MLP — treinado no C|Guloso (1 h)": {
      "mean": 0.6333333333333333,
      "lo": 0.23333333333333334,
-     "hi": 1.1,
+     "hi": 1.1166666666666667,
      "win": 0.1,
      "tie": 0.55,
      "loss": 0.35,
@@ -311,7 +436,7 @@
     },
     "Dueling DDQN MLP — treinado no C|Guloso (3 h)": {
      "mean": 1.1166666666666667,
-     "lo": 0.65,
+     "lo": 0.6666666666666666,
      "hi": 1.65,
      "win": 0.03333333333333333,
      "tie": 0.5,
@@ -320,7 +445,7 @@
     },
     "Guloso (3 h)|Guloso (1 h)": {
      "mean": -0.48333333333333334,
-     "lo": -0.8333333333333334,
+     "lo": -0.8166666666666667,
      "hi": -0.18333333333333332,
      "win": 0.23333333333333334,
      "tie": 0.7166666666666667,
@@ -329,8 +454,8 @@
     },
     "Dueling DDQN MLP — rede do B|Guloso (1 h)": {
      "mean": -0.31666666666666665,
-     "lo": -0.7666666666666667,
-     "hi": 0.08333333333333333,
+     "lo": -0.8,
+     "hi": 0.1,
      "win": 0.2,
      "tie": 0.6166666666666667,
      "loss": 0.18333333333333332,
@@ -338,8 +463,8 @@
     },
     "Dueling DDQN MLP — rede do B|Guloso (3 h)": {
      "mean": 0.16666666666666666,
-     "lo": -0.16666666666666666,
-     "hi": 0.4666666666666667,
+     "lo": -0.15,
+     "hi": 0.48333333333333334,
      "win": 0.11666666666666667,
      "tie": 0.6333333333333333,
      "loss": 0.25,
@@ -347,11 +472,47 @@
     },
     "Dueling DDQN MLP — treinado no C|Dueling DDQN MLP — rede do B": {
      "mean": 0.95,
-     "lo": 0.5166666666666667,
+     "lo": 0.5333333333333333,
      "hi": 1.4333333333333333,
      "win": 0.016666666666666666,
      "tie": 0.6,
      "loss": 0.38333333333333336,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (1 h)": {
+     "mean": 0.35,
+     "lo": 0.05,
+     "hi": 0.7,
+     "win": 0.15,
+     "tie": 0.5666666666666667,
+     "loss": 0.2833333333333333,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Guloso (3 h)": {
+     "mean": 0.8333333333333334,
+     "lo": 0.43333333333333335,
+     "hi": 1.2833333333333334,
+     "win": 0.06666666666666667,
+     "tie": 0.55,
+     "loss": 0.38333333333333336,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Dueling DDQN MLP — rede do B": {
+     "mean": 0.6666666666666666,
+     "lo": 0.25,
+     "hi": 1.1333333333333333,
+     "win": 0.1,
+     "tie": 0.6333333333333333,
+     "loss": 0.26666666666666666,
+     "n": 60
+    },
+    "Dueling DDQN MLP — ajustado a partir do B|Esperar": {
+     "mean": -0.08333333333333333,
+     "lo": -0.38333333333333336,
+     "hi": 0.23333333333333334,
+     "win": 0.18333333333333332,
+     "tie": 0.7333333333333333,
+     "loss": 0.08333333333333333,
      "n": 60
     }
    }
@@ -360,8 +521,8 @@
  "pooled": {
   "Dueling DDQN MLP — treinado no C|Guloso (1 h)": {
    "mean": 0.48333333333333334,
-   "lo": 0.2875,
-   "hi": 0.7041666666666667,
+   "lo": 0.2833333333333333,
+   "hi": 0.7,
    "win": 0.07916666666666666,
    "tie": 0.6333333333333333,
    "loss": 0.2875,
@@ -370,7 +531,7 @@
   "Dueling DDQN MLP — treinado no C|Guloso (3 h)": {
    "mean": 0.8958333333333334,
    "lo": 0.6791666666666667,
-   "hi": 1.1291666666666667,
+   "hi": 1.125,
    "win": 0.0375,
    "tie": 0.5541666666666667,
    "loss": 0.4083333333333333,
@@ -378,8 +539,8 @@
   },
   "Guloso (3 h)|Guloso (1 h)": {
    "mean": -0.4125,
-   "lo": -0.5833333333333334,
-   "hi": -0.25416666666666665,
+   "lo": -0.5875,
+   "hi": -0.2625,
    "win": 0.19583333333333333,
    "tie": 0.7625,
    "loss": 0.041666666666666664,
@@ -387,8 +548,8 @@
   },
   "Dueling DDQN MLP — rede do B|Guloso (1 h)": {
    "mean": -0.2125,
-   "lo": -0.42093749999999996,
-   "hi": -0.020833333333333332,
+   "lo": -0.4166666666666667,
+   "hi": -0.016666666666666666,
    "win": 0.175,
    "tie": 0.6333333333333333,
    "loss": 0.19166666666666668,
@@ -405,19 +566,55 @@
   },
   "Dueling DDQN MLP — treinado no C|Dueling DDQN MLP — rede do B": {
    "mean": 0.6958333333333333,
-   "lo": 0.5041666666666667,
-   "hi": 0.9041666666666667,
+   "lo": 0.49583333333333335,
+   "hi": 0.9,
    "win": 0.025,
    "tie": 0.6875,
    "loss": 0.2875,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Guloso (1 h)": {
+   "mean": 0.175,
+   "lo": 0.0125,
+   "hi": 0.3375,
+   "win": 0.1625,
+   "tie": 0.5958333333333333,
+   "loss": 0.24166666666666667,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Guloso (3 h)": {
+   "mean": 0.5875,
+   "lo": 0.37916666666666665,
+   "hi": 0.7958333333333333,
+   "win": 0.09583333333333334,
+   "tie": 0.5625,
+   "loss": 0.3416666666666667,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Dueling DDQN MLP — rede do B": {
+   "mean": 0.3875,
+   "lo": 0.21666666666666667,
+   "hi": 0.5708333333333333,
+   "win": 0.08333333333333333,
+   "tie": 0.725,
+   "loss": 0.19166666666666668,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Esperar": {
+   "mean": -0.20833333333333334,
+   "lo": -0.3625,
+   "hi": -0.058333333333333334,
+   "win": 0.17083333333333334,
+   "tie": 0.7791666666666667,
+   "loss": 0.05,
    "n": 240
   }
  },
  "pooled_vh": {
   "Dueling DDQN MLP — treinado no C|Guloso (1 h)": {
    "mean": 855.2750112093195,
-   "lo": 458.6817830307026,
-   "hi": 1256.669385671259,
+   "lo": 456.4294087441631,
+   "hi": 1275.9432435195072,
    "win": 0.3416666666666667,
    "tie": 0.029166666666666667,
    "loss": 0.6291666666666667,
@@ -425,8 +622,8 @@
   },
   "Dueling DDQN MLP — treinado no C|Guloso (3 h)": {
    "mean": 1707.6262505688057,
-   "lo": 1249.4643778854281,
-   "hi": 2160.7505318978797,
+   "lo": 1239.4414957107547,
+   "hi": 2148.268990061805,
    "win": 0.24166666666666667,
    "tie": 0.004166666666666667,
    "loss": 0.7541666666666667,
@@ -434,8 +631,8 @@
   },
   "Guloso (3 h)|Guloso (1 h)": {
    "mean": -852.3512393594863,
-   "lo": -1177.0095027326386,
-   "hi": -548.8834283781634,
+   "lo": -1174.7353550208215,
+   "hi": -546.924019263257,
    "win": 0.5958333333333333,
    "tie": 0.1125,
    "loss": 0.2916666666666667,
@@ -443,8 +640,8 @@
   },
   "Dueling DDQN MLP — rede do B|Guloso (1 h)": {
    "mean": -1449.3755089950105,
-   "lo": -1872.928113087647,
-   "hi": -1073.1376806728524,
+   "lo": -1872.995248674263,
+   "hi": -1054.4301176280749,
    "win": 0.6666666666666666,
    "tie": 0.008333333333333333,
    "loss": 0.325,
@@ -452,8 +649,8 @@
   },
   "Dueling DDQN MLP — rede do B|Guloso (3 h)": {
    "mean": -597.0242696355242,
-   "lo": -1011.4131305488289,
-   "hi": -180.8573403843777,
+   "lo": -1023.3048018164454,
+   "hi": -203.24071515469006,
    "win": 0.49583333333333335,
    "tie": 0.029166666666666667,
    "loss": 0.475,
@@ -461,11 +658,47 @@
   },
   "Dueling DDQN MLP — treinado no C|Dueling DDQN MLP — rede do B": {
    "mean": 2304.6505202043295,
-   "lo": 1911.274326502114,
-   "hi": 2727.0280068260527,
+   "lo": 1916.8514525243206,
+   "hi": 2718.2853963395137,
    "win": 0.12916666666666668,
    "tie": 0.03333333333333333,
    "loss": 0.8375,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Guloso (1 h)": {
+   "mean": -430.72909834539576,
+   "lo": -758.9433287414042,
+   "hi": -127.01812978570075,
+   "win": 0.43333333333333335,
+   "tie": 0.025,
+   "loss": 0.5416666666666666,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Guloso (3 h)": {
+   "mean": 421.6221410140905,
+   "lo": 26.853461109743655,
+   "hi": 818.6128639013625,
+   "win": 0.32916666666666666,
+   "tie": 0.008333333333333333,
+   "loss": 0.6625,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Dueling DDQN MLP — rede do B": {
+   "mean": 1018.6464106496147,
+   "lo": 677.3177180196591,
+   "hi": 1391.1465858194954,
+   "win": 0.1875,
+   "tie": 0.10416666666666667,
+   "loss": 0.7083333333333334,
+   "n": 240
+  },
+  "Dueling DDQN MLP — ajustado a partir do B|Esperar": {
+   "mean": -673.9277418121648,
+   "lo": -951.1033212168766,
+   "hi": -413.7883673221861,
+   "win": 0.4666666666666667,
+   "tie": 0.30416666666666664,
+   "loss": 0.22916666666666666,
    "n": 240
   }
  },
@@ -500,6 +733,13 @@
    "CTRL50": 59,
    "LIBERAR": 33,
    "INTERR": 45
+  },
+  "Dueling DDQN MLP — ajustado a partir do B": {
+   "DESOB": 240,
+   "WAIT": 2159,
+   "CTRL50": 337,
+   "INTERR": 63,
+   "LIBERAR": 81
   }
  },
  "desob_por_tipo": {
@@ -516,6 +756,11 @@
    "acidente": 121,
    "barreira": 274,
    "estrutura": 159
+  },
+  "Dueling DDQN MLP — ajustado a partir do B": {
+   "acidente": 88,
+   "barreira": 101,
+   "estrutura": 51
   },
   "Guloso (1 h)": {
    "acidente": 50
@@ -534,6 +779,12 @@
    "ep": 1500,
    "kpi": 3.375,
    "vh": 18460.15577910163
+  },
+  "aj": {
+   "seed": 0,
+   "ep": 2400,
+   "kpi": 4.3375,
+   "vh": 18777.73674390479
   }
  },
  "validacao": {

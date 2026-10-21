@@ -95,7 +95,37 @@ Desobstruções feitas no teste, por tipo: Guloso (1 h) 50 (só acidentes); Gulo
 - 2.400 episódios podem ser poucos para um problema com mais tipos e efeitos atrasados.
 - Os quatro atributos novos mudam a entrada da rede, que começa do zero.
 
-Próximos passos sugeridos: (a) ajustar a rede do B no cenário C (partir dos pesos do B em vez do zero); (b) treinar mais episódios; (c) testar sem as ações de controle (interromper e 50%) para ver se elas atrapalham o aprendizado.
+O ajuste a partir da rede do B foi testado na seção seguinte.
+
+## Ajuste da rede do B no cenário C
+
+Para ver se o DDQN passa do Guloso de 3 h, a rede do B foi usada como ponto de partida e treinada mais 2.400 episódios no cenário C (duas sementes).
+
+- Os pesos dos 4 atributos novos começam em zero, então no início a rede decide exatamente como a do B.
+- Exploração menor (ε de 0,2 até 0,05) e taxa de aprendizado menor (0,0005), para não apagar o que ela já sabia.
+- O ponto de partida também entra na validação (episódio 0).
+
+```powershell
+$env:CTM_INIT="../simulador_b/baseline/total/selected.json"; $env:CTM_TAG="ajuste"; $env:CTM_EPS0="0.2"; $env:CTM_LR="0.0005"
+node simulador_c/train.js 0 2400                     # em outro terminal, a semente 1
+node simulador_c/select.js ajuste --sem-partida      # melhor ponto depois do ajuste (sem o episódio 0)
+node simulador_c/test_ajuste.js 0 2                  # em outro terminal: node simulador_c/test_ajuste.js 1 2
+```
+
+**Resultado: o ajuste piorou a rede.** Na validação, todos os 16 pontos depois do ajuste ficaram piores que o ponto de partida (4,14 h): entre 4,34 h e 4,61 h. Pela regra de escolha, a rede escolhida seria a própria rede do B. Para mostrar o efeito do treino, o teste usou o melhor ponto depois do ajuste (semente 0, episódio 2.400; 4,34 h na validação).
+
+| Comparação pareada no teste (240 episódios) | Diferença média | IC 95% | Melhor / empate / pior |
+|---|---|---|---|
+| Rede ajustada − rede do B | +0,39 h | +0,22 a +0,57 | 8% / 73% / 19% |
+| Rede ajustada − Guloso (3 h) | +0,59 h | +0,38 a +0,80 | 10% / 56% / 34% |
+| Rede ajustada − Guloso (1 h) | +0,18 h | +0,01 a +0,34 | 16% / 60% / 24% |
+| Rede ajustada − Esperar | −0,21 h | −0,36 a −0,06 | 17% / 78% / 5% |
+
+Tempo médio no teste: 4,79 h (rede do B: 4,40 h; Guloso de 3 h: 4,20 h).
+
+**O que o treino no C mudou no comportamento:** a rede ajustada desobstruiu menos (240 contra 554 da rede do B) e passou a usar muito mais o controle de 50% (337 contra 59). O mesmo aconteceu com o DDQN treinado do zero (473 interrupções e controles). Ou seja, treinar neste cenário leva o agente a trocar desobstruções por controles de fluxo, que pioram o resultado.
+
+**Hipótese (não testada):** como o efeito de desobstruir chega horas depois e muitas obstruções acabam sozinhas, o sinal de recompensa fica fraco e ruidoso, e o aprendizado superestima o valor dos controles. Teste sugerido: treinar no C sem as ações de interromper e controlar 50%.
 
 ## Suposições adicionais deste cenário
 

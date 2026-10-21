@@ -92,7 +92,8 @@ Não mudam os resultados atuais. Corrigir só como mudança declarada, revalidan
 - Tipos de interdição e tempos de remoção em `TIPOS` (env.js) — todos suposições. Desobstruir não é instantâneo. 22 atributos (18 do B + 4 do tipo).
 - Métodos: Esperar, Guloso (1 h), Guloso (3 h), DDQN treinado no C, rede do B (`simulador_b/baseline/total/selected.json`).
 - Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 1 h 4,62; Guloso 3 h 4,20; DDQN C 5,10; rede do B 4,40.
-- Pendência: o treino do zero no C não aprendeu; testar ajuste a partir dos pesos do B.
+- Ajuste a partir da rede do B (`results/ajuste/`, variáveis CTM_INIT/CTM_TAG/CTM_EPS0/CTM_LR em train.js): piorou (melhor ponto depois do ajuste 4,79 h no teste; rede do B 4,40 h). Treinar no C leva o agente a trocar desobstruções por controles de 50%.
+- Pendência: testar treino no C sem as ações de interromper e controlar 50%.
 
 ## Próximo passo planejado
 Portar `sim.js` e `env.js` para Python, com interface Gymnasium e os contratos M1–M9 da proposta. Vetorizar a física com NumPy ou Numba e passar a rede para PyTorch. Antes de qualquer melhoria, validar que a versão portada reproduz os números acima.

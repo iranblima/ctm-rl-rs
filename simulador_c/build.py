@@ -7,8 +7,8 @@ D = json.load(open(os.path.join('..', 'data', 'derived', 'rsdata.json'), encodin
 names = json.load(open(os.path.join('..', 'data', 'derived', 'node_names.json'), encoding='utf-8'))
 res = sorted([x for f in sorted(glob.glob('results/test_*.json')) for x in json.load(open(f, encoding='utf-8'))], key=lambda r: (r['i'], r['K']))
 W, G, G3 = 'Esperar', 'Guloso (1 h)', 'Guloso (3 h)'
-AC, AB = 'Dueling DDQN MLP — treinado no C', 'Dueling DDQN MLP — rede do B'
-M = [m for m in (W, G, G3, AC, AB) if m in res[0]['m']]
+AC, AB, AJ = 'Dueling DDQN MLP — treinado no C', 'Dueling DDQN MLP — rede do B', 'Dueling DDQN MLP — ajustado a partir do B'
+M = [m for m in (W, G, G3, AC, AB, AJ) if m in res[0]['m']]
 rng = np.random.default_rng(1)
 
 def boot(x, n=5000):
@@ -22,7 +22,7 @@ def paired(x):
 def col(rr, m, k):
     return np.array([r['m'][m][k] for r in rr], float)
 
-pairs = [(AC, G), (AC, G3), (G3, G)] + ([(AB, G), (AB, G3), (AC, AB)] if AB in M else [])
+pairs = [(AC, G), (AC, G3), (G3, G)] + ([(AB, G), (AB, G3), (AC, AB)] if AB in M else []) + ([(AJ, G), (AJ, G3), (AJ, AB), (AJ, W)] if AJ in M else [])
 byK = []
 for K in (1, 3, 5, 10):
     rr = [r for r in res if r['K'] == K]
@@ -45,7 +45,7 @@ for r in res:
             if l['type'] == 'DESOB':
                 c = r['evs'][l['ev']]['cls']; bytype.setdefault(m, {}); bytype[m][c] = bytype[m].get(c, 0) + 1
 sel = {}
-for key, f in (('c', 'results/total/selected.json'), ('b', '../simulador_b/baseline/total/selected.json')):
+for key, f in (('c', 'results/total/selected.json'), ('b', '../simulador_b/baseline/total/selected.json'), ('aj', 'results/ajuste/selected.json')):
     if os.path.exists(f):
         s = json.load(open(f)); sel[key] = dict(seed=s['seed'], ep=s['ep'], kpi=s['kpi'], vh=s['vh'])
 valref = json.load(open('results/valref.json')) if os.path.exists('results/valref.json') else None

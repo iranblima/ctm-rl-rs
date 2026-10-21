@@ -113,6 +113,8 @@ canvas.strip{display:block;width:100%;height:96px}
 ul.flat{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px}
 footer{margin-top:22px;font-size:13px;color:var(--muted);max-width:96ch;display:grid;gap:6px}
 footer p{margin:0}
+.mhead,.mhead .field{min-width:0;max-width:100%}.mhead select{max-width:100%;min-width:0}
+.pane,.panes>*,.maps>*{min-width:0}
 </style>
 
 <div class="wrap">
@@ -173,6 +175,7 @@ footer p{margin:0}
         <li><b>Guloso (3 h):</b> igual, mas olha 3 horas à frente (a ação e depois esperar). Entra porque, com remoção demorada, o efeito de desobstruir pode não aparecer em 1 hora.</li>
         <li><b>DDQN treinado no C:</b> Dueling DDQN MLP (método proposto) treinado nos cenários C. Além do que via no cenário B, vê o tipo da interdição e o tempo típico de remoção. Não simula.</li>
         <li><b>Rede do B:</b> a rede escolhida no cenário B, sem novo treino, aplicada ao cenário C. Não vê o tipo. Mede se o que ela aprendeu vale para situações mais diversas.</li>
+        <li><b>Rede do B ajustada no C:</b> parte dos pesos da rede do B (os 4 atributos novos começam em zero) e continua o treino no cenário C por 2.400 episódios. Pela regra de escolha na validação, o melhor ponto foi o de partida (a própria rede do B); aqui aparece o melhor ponto depois do ajuste, para mostrar o efeito do treino.</li>
         <li><b>Tipos (suposições):</b> acidente 40% (duração típica 2,5 h, metade com meia pista, remoção 30–90 min); queda de barreira 25% (remoção 2–6 h); dano na estrutura 15% (obra provisória 6–12 h, depois meia pista); água na pista 20% (não desobstruível). Barreira, estrutura e água usam as durações das interdições reais de 2024 do mesmo tipo.</li>
         <li><b>Cenários:</b> 4 a 12 obstruções sorteadas (peso pelo volume); 300 de treino, 40 de validação e 60 de teste, independentes.</li>
       </ul>
@@ -191,7 +194,7 @@ footer p{margin:0}
   const nf1 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const nf2 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const sg = (v, f = nf2) => (v > 0 ? '+' : v < 0 ? '−' : '') + f.format(Math.abs(v));
-  const [WAIT, GREEDY, GREEDY3, AGENT, AGENTB] = D.methods;
+  const [WAIT, GREEDY, GREEDY3, AGENT, AGENTB, AGENTJ] = D.methods;
   const DOW = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
   const fmt = m => `${DOW.at((5 + Math.floor(m / 1440)) % 7)} ${String(Math.floor(m / 60) % 24).padStart(2, '0')}h`;
   const CLSN = { acidente: 'Acidente', barreira: 'Queda de barreira', estrutura: 'Dano na estrutura', agua: 'Água na pista' };
@@ -346,8 +349,8 @@ footer p{margin:0}
     el('testNote').textContent = `${t.n_cenarios} cenários de teste sorteados × 4 orçamentos (${t.obstrucoes[0]} a ${t.obstrucoes[1]} obstruções; ${nf0.format(100 * t.stab0[0])}% a ${nf0.format(100 * t.stab0[1])}% dos trechos estáveis no início). KPI em horas até ≥ 80% dos trechos estáveis (13 = não estabilizou em 12 h); menor é melhor. Diferenças pareadas no mesmo cenário e orçamento.`;
     const card = (lab, d, s2) => d ? `<div><span class="k">${lab}</span><span class="v">${sg(d.mean)} h</span><span class="s">IC 95%: ${sg(d.lo)} a ${sg(d.hi)} h · melhor/empate/pior ${nf0.format(100 * d.win)}/${nf0.format(100 * d.tie)}/${nf0.format(100 * d.loss)}%${s2 || ''}</span></div>` : '';
     const vhc = (lab, d) => d ? `<div><span class="k">${lab}</span><span class="v">${sg(d.mean, nf0)} v·h</span><span class="s">IC 95%: ${sg(d.lo, nf0)} a ${sg(d.hi, nf0)} v·h por episódio · melhor/empate/pior ${nf0.format(100 * d.win)}/${nf0.format(100 * d.tie)}/${nf0.format(100 * d.loss)}%</span></div>` : '';
-    el('pair').innerHTML = card('DDQN treinado no C − Guloso (1 h)', k(AGENT, GREEDY)) + card('DDQN treinado no C − Guloso (3 h)', k(AGENT, GREEDY3)) + card('Rede do B (sem novo treino) − Guloso (1 h)', AGENTB ? k(AGENTB, GREEDY) : null) + card('DDQN treinado no C − rede do B', AGENTB ? k(AGENT, AGENTB) : null, ' · negativo = treinar no C ajudou') + card('Guloso (3 h) − Guloso (1 h)', k(GREEDY3, GREEDY), ' · negativo = olhar mais à frente ajudou') + vhc('Veículo-hora: DDQN treinado no C − Guloso (1 h)', t.pooled_vh[`${AGENT}|${GREEDY}`]);
-    const ab = m => m === WAIT ? 'Esperar' : m === GREEDY ? 'Guloso 1 h' : m === GREEDY3 ? 'Guloso 3 h' : m === AGENT ? 'DDQN treinado no C' : 'Rede do B';
+    el('pair').innerHTML = card('DDQN treinado no C − Guloso (1 h)', k(AGENT, GREEDY)) + card('DDQN treinado no C − Guloso (3 h)', k(AGENT, GREEDY3)) + card('Rede do B (sem novo treino) − Guloso (1 h)', AGENTB ? k(AGENTB, GREEDY) : null) + card('DDQN treinado no C − rede do B', AGENTB ? k(AGENT, AGENTB) : null, ' · negativo = treinar no C ajudou') + card('Guloso (3 h) − Guloso (1 h)', k(GREEDY3, GREEDY), ' · negativo = olhar mais à frente ajudou') + (AGENTJ ? card('Rede do B ajustada no C − rede do B', k(AGENTJ, AGENTB), ' · positivo = o ajuste piorou') + card('Rede do B ajustada no C − Guloso (3 h)', k(AGENTJ, GREEDY3)) : '') + vhc('Veículo-hora: rede do B − Guloso (3 h)', t.pooled_vh[`${AGENTB}|${GREEDY3}`]);
+    const ab = m => m === WAIT ? 'Esperar' : m === GREEDY ? 'Guloso 1 h' : m === GREEDY3 ? 'Guloso 3 h' : m === AGENT ? 'DDQN treinado no C' : m === AGENTB ? 'Rede do B' : 'Rede do B ajustada';
     el('kpiTbl').innerHTML = `<table class="tbl"><thead><tr><th>K</th>${D.methods.map(m => `<th>${ab(m)}</th>`).join('')}</tr></thead><tbody>${t.byK.map(r => { const best = Math.min(...D.methods.map(m => r.kpi[m]));
       return `<tr><td>${r.K}</td>${D.methods.map(m => `<td class="${r.kpi[m] === best ? 'b' : ''}">${nf2.format(r.kpi[m])}</td>`).join('')}</tr>`; }).join('')}</tbody></table>`;
     el('secTbl').innerHTML = `<table class="tbl"><thead><tr><th>K</th>${D.methods.map(m => `<th>${ab(m)}<br><span class="muted">v·h · ações</span></th>`).join('')}</tr></thead><tbody>${t.byK.map(r => `<tr><td>${r.K}</td>${D.methods.map(m => `<td>${nf0.format(r.vh[m])} · ${nf1.format(r.used[m])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -394,7 +397,7 @@ footer p{margin:0}
 
   const sel = D.test.selecionados || {}, vr = D.test.validacao;
   el('foot').innerHTML = `<p><b>Dados:</b> malha SNV (308 nós, 315 trechos, 630 sentidos); demanda pelo VDM por sentido do DNIT (VDM Modelagem 2019, SNV 202001A) em 295 trechos e pelo VDM do cadastro nos outros 20; perfil horário dos postos PNCT (semana típica). Obstruções sintéticas de quatro tipos; durações de barreira, estrutura e água tiradas das interdições reais da PRF de 2024 do mesmo tipo.</p>
-  <p><b>Protocolo:</b> 300 cenários de treino, 40 de validação e ${D.test.n_cenarios} de teste, todos independentes (sementes distintas). DDQN escolhido na validação do cenário C${sel.c ? `: semente ${sel.c.seed}, episódio ${sel.c.ep} (${nf2.format(sel.c.kpi)} h)` : ''}; rede do B: a escolhida no cenário B${sel.b ? ` (semente ${sel.b.seed}, episódio ${sel.b.ep})` : ''}.${vr ? ` Na validação do C: Esperar ${nf2.format(vr.wait.kpi)} h, Guloso (1 h) ${nf2.format(vr.greedy.kpi)} h${vr.greedy3 ? `, Guloso (3 h) ${nf2.format(vr.greedy3.kpi)} h` : ''}.` : ''} Os mapas mostram ${STARTS.length} cenários; as tabelas usam todos.</p>`;
+  <p><b>Protocolo:</b> 300 cenários de treino, 40 de validação e ${D.test.n_cenarios} de teste, todos independentes (sementes distintas). DDQN escolhido na validação do cenário C${sel.c ? `: semente ${sel.c.seed}, episódio ${sel.c.ep} (${nf2.format(sel.c.kpi)} h)` : ''}; rede do B: a escolhida no cenário B${sel.b ? ` (semente ${sel.b.seed}, episódio ${sel.b.ep})` : ''}${sel.aj ? `; rede do B ajustada: melhor ponto depois do ajuste, semente ${sel.aj.seed}, episódio ${sel.aj.ep} (${nf2.format(sel.aj.kpi)} h; o ponto de partida tinha 4,14 h)` : ''}.${vr ? ` Na validação do C: Esperar ${nf2.format(vr.wait.kpi)} h, Guloso (1 h) ${nf2.format(vr.greedy.kpi)} h${vr.greedy3 ? `, Guloso (3 h) ${nf2.format(vr.greedy3.kpi)} h` : ''}.` : ''} Os mapas mostram ${STARTS.length} cenários; as tabelas usam todos.</p>`;
 
   testPanel(); layout(); render();
 })();

@@ -45,7 +45,7 @@ Compara três métodos nas mesmas situações:
 
 ## Cenário C (interdições sintéticas de quatro tipos)
 
-Testa o Dueling DDQN MLP com obstruções mais diversas e remoção demorada. Resultado: o Guloso que olha 3 h à frente foi o melhor (4,20 h); a rede do B, sem novo treino, venceu o Guloso de 1 h (−0,21 h) e teve a menor perda no trânsito; o DDQN treinado do zero no C não aprendeu (igual a Esperar). Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
+Testa o Dueling DDQN MLP com obstruções mais diversas e remoção demorada. Resultado: o Guloso que olha 3 h à frente foi o melhor (4,20 h); a rede do B, sem novo treino, venceu o Guloso de 1 h (−0,21 h) e teve a menor perda no trânsito; o DDQN treinado do zero no C não aprendeu (igual a Esperar), e ajustar a rede do B no C a piorou (4,79 h contra 4,40 h). Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
 
 ## Requisitos
 

@@ -1,1 +1,1 @@
-{"label":"Cenário C, treino de referência (semente 1, ep. 2400)","comuns":["test_0.json","test_1.json","summary.json","viz.json","valref.json"]}
+{"label":"Cenário C, treino de referência (do zero: semente 1, ep. 2400; ajuste a partir do B: semente 0, ep. 2400)","comuns":["test_0.json","test_1.json","summary.json","viz.json","valref.json"]}

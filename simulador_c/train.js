@@ -13,7 +13,12 @@ const seed = +args[0], EPIS = +args[1];
 const LOGN = args.includes('--log') ? +args[args.indexOf('--log') + 1] : 50;
 if (!Number.isFinite(seed) || !Number.isFinite(EPIS)) { console.error('uso: node train.js <semente> <episódios> [--log N]'); process.exit(1); }
 const CK = 300, GAMMA = 0.95, KS = [1, 3, 5, 10];
-const RD = `results/${E.OBS}`; fs.mkdirSync(RD, { recursive: true });
+// Ajuste fino (opcional): CTM_INIT=<selected.json da rede de partida> CTM_TAG=ajuste CTM_EPS0=0.2 CTM_LR=0.0005
+// A rede de partida pode ter menos atributos (18, do cenário B): os pesos dos atributos novos começam em zero,
+// então no episódio 0 ela decide exatamente como a original. Esse ponto de partida também entra na validação (episódio 0).
+const INIT = process.env.CTM_INIT || null, TAG = process.env.CTM_TAG || E.OBS;
+const EPS0 = +(process.env.CTM_EPS0 || 1), LR = +(process.env.CTM_LR || 1e-3);
+const RD = `results/${TAG}`; fs.mkdirSync(RD, { recursive: true });
 const LOCK = `${RD}/.training_${seed}.lock`, LOG = `${RD}/train_log_${seed}.jsonl`;
 if (fs.existsSync(LOCK)) {
   const pid = +fs.readFileSync(LOCK, 'utf8').split('\n')[0];
@@ -29,14 +34,19 @@ fs.writeFileSync(`${RD}/ckpt_${seed}.json`, '[]');   // um treino novo substitui
 const NTR = 300, NVA = 40;
 console.log('gerando cenários de treino e validação…');
 const TR = Array.from({ length: NTR }, (_, i) => E.scenario(E.SEEDS.treino(i))), VA = Array.from({ length: NVA }, (_, i) => E.scenario(E.SEEDS.validacao(i)));
-const r = rng(seed * 31 + 3), net = new Net(seed); let tgt = net.copy();
+const r = rng(seed * 31 + 3), net = new Net(seed);
+if (INIT) { const src = JSON.parse(fs.readFileSync(INIT)).net, nf0 = src.W1.length / 32;
+  for (const k in src) { if (k === 'W1') { net.p.W1.fill(0); for (let i = 0; i < nf0 * 32; i++) net.p.W1[i] = src.W1[i]; } else net.p[k] = Float64Array.from(src[k]); }
+  console.log(`partindo de ${INIT} (${nf0} atributos → ${E.NF}); ε inicial ${EPS0}; taxa ${LR}`); }
+let tgt = net.copy();
 const buf = [], prio = [], CAP = 20000, T0 = Date.now(), ckpts = [];
 function evalVal(pol) { let k = 0, v = 0, c = 0; for (const st of VA) for (const K of KS) { const o = E.runEpisode(st, K, pol); k += o.kpi; v += o.vh; c++; } return { kpi: k / c, vh: v / c }; }
 // acumuladores da janela de registro
 let W = { n: 0, ret: 0, kpi: 0, act: 0, loss: 0, nl: 0 };
+if (INIT) { const v = evalVal(makePolicy(net)); ckpts.push({ seed, ep: 0, ...v, net: net.toJSON() }); fs.writeFileSync(`${RD}/ckpt_${seed}.json`, JSON.stringify(ckpts)); console.log(`semente ${seed} ep 0 (ponto de partida) validação: KPI ${v.kpi.toFixed(3)} h, ${v.vh.toFixed(0)} v·h`); }
 console.log(`[${E.OBS}] semente ${seed}: ${EPIS} episódios, ${TR.length} cenários de treino, ${VA.length} de validação; registro a cada ${LOGN}`);
 for (let epi = 0; epi < EPIS; epi++) {
-  const eps = Math.max(0.05, 1 - epi / (0.6 * EPIS));
+  const eps = Math.max(0.05, EPS0 - (EPS0 - 0.05) * epi / (0.6 * EPIS));
   const st = TR[Math.floor(r() * TR.length)], K = KS[Math.floor(r() * KS.length)];
   const ep = new E.Ep(st, K);
   if (!ep.done) {
@@ -53,7 +63,7 @@ for (let epi = 0; epi < EPIS; epi++) {
           const t = buf[j]; let y = t.r;
           if (t.X2) { const qo = net.fwd(t.X2).Q, qt = tgt.fwd(t.X2).Q; y += GAMMA * qt[qo.indexOf(Math.max(...qo))]; }
           prio[j] = Math.abs(net.fwd(t.X).Q[t.a] - y) + 1e-3; batch.push({ X: t.X, a: t.a, y }); }
-        W.loss += net.trainBatch(batch); W.nl++;
+        W.loss += net.trainBatch(batch, LR); W.nl++;
         if (net.t % 200 === 0) tgt = net.copy();
       }
       if (X2) { X = X2; C = C2; }
