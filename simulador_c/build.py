@@ -6,9 +6,9 @@ import numpy as np
 D = json.load(open(os.path.join('..', 'data', 'derived', 'rsdata.json'), encoding='utf-8'))
 names = json.load(open(os.path.join('..', 'data', 'derived', 'node_names.json'), encoding='utf-8'))
 res = sorted([x for f in sorted(glob.glob('results/test_*.json')) for x in json.load(open(f, encoding='utf-8'))], key=lambda r: (r['i'], r['K']))
-W, G, G3 = 'Esperar', 'Guloso (1 h)', 'Guloso (3 h)'
+W, G = 'Esperar', 'Guloso'
 AT, AD = 'Dueling DDQN MLP — todas as ações', 'Dueling DDQN MLP — só desobstruir'
-M = [m for m in (W, G, G3, AT, AD) if m in res[0]['m']]
+M = [m for m in (W, G, AT, AD) if m in res[0]['m']]
 rng = np.random.default_rng(1)
 
 def boot(x, n=5000):
@@ -22,7 +22,7 @@ def paired(x):
 def col(rr, m, k):
     return np.array([r['m'][m][k] for r in rr], float)
 
-pairs = [(AT, G), (AT, G3), (AT, W), (G3, G), (G, W), (G3, W)] + ([(AD, G), (AD, G3), (AD, W), (AD, AT)] if AD in M else [])
+pairs = [(AT, G), (AT, W), (G, W)] + ([(AD, G), (AD, W), (AD, AT)] if AD in M else [])
 byK = []
 for K in (1, 3, 5, 10):
     rr = [r for r in res if r['K'] == K]

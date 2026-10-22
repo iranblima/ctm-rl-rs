@@ -173,8 +173,7 @@ footer p{margin:0}
       <ul class="flat">
         <li><b>Estável:</b> o fluxo de um sentido de trecho na hora fica a menos de 20% (ou de 30 veículos/h) do que seria sem obstrução, no mesmo horário.</li>
         <li><b>KPI:</b> horas até ≥ 80% dos sentidos de trecho estarem estáveis; quem não chega em 12 h recebe 13. Recompensa do agente: −1 por hora até estabilizar.</li>
-        <li><b>Guloso (1 h):</b> clona o ambiente e testa cada ação por 1 hora; fica com a que deixa mais trechos estáveis (empate: menos veículo-hora; empate total: esperar). É o mesmo dos cenários anteriores.</li>
-        <li><b>Guloso (3 h):</b> igual, mas olha 3 horas à frente (a ação e depois esperar). Entra porque, com remoção demorada, o efeito de desobstruir pode não aparecer em 1 hora.</li>
+        <li><b>Guloso:</b> adaptação do Greedy MC do artigo, igual ao cenário A. Clona o ambiente e testa cada ação por 1 hora; fica com a que deixa mais trechos estáveis (empate: menos veículo-hora; empate total: esperar).</li>
         <li><b>DDQN — todas as ações:</b> Dueling DDQN MLP (método proposto) treinado do zero nos cenários C, com as mesmas ações do cenário A. Vê o fluxo do próprio trecho e dos vizinhos, o tipo da interdição e o tempo típico de remoção. Não simula.</li>
         <li><b>DDQN — só desobstruir:</b> igual, mas treinado e testado só com esperar e desobstruir (sem interromper nem controlar o fluxo).</li>
         <li><b>Tipos (suposições):</b> acidente 40% (duração típica 2,5 h, metade com meia pista, remoção 30–90 min); queda de barreira 25% (remoção 2–6 h); dano na estrutura 15% (obra provisória 6–12 h, depois meia pista); água na pista 20% (não desobstruível). Barreira, estrutura e água usam as durações das interdições reais de 2024 do mesmo tipo.</li>
@@ -195,7 +194,7 @@ footer p{margin:0}
   const nf1 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const nf2 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const sg = (v, f = nf2) => (v > 0 ? '+' : v < 0 ? '−' : '') + f.format(Math.abs(v));
-  const [WAIT, GREEDY, GREEDY3, AGENT, AGENTD] = D.methods;
+  const [WAIT, GREEDY, AGENT, AGENTD] = D.methods;
   const DOW = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
   const fmt = m => `${DOW.at((5 + Math.floor(m / 1440)) % 7)} ${String(Math.floor(m / 60) % 24).padStart(2, '0')}h`;
   const CLSN = { acidente: 'Acidente', barreira: 'Queda de barreira', estrutura: 'Dano na estrutura', agua: 'Água na pista' };
@@ -215,7 +214,7 @@ footer p{margin:0}
   // episódios agrupados por momento
   const STARTS = [...new Set(D.eps.map(e => e.i))].sort((a, b) => a - b);
   const KS = [1, 3, 5, 10];
-  const S = { i: STARTS[0], K: 5, h: 0, view: 'fit', timer: null, left: GREEDY3, right: AGENTD || AGENT };
+  const S = { i: STARTS[0], K: 5, h: 0, view: 'fit', timer: null, left: GREEDY, right: AGENTD || AGENT };
   const ep = () => D.eps.find(e => e.i === S.i && e.K === S.K);
 
   let T = {};
@@ -350,15 +349,17 @@ footer p{margin:0}
     el('testNote').textContent = `${t.n_cenarios} cenários de teste sorteados × 4 orçamentos (${t.obstrucoes[0]} a ${t.obstrucoes[1]} obstruções; ${nf0.format(100 * t.stab0[0])}% a ${nf0.format(100 * t.stab0[1])}% dos trechos estáveis no início). KPI em horas até ≥ 80% dos trechos estáveis (13 = não estabilizou em 12 h); menor é melhor. Diferenças pareadas no mesmo cenário e orçamento.`;
     const card = (lab, d, s2) => d ? `<div><span class="k">${lab}</span><span class="v">${sg(d.mean)} h</span><span class="s">IC 95%: ${sg(d.lo)} a ${sg(d.hi)} h · melhor/empate/pior ${nf0.format(100 * d.win)}/${nf0.format(100 * d.tie)}/${nf0.format(100 * d.loss)}%${s2 || ''}</span></div>` : '';
     const vhc = (lab, d) => d ? `<div><span class="k">${lab}</span><span class="v">${sg(d.mean, nf0)} v·h</span><span class="s">IC 95%: ${sg(d.lo, nf0)} a ${sg(d.hi, nf0)} v·h por episódio · melhor/empate/pior ${nf0.format(100 * d.win)}/${nf0.format(100 * d.tie)}/${nf0.format(100 * d.loss)}%</span></div>` : '';
-    el('pair').innerHTML = card('DDQN todas as ações − Guloso (1 h)', k(AGENT, GREEDY)) + card('DDQN todas as ações − Guloso (3 h)', k(AGENT, GREEDY3)) + card('DDQN todas as ações − Esperar', k(AGENT, WAIT)) + (AGENTD ? card('DDQN só desobstruir − Guloso (1 h)', k(AGENTD, GREEDY)) + card('DDQN só desobstruir − Guloso (3 h)', k(AGENTD, GREEDY3)) + card('DDQN só desobstruir − todas as ações', k(AGENTD, AGENT), ' · negativo = tirar os controles ajudou') : '') + card('Guloso (3 h) − Guloso (1 h)', k(GREEDY3, GREEDY), ' · negativo = olhar mais à frente ajudou');
-    const A = t.cenario_A; if (A) { const bestG = Math.min(t.byK.reduce((s, r) => s + r.kpi[GREEDY], 0), t.byK.reduce((s, r) => s + r.kpi[GREEDY3], 0)) / 4, mean = m => t.byK.reduce((s, r) => s + r.kpi[m], 0) / 4, bestD = Math.min(mean(AGENT), AGENTD ? mean(AGENTD) : 99);
-      el('aTbl').innerHTML = `<h3 class="sub">Comparação com o cenário A (instantes reais de 2024, 32 postos, desobstrução instantânea)</h3><table class="tbl"><thead><tr><th></th><th>Cenário A</th><th>Cenário C</th></tr></thead><tbody>
+    el('pair').innerHTML = card('DDQN todas as ações − Guloso', k(AGENT, GREEDY)) + card('DDQN todas as ações − Esperar', k(AGENT, WAIT)) + (AGENTD ? card('DDQN só desobstruir − Guloso', k(AGENTD, GREEDY)) + card('DDQN só desobstruir − Esperar', k(AGENTD, WAIT)) + card('DDQN só desobstruir − todas as ações', k(AGENTD, AGENT), ' · negativo = tirar os controles ajudou') : '') + card('Guloso − Esperar', k(GREEDY, WAIT));
+    const A = t.cenario_A; if (A) { const mean = m => t.byK.reduce((s, r) => s + r.kpi[m], 0) / 4, dc = (m, n) => { const d = k(m, n); return `${sg(d.mean)} h (IC ${sg(d.lo)} a ${sg(d.hi)})`; };
+      el('aTbl').innerHTML = `<h3 class="sub">Comparação com o cenário A</h3><table class="tbl"><thead><tr><th>Média de horas até 80% estável</th><th>Cenário A</th><th>Cenário C</th></tr></thead><tbody>
         <tr><td>Esperar</td><td>${nf2.format(A.kpi.Esperar)} h</td><td>${nf2.format(mean(WAIT))} h</td></tr>
-        <tr><td>Melhor Guloso</td><td>${nf2.format(A.kpi.Guloso)} h</td><td>${nf2.format(bestG)} h</td></tr>
-        <tr><td>Melhor DDQN</td><td>${nf2.format(A.kpi.DDQN)} h</td><td>${nf2.format(bestD)} h</td></tr>
-        <tr><td>DDQN − Guloso (pareado)</td><td>${sg(A.ddqn_guloso.mean)} h (IC ${sg(A.ddqn_guloso.lo)} a ${sg(A.ddqn_guloso.hi)})</td><td>${(() => { const d = AGENTD && mean(AGENTD) < mean(AGENT) ? k(AGENTD, GREEDY3) : k(AGENT, GREEDY3); return `${sg(d.mean)} h (IC ${sg(d.lo)} a ${sg(d.hi)}), contra o Guloso de 3 h`; })()}</td></tr>
-        <tr><td>Episódios de teste</td><td>${A.n}</td><td>${t.n_cenarios * 4}</td></tr></tbody></table><p class="muted">As horas não são diretamente comparáveis: no A a estabilidade é medida nos 32 postos e os instantes são reais; no C, nos 630 sentidos de trecho, com obstruções sintéticas. Compare a distância entre os métodos.</p>`; }
-    const ab = m => m === WAIT ? 'Esperar' : m === GREEDY ? 'Guloso 1 h' : m === GREEDY3 ? 'Guloso 3 h' : m === AGENT ? 'DDQN todas as ações' : 'DDQN só desobstruir';
+        <tr><td>Guloso</td><td>${nf2.format(A.kpi.Guloso)} h</td><td>${nf2.format(mean(GREEDY))} h</td></tr>
+        <tr><td>DDQN, todas as ações</td><td>${nf2.format(A.kpi.DDQN)} h</td><td>${nf2.format(mean(AGENT))} h</td></tr>
+        ${AGENTD ? `<tr><td>DDQN, só esperar e desobstruir</td><td>não testado</td><td>${nf2.format(mean(AGENTD))} h</td></tr>` : ''}
+        <tr><td>DDQN todas as ações − Guloso</td><td>${sg(A.ddqn_guloso.mean)} h (IC ${sg(A.ddqn_guloso.lo)} a ${sg(A.ddqn_guloso.hi)})</td><td>${dc(AGENT, GREEDY)}</td></tr>
+        ${AGENTD ? `<tr><td>DDQN só desobstruir − Guloso</td><td>não testado</td><td>${dc(AGENTD, GREEDY)}</td></tr>` : ''}
+        <tr><td>Episódios de teste</td><td>${A.n}</td><td>${t.n_cenarios * 4}</td></tr></tbody></table><p class="muted">Diferença positiva: o DDQN levou mais tempo que o Guloso; negativa: levou menos. As horas não são diretamente comparáveis entre A e C (no A a estabilidade é medida nos 32 postos e os instantes são reais; no C, nos 630 sentidos de trecho, com obstruções sintéticas).</p>`; }
+    const ab = m => m === WAIT ? 'Esperar' : m === GREEDY ? 'Guloso' : m === AGENT ? 'DDQN todas as ações' : 'DDQN só desobstruir';
     el('kpiTbl').innerHTML = `<table class="tbl"><thead><tr><th>K</th>${D.methods.map(m => `<th>${ab(m)}</th>`).join('')}</tr></thead><tbody>${t.byK.map(r => { const best = Math.min(...D.methods.map(m => r.kpi[m]));
       return `<tr><td>${r.K}</td>${D.methods.map(m => `<td class="${r.kpi[m] === best ? 'b' : ''}">${nf2.format(r.kpi[m])}</td>`).join('')}</tr>`; }).join('')}</tbody></table>`;
     el('secTbl').innerHTML = `<table class="tbl"><thead><tr><th>K</th>${D.methods.map(m => `<th>${ab(m)}<br><span class="muted">v·h · ações</span></th>`).join('')}</tr></thead><tbody>${t.byK.map(r => `<tr><td>${r.K}</td>${D.methods.map(m => `<td>${nf0.format(r.vh[m])} · ${nf1.format(r.used[m])}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
@@ -405,7 +406,7 @@ footer p{margin:0}
 
   const sel = D.test.selecionados || {}, vr = D.test.validacao;
   el('foot').innerHTML = `<p><b>Dados:</b> malha SNV (308 nós, 315 trechos, 630 sentidos); demanda pelo VDM por sentido do DNIT (VDM Modelagem 2019, SNV 202001A) em 295 trechos e pelo VDM do cadastro nos outros 20; perfil horário dos postos PNCT (semana típica). Obstruções sintéticas de quatro tipos; durações de barreira, estrutura e água tiradas das interdições reais da PRF de 2024 do mesmo tipo.</p>
-  <p><b>Protocolo:</b> 300 cenários de treino, 40 de validação e ${D.test.n_cenarios} de teste, todos independentes (sementes distintas). DDQN escolhido na validação${sel.todas ? ` — todas as ações: semente ${sel.todas.seed}, episódio ${sel.todas.ep} (${nf2.format(sel.todas.kpi)} h)` : ''}${sel.desob ? `; só desobstruir: semente ${sel.desob.seed}, episódio ${sel.desob.ep} (${nf2.format(sel.desob.kpi)} h)` : ''}.${vr ? ` Na validação: Esperar ${nf2.format(vr.wait.kpi)} h, Guloso (1 h) ${nf2.format(vr.greedy.kpi)} h${vr.greedy3 ? `, Guloso (3 h) ${nf2.format(vr.greedy3.kpi)} h` : ''}.` : ''} Os mapas mostram ${STARTS.length} cenários; as tabelas usam todos.</p>`;
+  <p><b>Protocolo:</b> 300 cenários de treino, 40 de validação e ${D.test.n_cenarios} de teste, todos independentes (sementes distintas). DDQN escolhido na validação${sel.todas ? ` — todas as ações: semente ${sel.todas.seed}, episódio ${sel.todas.ep} (${nf2.format(sel.todas.kpi)} h)` : ''}${sel.desob ? `; só desobstruir: semente ${sel.desob.seed}, episódio ${sel.desob.ep} (${nf2.format(sel.desob.kpi)} h)` : ''}.${vr ? ` Na validação: Esperar ${nf2.format(vr.wait.kpi)} h, Guloso ${nf2.format(vr.greedy.kpi)} h.` : ''} Os mapas mostram ${STARTS.length} cenários; as tabelas usam todos.</p>`;
 
   testPanel(); layout(); render();
 })();

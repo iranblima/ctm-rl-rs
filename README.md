@@ -45,7 +45,7 @@ Compara três métodos nas mesmas situações:
 
 ## Cenário C (interdições sintéticas de quatro tipos)
 
-Treina o Dueling DDQN MLP do zero com obstruções sintéticas (acidente, barreira, estrutura, água) e remoção demorada, e compara com o cenário A. Resultado: o DDQN só com esperar e desobstruir empatou com o melhor Guloso (+0,04 h, intervalo contém o zero; no cenário A a diferença era +2,88 h) e teve a menor perda no trânsito. Com todas as ações, o treino falha. Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
+Treina o Dueling DDQN MLP do zero com obstruções sintéticas (acidente, barreira, estrutura, água) e remoção demorada, e compara com o cenário A. Resultado (DDQN − Guloso, em horas até estabilizar): com as mesmas ações do cenário A, +0,48 h (no cenário A era +2,88 h); só com esperar e desobstruir, −0,37 h. Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
 
 ## Requisitos
 

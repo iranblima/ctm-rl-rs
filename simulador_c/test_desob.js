@@ -11,6 +11,6 @@ for (const [i, items] of byI) {
   const sc = E.scenario(E.SEEDS.teste(i)), show = i % 6 === 0;
   for (const item of items) { const o = E.runEpisode(sc, item.K, pol, { frames: show });
     item.m[NM] = { kpi: o.kpi, censored: o.censored, sustained: o.sustained, unstable: o.unstable, vh: o.vh, used: o.used, log: o.log, stabs: o.stabs, frames: show ? o.frames : undefined };
-    console.log(i, item.K, 'só desobstruir', o.kpi, Math.round(o.vh), '| G3', item.m['Guloso (3 h)'].kpi); }
+    console.log(i, item.K, 'só desobstruir', o.kpi, Math.round(o.vh), '| Guloso', item.m['Guloso'].kpi); }
 }
 fs.writeFileSync(F, JSON.stringify(res));

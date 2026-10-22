@@ -91,8 +91,9 @@ Não mudam os resultados atuais. Corrigir só como mudança declarada, revalidan
 - Código em `simulador_c/`, independente: treina e testa as próprias redes do zero; só lê os testes do cenário A (`simulador/baseline/results/`) para comparar. Documentação e resultados em `CENARIO_C.md`.
 - Tipos de interdição e tempos de remoção em `TIPOS` (env.js), todos suposições. Desobstruir não é instantâneo. 22 atributos.
 - DDQN em duas versões: todas as ações (`results/total/`) e só esperar e desobstruir (`CTM_ACOES=desob`, `results/so_desob/`).
-- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 1 h 4,62; Guloso 3 h 4,20; DDQN todas as ações 5,10; DDQN só desobstruir 4,25.
-- DDQN só desobstruir − Guloso 3 h: +0,04 h (IC −0,18 a +0,25, empate). No cenário A era +2,88 h.
+- Guloso igual ao do cenário A (testa cada ação por 1 h).
+- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 4,62; DDQN todas as ações 5,10; DDQN só desobstruir 4,25.
+- DDQN − Guloso: todas as ações +0,48 h; só desobstruir −0,37 h. No cenário A: +2,88 h.
 - Pendência: rodar o cenário A só com esperar e desobstruir, para separar os efeitos.
 
 ## Próximo passo planejado

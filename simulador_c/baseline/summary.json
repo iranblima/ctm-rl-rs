@@ -31,7 +31,7 @@
   "ddqn_guloso": {
    "mean": 2.8846153846153846,
    "lo": 2.4423076923076925,
-   "hi": 3.3525641025641026,
+   "hi": 3.3655448717948695,
    "win": 0.0,
    "tie": 0.21794871794871795,
    "loss": 0.782051282051282,
@@ -39,8 +39,8 @@
   },
   "ddqn_esperar": {
    "mean": -0.1858974358974359,
-   "lo": -0.34615384615384615,
-   "hi": -0.0641025641025641,
+   "lo": -0.3399038461538461,
+   "hi": -0.07051282051282051,
    "win": 0.09615384615384616,
    "tie": 0.8974358974358975,
    "loss": 0.00641025641025641,
@@ -50,8 +50,7 @@
  "n_cenarios": 60,
  "metodos": [
   "Esperar",
-  "Guloso (1 h)",
-  "Guloso (3 h)",
+  "Guloso",
   "Dueling DDQN MLP — todas as ações",
   "Dueling DDQN MLP — só desobstruir"
  ],
@@ -60,49 +59,36 @@
    "K": 1,
    "kpi": {
     "Esperar": 5.0,
-    "Guloso (1 h)": 4.733333333333333,
-    "Guloso (3 h)": 4.483333333333333,
+    "Guloso": 4.733333333333333,
     "Dueling DDQN MLP — todas as ações": 5.133333333333334,
     "Dueling DDQN MLP — só desobstruir": 4.45
    },
    "sus": {
     "Esperar": 5.983333333333333,
-    "Guloso (1 h)": 5.45,
-    "Guloso (3 h)": 5.266666666666667,
+    "Guloso": 5.45,
     "Dueling DDQN MLP — todas as ações": 5.883333333333334,
     "Dueling DDQN MLP — só desobstruir": 5.4
    },
    "vh": {
     "Esperar": 20428.27799512221,
-    "Guloso (1 h)": 20389.733101612732,
-    "Guloso (3 h)": 19873.525760027238,
+    "Guloso": 20389.733101612732,
     "Dueling DDQN MLP — todas as ações": 21061.669487804913,
     "Dueling DDQN MLP — só desobstruir": 19479.938942643344
    },
    "used": {
     "Esperar": 0.0,
-    "Guloso (1 h)": 0.9333333333333333,
-    "Guloso (3 h)": 1.0,
+    "Guloso": 0.9333333333333333,
     "Dueling DDQN MLP — todas as ações": 1.0,
     "Dueling DDQN MLP — só desobstruir": 1.0
    },
    "d": {
-    "Dueling DDQN MLP — todas as ações|Guloso (1 h)": {
+    "Dueling DDQN MLP — todas as ações|Guloso": {
      "mean": 0.4,
      "lo": 0.13333333333333333,
      "hi": 0.75,
      "win": 0.05,
      "tie": 0.7166666666666667,
      "loss": 0.23333333333333334,
-     "n": 60
-    },
-    "Dueling DDQN MLP — todas as ações|Guloso (3 h)": {
-     "mean": 0.65,
-     "lo": 0.2833333333333333,
-     "hi": 1.1170833333333272,
-     "win": 0.05,
-     "tie": 0.6666666666666666,
-     "loss": 0.2833333333333333,
      "n": 60
     },
     "Dueling DDQN MLP — todas as ações|Esperar": {
@@ -114,16 +100,7 @@
      "loss": 0.05,
      "n": 60
     },
-    "Guloso (3 h)|Guloso (1 h)": {
-     "mean": -0.25,
-     "lo": -0.6333333333333333,
-     "hi": 0.03333333333333333,
-     "win": 0.08333333333333333,
-     "tie": 0.9,
-     "loss": 0.016666666666666666,
-     "n": 60
-    },
-    "Guloso (1 h)|Esperar": {
+    "Guloso|Esperar": {
      "mean": -0.26666666666666666,
      "lo": -0.45,
      "hi": -0.1,
@@ -132,31 +109,13 @@
      "loss": 0.03333333333333333,
      "n": 60
     },
-    "Guloso (3 h)|Esperar": {
-     "mean": -0.5166666666666667,
-     "lo": -0.9,
-     "hi": -0.21666666666666667,
-     "win": 0.25,
-     "tie": 0.7333333333333333,
-     "loss": 0.016666666666666666,
-     "n": 60
-    },
-    "Dueling DDQN MLP — só desobstruir|Guloso (1 h)": {
+    "Dueling DDQN MLP — só desobstruir|Guloso": {
      "mean": -0.2833333333333333,
-     "lo": -0.7666666666666667,
+     "lo": -0.7833333333333333,
      "hi": 0.13333333333333333,
      "win": 0.2,
      "tie": 0.6166666666666667,
      "loss": 0.18333333333333332,
-     "n": 60
-    },
-    "Dueling DDQN MLP — só desobstruir|Guloso (3 h)": {
-     "mean": -0.03333333333333333,
-     "lo": -0.6333333333333333,
-     "hi": 0.5004166666666606,
-     "win": 0.16666666666666666,
-     "tie": 0.5833333333333334,
-     "loss": 0.25,
      "n": 60
     },
     "Dueling DDQN MLP — só desobstruir|Esperar": {
@@ -170,8 +129,8 @@
     },
     "Dueling DDQN MLP — só desobstruir|Dueling DDQN MLP — todas as ações": {
      "mean": -0.6833333333333333,
-     "lo": -1.1666666666666667,
-     "hi": -0.26666666666666666,
+     "lo": -1.2,
+     "hi": -0.25,
      "win": 0.21666666666666667,
      "tie": 0.7833333333333333,
      "loss": 0.0,
@@ -183,34 +142,30 @@
    "K": 3,
    "kpi": {
     "Esperar": 5.0,
-    "Guloso (1 h)": 4.6,
-    "Guloso (3 h)": 4.166666666666667,
+    "Guloso": 4.6,
     "Dueling DDQN MLP — todas as ações": 5.1,
     "Dueling DDQN MLP — só desobstruir": 4.25
    },
    "sus": {
     "Esperar": 5.983333333333333,
-    "Guloso (1 h)": 5.333333333333333,
-    "Guloso (3 h)": 5.1,
+    "Guloso": 5.333333333333333,
     "Dueling DDQN MLP — todas as ações": 5.8,
     "Dueling DDQN MLP — só desobstruir": 4.866666666666666
    },
    "vh": {
     "Esperar": 20428.27799512221,
-    "Guloso (1 h)": 20143.945255558796,
-    "Guloso (3 h)": 19271.49075402514,
+    "Guloso": 20143.945255558796,
     "Dueling DDQN MLP — todas as ações": 20833.659386650645,
     "Dueling DDQN MLP — só desobstruir": 18900.246457016005
    },
    "used": {
     "Esperar": 0.0,
-    "Guloso (1 h)": 2.183333333333333,
-    "Guloso (3 h)": 2.4,
+    "Guloso": 2.183333333333333,
     "Dueling DDQN MLP — todas as ações": 2.7,
     "Dueling DDQN MLP — só desobstruir": 2.15
    },
    "d": {
-    "Dueling DDQN MLP — todas as ações|Guloso (1 h)": {
+    "Dueling DDQN MLP — todas as ações|Guloso": {
      "mean": 0.5,
      "lo": 0.06666666666666667,
      "hi": 0.9833333333333333,
@@ -219,72 +174,36 @@
      "loss": 0.3,
      "n": 60
     },
-    "Dueling DDQN MLP — todas as ações|Guloso (3 h)": {
-     "mean": 0.9333333333333333,
-     "lo": 0.5333333333333333,
-     "hi": 1.4166666666666667,
-     "win": 0.016666666666666666,
-     "tie": 0.5333333333333333,
-     "loss": 0.45,
-     "n": 60
-    },
     "Dueling DDQN MLP — todas as ações|Esperar": {
      "mean": 0.1,
-     "lo": -0.21666666666666667,
-     "hi": 0.45,
+     "lo": -0.23333333333333334,
+     "hi": 0.43333333333333335,
      "win": 0.08333333333333333,
      "tie": 0.7833333333333333,
      "loss": 0.13333333333333333,
      "n": 60
     },
-    "Guloso (3 h)|Guloso (1 h)": {
-     "mean": -0.43333333333333335,
-     "lo": -0.75,
-     "hi": -0.16666666666666666,
-     "win": 0.23333333333333334,
-     "tie": 0.7166666666666667,
-     "loss": 0.05,
-     "n": 60
-    },
-    "Guloso (1 h)|Esperar": {
+    "Guloso|Esperar": {
      "mean": -0.4,
      "lo": -0.75,
-     "hi": -0.13291666666667273,
+     "hi": -0.13333333333333333,
      "win": 0.23333333333333334,
      "tie": 0.7166666666666667,
      "loss": 0.05,
      "n": 60
     },
-    "Guloso (3 h)|Esperar": {
-     "mean": -0.8333333333333334,
-     "lo": -1.2666666666666666,
-     "hi": -0.4666666666666667,
-     "win": 0.4,
-     "tie": 0.5833333333333334,
-     "loss": 0.016666666666666666,
-     "n": 60
-    },
-    "Dueling DDQN MLP — só desobstruir|Guloso (1 h)": {
+    "Dueling DDQN MLP — só desobstruir|Guloso": {
      "mean": -0.35,
-     "lo": -0.8666666666666667,
-     "hi": 0.1,
+     "lo": -0.85,
+     "hi": 0.08333333333333333,
      "win": 0.21666666666666667,
      "tie": 0.5833333333333334,
      "loss": 0.2,
      "n": 60
     },
-    "Dueling DDQN MLP — só desobstruir|Guloso (3 h)": {
-     "mean": 0.08333333333333333,
-     "lo": -0.38333333333333336,
-     "hi": 0.4666666666666667,
-     "win": 0.15,
-     "tie": 0.5333333333333333,
-     "loss": 0.31666666666666665,
-     "n": 60
-    },
     "Dueling DDQN MLP — só desobstruir|Esperar": {
      "mean": -0.75,
-     "lo": -1.2833333333333334,
+     "lo": -1.2666666666666666,
      "hi": -0.31666666666666665,
      "win": 0.23333333333333334,
      "tie": 0.7666666666666667,
@@ -306,103 +225,63 @@
    "K": 5,
    "kpi": {
     "Esperar": 5.0,
-    "Guloso (1 h)": 4.566666666666666,
-    "Guloso (3 h)": 4.083333333333333,
+    "Guloso": 4.566666666666666,
     "Dueling DDQN MLP — todas as ações": 4.966666666666667,
     "Dueling DDQN MLP — só desobstruir": 4.15
    },
    "sus": {
     "Esperar": 5.983333333333333,
-    "Guloso (1 h)": 5.3,
-    "Guloso (3 h)": 4.883333333333334,
+    "Guloso": 5.3,
     "Dueling DDQN MLP — todas as ações": 5.583333333333333,
     "Dueling DDQN MLP — só desobstruir": 4.766666666666667
    },
    "vh": {
     "Esperar": 20428.27799512221,
-    "Guloso (1 h)": 20103.7219740004,
-    "Guloso (3 h)": 19107.388707905033,
+    "Guloso": 20103.7219740004,
     "Dueling DDQN MLP — todas as ações": 20931.894794625332,
     "Dueling DDQN MLP — só desobstruir": 18563.4573107779
    },
    "used": {
     "Esperar": 0.0,
-    "Guloso (1 h)": 2.6,
-    "Guloso (3 h)": 2.816666666666667,
+    "Guloso": 2.6,
     "Dueling DDQN MLP — todas as ações": 3.7,
     "Dueling DDQN MLP — só desobstruir": 2.433333333333333
    },
    "d": {
-    "Dueling DDQN MLP — todas as ações|Guloso (1 h)": {
+    "Dueling DDQN MLP — todas as ações|Guloso": {
      "mean": 0.4,
-     "lo": 0.016666666666666666,
-     "hi": 0.8333333333333334,
+     "lo": 0.0,
+     "hi": 0.85,
      "win": 0.1,
      "tie": 0.6333333333333333,
      "loss": 0.26666666666666666,
      "n": 60
     },
-    "Dueling DDQN MLP — todas as ações|Guloso (3 h)": {
-     "mean": 0.8833333333333333,
-     "lo": 0.5,
-     "hi": 1.3333333333333333,
-     "win": 0.05,
-     "tie": 0.5166666666666667,
-     "loss": 0.43333333333333335,
-     "n": 60
-    },
     "Dueling DDQN MLP — todas as ações|Esperar": {
      "mean": -0.03333333333333333,
-     "lo": -0.31708333333333316,
-     "hi": 0.2833333333333333,
+     "lo": -0.31666666666666665,
+     "hi": 0.26666666666666666,
      "win": 0.11666666666666667,
      "tie": 0.8,
      "loss": 0.08333333333333333,
      "n": 60
     },
-    "Guloso (3 h)|Guloso (1 h)": {
-     "mean": -0.48333333333333334,
-     "lo": -0.8333333333333334,
-     "hi": -0.18333333333333332,
-     "win": 0.23333333333333334,
-     "tie": 0.7166666666666667,
-     "loss": 0.05,
-     "n": 60
-    },
-    "Guloso (1 h)|Esperar": {
+    "Guloso|Esperar": {
      "mean": -0.43333333333333335,
-     "lo": -0.8,
+     "lo": -0.7833333333333333,
      "hi": -0.16666666666666666,
      "win": 0.25,
      "tie": 0.7166666666666667,
      "loss": 0.03333333333333333,
      "n": 60
     },
-    "Guloso (3 h)|Esperar": {
-     "mean": -0.9166666666666666,
-     "lo": -1.3666666666666667,
-     "hi": -0.5166666666666667,
-     "win": 0.4166666666666667,
-     "tie": 0.5666666666666667,
-     "loss": 0.016666666666666666,
-     "n": 60
-    },
-    "Dueling DDQN MLP — só desobstruir|Guloso (1 h)": {
+    "Dueling DDQN MLP — só desobstruir|Guloso": {
      "mean": -0.4166666666666667,
      "lo": -0.9166666666666666,
-     "hi": 0.0,
+     "hi": 0.016666666666666666,
      "win": 0.25,
      "tie": 0.55,
      "loss": 0.2,
-     "n": 60
-    },
-    "Dueling DDQN MLP — só desobstruir|Guloso (3 h)": {
-     "mean": 0.06666666666666667,
-     "lo": -0.3,
-     "hi": 0.4,
-     "win": 0.18333333333333332,
-     "tie": 0.5166666666666667,
-     "loss": 0.3,
      "n": 60
     },
     "Dueling DDQN MLP — só desobstruir|Esperar": {
@@ -416,8 +295,8 @@
     },
     "Dueling DDQN MLP — só desobstruir|Dueling DDQN MLP — todas as ações": {
      "mean": -0.8166666666666667,
-     "lo": -1.3,
-     "hi": -0.4166666666666667,
+     "lo": -1.2833333333333334,
+     "hi": -0.4,
      "win": 0.31666666666666665,
      "tie": 0.6666666666666666,
      "loss": 0.016666666666666666,
@@ -429,109 +308,69 @@
    "K": 10,
    "kpi": {
     "Esperar": 5.0,
-    "Guloso (1 h)": 4.566666666666666,
-    "Guloso (3 h)": 4.083333333333333,
+    "Guloso": 4.566666666666666,
     "Dueling DDQN MLP — todas as ações": 5.2,
     "Dueling DDQN MLP — só desobstruir": 4.133333333333334
    },
    "sus": {
     "Esperar": 5.983333333333333,
-    "Guloso (1 h)": 5.3,
-    "Guloso (3 h)": 4.883333333333334,
+    "Guloso": 5.3,
     "Dueling DDQN MLP — todas as ações": 5.85,
     "Dueling DDQN MLP — só desobstruir": 4.666666666666667
    },
    "vh": {
     "Esperar": 20428.27799512221,
-    "Guloso (1 h)": 20102.91707544983,
-    "Guloso (3 h)": 19078.507227226408,
+    "Guloso": 20102.91707544983,
     "Dueling DDQN MLP — todas as ações": 21334.193782378163,
     "Dueling DDQN MLP — só desobstruir": 18389.437859141624
    },
    "used": {
     "Esperar": 0.0,
-    "Guloso (1 h)": 2.7,
-    "Guloso (3 h)": 2.966666666666667,
+    "Guloso": 2.7,
     "Dueling DDQN MLP — todas as ações": 5.033333333333333,
     "Dueling DDQN MLP — só desobstruir": 2.933333333333333
    },
    "d": {
-    "Dueling DDQN MLP — todas as ações|Guloso (1 h)": {
+    "Dueling DDQN MLP — todas as ações|Guloso": {
      "mean": 0.6333333333333333,
      "lo": 0.23333333333333334,
-     "hi": 1.1166666666666667,
+     "hi": 1.1,
      "win": 0.1,
      "tie": 0.55,
      "loss": 0.35,
      "n": 60
     },
-    "Dueling DDQN MLP — todas as ações|Guloso (3 h)": {
-     "mean": 1.1166666666666667,
-     "lo": 0.6666666666666666,
-     "hi": 1.65,
-     "win": 0.03333333333333333,
-     "tie": 0.5,
-     "loss": 0.4666666666666667,
-     "n": 60
-    },
     "Dueling DDQN MLP — todas as ações|Esperar": {
      "mean": 0.2,
      "lo": -0.06666666666666667,
-     "hi": 0.5333333333333333,
+     "hi": 0.5170833333333273,
      "win": 0.08333333333333333,
      "tie": 0.75,
      "loss": 0.16666666666666666,
      "n": 60
     },
-    "Guloso (3 h)|Guloso (1 h)": {
-     "mean": -0.48333333333333334,
-     "lo": -0.85,
-     "hi": -0.18333333333333332,
-     "win": 0.23333333333333334,
-     "tie": 0.7166666666666667,
-     "loss": 0.05,
-     "n": 60
-    },
-    "Guloso (1 h)|Esperar": {
+    "Guloso|Esperar": {
      "mean": -0.43333333333333335,
-     "lo": -0.75,
+     "lo": -0.7666666666666667,
      "hi": -0.16666666666666666,
      "win": 0.25,
      "tie": 0.7166666666666667,
      "loss": 0.03333333333333333,
      "n": 60
     },
-    "Guloso (3 h)|Esperar": {
-     "mean": -0.9166666666666666,
-     "lo": -1.3666666666666667,
-     "hi": -0.5333333333333333,
-     "win": 0.4166666666666667,
-     "tie": 0.5666666666666667,
-     "loss": 0.016666666666666666,
-     "n": 60
-    },
-    "Dueling DDQN MLP — só desobstruir|Guloso (1 h)": {
+    "Dueling DDQN MLP — só desobstruir|Guloso": {
      "mean": -0.43333333333333335,
-     "lo": -0.9504166666666665,
+     "lo": -0.9,
      "hi": -0.016666666666666666,
      "win": 0.23333333333333334,
      "tie": 0.5666666666666667,
      "loss": 0.2,
      "n": 60
     },
-    "Dueling DDQN MLP — só desobstruir|Guloso (3 h)": {
-     "mean": 0.05,
-     "lo": -0.3337499999999998,
-     "hi": 0.4166666666666667,
-     "win": 0.16666666666666666,
-     "tie": 0.5333333333333333,
-     "loss": 0.3,
-     "n": 60
-    },
     "Dueling DDQN MLP — só desobstruir|Esperar": {
      "mean": -0.8666666666666667,
      "lo": -1.3833333333333333,
-     "hi": -0.45,
+     "hi": -0.43333333333333335,
      "win": 0.2833333333333333,
      "tie": 0.7166666666666667,
      "loss": 0.0,
@@ -539,8 +378,8 @@
     },
     "Dueling DDQN MLP — só desobstruir|Dueling DDQN MLP — todas as ações": {
      "mean": -1.0666666666666667,
-     "lo": -1.6333333333333333,
-     "hi": -0.6,
+     "lo": -1.6166666666666667,
+     "hi": -0.5833333333333334,
      "win": 0.38333333333333336,
      "tie": 0.6,
      "loss": 0.016666666666666666,
@@ -550,82 +389,46 @@
   }
  ],
  "pooled": {
-  "Dueling DDQN MLP — todas as ações|Guloso (1 h)": {
+  "Dueling DDQN MLP — todas as ações|Guloso": {
    "mean": 0.48333333333333334,
-   "lo": 0.2833333333333333,
-   "hi": 0.7,
+   "lo": 0.2875,
+   "hi": 0.7041666666666667,
    "win": 0.07916666666666666,
    "tie": 0.6333333333333333,
    "loss": 0.2875,
    "n": 240
   },
-  "Dueling DDQN MLP — todas as ações|Guloso (3 h)": {
-   "mean": 0.8958333333333334,
-   "lo": 0.6791666666666667,
-   "hi": 1.125,
-   "win": 0.0375,
-   "tie": 0.5541666666666667,
-   "loss": 0.4083333333333333,
-   "n": 240
-  },
   "Dueling DDQN MLP — todas as ações|Esperar": {
    "mean": 0.1,
-   "lo": -0.041666666666666664,
+   "lo": -0.0375,
    "hi": 0.25,
    "win": 0.07916666666666666,
    "tie": 0.8125,
    "loss": 0.10833333333333334,
    "n": 240
   },
-  "Guloso (3 h)|Guloso (1 h)": {
-   "mean": -0.4125,
-   "lo": -0.5916666666666667,
-   "hi": -0.25822916666666823,
-   "win": 0.19583333333333333,
-   "tie": 0.7625,
-   "loss": 0.041666666666666664,
-   "n": 240
-  },
-  "Guloso (1 h)|Esperar": {
+  "Guloso|Esperar": {
    "mean": -0.38333333333333336,
-   "lo": -0.5375,
-   "hi": -0.25416666666666665,
+   "lo": -0.5333333333333333,
+   "hi": -0.25,
    "win": 0.23333333333333334,
    "tie": 0.7291666666666666,
    "loss": 0.0375,
    "n": 240
   },
-  "Guloso (3 h)|Esperar": {
-   "mean": -0.7958333333333333,
-   "lo": -1.0,
-   "hi": -0.6041666666666666,
-   "win": 0.37083333333333335,
-   "tie": 0.6125,
-   "loss": 0.016666666666666666,
-   "n": 240
-  },
-  "Dueling DDQN MLP — só desobstruir|Guloso (1 h)": {
+  "Dueling DDQN MLP — só desobstruir|Guloso": {
    "mean": -0.37083333333333335,
-   "lo": -0.6083333333333333,
-   "hi": -0.15,
+   "lo": -0.6208333333333333,
+   "hi": -0.14583333333333334,
    "win": 0.225,
    "tie": 0.5791666666666667,
    "loss": 0.19583333333333333,
    "n": 240
   },
-  "Dueling DDQN MLP — só desobstruir|Guloso (3 h)": {
-   "mean": 0.041666666666666664,
-   "lo": -0.17916666666666667,
-   "hi": 0.24593749999999848,
-   "win": 0.16666666666666666,
-   "tie": 0.5416666666666666,
-   "loss": 0.2916666666666667,
-   "n": 240
-  },
   "Dueling DDQN MLP — só desobstruir|Esperar": {
    "mean": -0.7541666666666667,
-   "lo": -1.0,
-   "hi": -0.525,
+   "lo": -0.9958333333333333,
+   "hi": -0.5291666666666667,
    "win": 0.25,
    "tie": 0.75,
    "loss": 0.0,
@@ -633,8 +436,8 @@
   },
   "Dueling DDQN MLP — só desobstruir|Dueling DDQN MLP — todas as ações": {
    "mean": -0.8541666666666666,
-   "lo": -1.1084375,
-   "hi": -0.6208333333333333,
+   "lo": -1.0958333333333334,
+   "hi": -0.6291666666666667,
    "win": 0.30833333333333335,
    "tie": 0.6791666666666667,
    "loss": 0.0125,
@@ -642,82 +445,46 @@
   }
  },
  "pooled_vh": {
-  "Dueling DDQN MLP — todas as ações|Guloso (1 h)": {
+  "Dueling DDQN MLP — todas as ações|Guloso": {
    "mean": 855.2750112093195,
-   "lo": 456.4294087441631,
-   "hi": 1275.9432435195072,
+   "lo": 458.6817830307026,
+   "hi": 1256.669385671259,
    "win": 0.3416666666666667,
    "tie": 0.029166666666666667,
    "loss": 0.6291666666666667,
    "n": 240
   },
-  "Dueling DDQN MLP — todas as ações|Guloso (3 h)": {
-   "mean": 1707.6262505688057,
-   "lo": 1239.4414957107547,
-   "hi": 2148.268990061805,
-   "win": 0.24166666666666667,
-   "tie": 0.004166666666666667,
-   "loss": 0.7541666666666667,
-   "n": 240
-  },
   "Dueling DDQN MLP — todas as ações|Esperar": {
    "mean": 612.0763677425506,
-   "lo": 243.2117750467852,
-   "hi": 990.6589786266512,
+   "lo": 245.32295987605428,
+   "hi": 993.5506351151931,
    "win": 0.4125,
    "tie": 0.11666666666666667,
    "loss": 0.4708333333333333,
    "n": 240
   },
-  "Guloso (3 h)|Guloso (1 h)": {
-   "mean": -852.3512393594863,
-   "lo": -1174.383217869562,
-   "hi": -554.2523524710133,
-   "win": 0.5958333333333333,
-   "tie": 0.1125,
-   "loss": 0.2916666666666667,
-   "n": 240
-  },
-  "Guloso (1 h)|Esperar": {
+  "Guloso|Esperar": {
    "mean": -243.19864346676889,
-   "lo": -407.09230149186834,
-   "hi": -71.86976758914903,
+   "lo": -409.3107349756175,
+   "hi": -77.85018404921519,
    "win": 0.7208333333333333,
    "tie": 0.06666666666666667,
    "loss": 0.2125,
    "n": 240
   },
-  "Guloso (3 h)|Esperar": {
-   "mean": -1095.549882826255,
-   "lo": -1432.4431322291068,
-   "hi": -777.6729713799338,
-   "win": 0.8166666666666667,
-   "tie": 0.0,
-   "loss": 0.18333333333333332,
-   "n": 240
-  },
-  "Dueling DDQN MLP — só desobstruir|Guloso (1 h)": {
+  "Dueling DDQN MLP — só desobstruir|Guloso": {
    "mean": -1351.8092092607237,
-   "lo": -1703.0053899768461,
-   "hi": -1019.2310328795157,
+   "lo": -1721.552908371992,
+   "hi": -1011.0341198351297,
    "win": 0.6791666666666667,
    "tie": 0.008333333333333333,
    "loss": 0.3125,
    "n": 240
   },
-  "Dueling DDQN MLP — só desobstruir|Guloso (3 h)": {
-   "mean": -499.45796990123756,
-   "lo": -919.2927938797183,
-   "hi": -67.55398478100481,
-   "win": 0.5125,
-   "tie": 0.008333333333333333,
-   "loss": 0.4791666666666667,
-   "n": 240
-  },
   "Dueling DDQN MLP — só desobstruir|Esperar": {
    "mean": -1595.0078527274927,
-   "lo": -1922.1319124206743,
-   "hi": -1301.2516503334216,
+   "lo": -1908.9662623431427,
+   "hi": -1293.4060291890394,
    "win": 0.8833333333333333,
    "tie": 0.1125,
    "loss": 0.004166666666666667,
@@ -725,8 +492,8 @@
   },
   "Dueling DDQN MLP — só desobstruir|Dueling DDQN MLP — todas as ações": {
    "mean": -2207.0842204700434,
-   "lo": -2657.7847231334204,
-   "hi": -1786.400404007105,
+   "lo": -2662.4190943354365,
+   "hi": -1804.226389687032,
    "win": 0.8166666666666667,
    "tie": 0.07083333333333333,
    "loss": 0.1125,
@@ -737,19 +504,12 @@
   "Esperar": {
    "WAIT": 2880
   },
-  "Guloso (1 h)": {
+  "Guloso": {
    "INTERR": 366,
    "WAIT": 2375,
    "DESOB": 50,
    "LIBERAR": 87,
    "CTRL50": 2
-  },
-  "Guloso (3 h)": {
-   "DESOB": 179,
-   "WAIT": 2329,
-   "INTERR": 300,
-   "LIBERAR": 60,
-   "CTRL50": 12
   },
   "Dueling DDQN MLP — todas as ações": {
    "DESOB": 206,
@@ -764,10 +524,6 @@
   }
  },
  "desob_por_tipo": {
-  "Guloso (3 h)": {
-   "acidente": 61,
-   "barreira": 118
-  },
   "Dueling DDQN MLP — todas as ações": {
    "estrutura": 100,
    "acidente": 15,
@@ -778,7 +534,7 @@
    "estrutura": 122,
    "barreira": 301
   },
-  "Guloso (1 h)": {
+  "Guloso": {
    "acidente": 50
   }
  },
@@ -805,10 +561,6 @@
   "greedy": {
    "kpi": 4.08125,
    "vh": 19555.980472412888
-  },
-  "greedy3": {
-   "kpi": 4.0625,
-   "vh": 18758.486187935174
   }
  },
  "stab0": [

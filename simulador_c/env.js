@@ -187,21 +187,19 @@ class Ep {
   load(s) { sim.restore(s.z); sim.S.real = false; Object.assign(this, { left: s.left, h: s.h, hl: s.hl.map(x => x.slice()), hs: s.hs.map(x => x.slice()), ctrl: new Map(s.ctrl), stab: s.stab, done: s.done, kpi: s.kpi, vh: s.vh, stabs: s.stabs.slice() }); }
 }
 
-// Guloso: testa cada ação no simulador por L horas (a ação na 1ª hora, depois esperar) e fica com a que deixa mais trechos estáveis
-// no fim (empate: menos veículo-hora; empate total: esperar). L = 1 é o Guloso dos cenários anteriores.
-function greedyLook(ep, C, L) {
+// Guloso (adaptação do Greedy MC do artigo, igual ao cenário A): testa cada ação no simulador por 1 h e fica com a que deixa
+// mais trechos estáveis (empate: menos veículo-hora; empate total: esperar).
+function greedy1(ep, C) {
   if (C.length === 1) return C[0];
-  const s = ep.save(), steps = Math.max(1, Math.min(L, H - ep.h)); let best = 0, bs = -1, bv = Infinity;
-  C.forEach((c, j) => { ep.load(s); ep.apply(c); const v0 = ep.vh; for (let q = 0; q < steps; q++) ep.advance(); const dv = ep.vh - v0;
+  const s = ep.save(); let best = 0, bs = -1, bv = Infinity;
+  C.forEach((c, j) => { ep.load(s); ep.apply(c); const v0 = ep.vh; ep.advance(); const dv = ep.vh - v0;
     if (ep.stab > bs + 1e-9 || (Math.abs(ep.stab - bs) <= 1e-9 && dv < bv - 1e-6)) { bs = ep.stab; bv = dv; best = j; } });
   ep.load(s); return C[best];
 }
 const P = {
   wait: (ep, C) => C[0],
   // Guloso: testa cada ação por 1 h no simulador e fica com a que deixa mais trechos estáveis (empate: menos veículo-hora; empate total: esperar)
-  greedy: (ep, C) => greedyLook(ep, C, 1),
-  // Guloso com 3 h de antecipação: cada ação é aplicada e o simulador avança 3 h esperando (útil quando a remoção demora)
-  greedy3: (ep, C) => greedyLook(ep, C, 3),
+  greedy: greedy1,
 };
 function runEpisode(sc, K, pol, opt = {}) {
   const prevA = pol.acoes ? setAcoes(pol.acoes) : null;
