@@ -1,5 +1,5 @@
 // Cenário C — volta ao treino de referência guardado em baseline/.
-//   node reset.js [todos] [--sim]   (redes com todas as ações e só desobstruir, tabelas e página)
+//   node reset.js [todos] [--sim]   (rede, tabelas e página)
 // Recusa se houver treino rodando nessa observação. Mantém results/valref.json.
 process.chdir(__dirname);
 'use strict';
@@ -13,7 +13,7 @@ function running(mode) {
   return out;
 }
 function reset(mode) {
-  const modes = ['total', 'so_desob'].filter(m => fs.existsSync(`baseline/${m}`));
+  const modes = ['total'];
   const busy = modes.flatMap(running);
   if (busy.length) return { ok: false, msg: `Há treino rodando (processo ${busy.join(', ')}). Interrompa antes de voltar ao estado de referência.` };
   if (!fs.existsSync('baseline/MANIFEST.json')) return { ok: false, msg: 'Pasta baseline/ não encontrada.' };
@@ -30,7 +30,7 @@ function reset(mode) {
   }
   return { ok: true, msg: `Estado de referência restaurado (${man.label}; ${mode}). ${n} arquivos copiados de baseline/; ${rm} removidos de results/.` };
 }
-module.exports = { reset, running: () => [...running('total'), ...running('so_desob')] };
+module.exports = { reset, running: () => running('total') };
 if (require.main === module) {
   const mode = ['total', 'todos'].includes(process.argv[2]) ? process.argv[2] : 'todos';
   const go = () => { const r = reset(mode); console.log(r.msg); process.exit(r.ok ? 0 : 1); };

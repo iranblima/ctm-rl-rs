@@ -3,7 +3,7 @@
 // Cada obstrução tem um tipo, com duração, capacidade restante e tempo de remoção próprios (tabela TIPOS abaixo).
 // Desobstruir deixa de ser instantâneo: a interdição só sai depois do tempo de remoção do tipo.
 // Atributos: 18 (tipo de ação, prioridade, fluxo do trecho e dos vizinhos, orçamento, progresso) + 4 do tipo da interdição = 22.
-// Ações: todas (esperar, desobstruir, interromper, controle 50%, liberar) ou, com CTM_ACOES=desob, só esperar e desobstruir.
+// Ações: as mesmas do cenário A (esperar, desobstruir, interromper, controle 50%, liberar).
 'use strict';
 const fs = require('fs'), path = require('path');
 const { makeSim } = require('./sim.js');
@@ -16,8 +16,6 @@ const sim = makeSim(D, { vdm: VDM });
 const H = 12, B = 32, THR = 0.8, WARM = 720;
 const TYPES = ['WAIT', 'DESOB', 'INTERR', 'CTRL50', 'LIBERAR'];
 const NF = 22;
-let ACOES = process.env.CTM_ACOES === 'desob' ? 'desob' : 'todas';
-const setAcoes = m => { const p = ACOES; ACOES = m; return p; };
 
 // ---------- estrutura ----------
 const nN = D.nodes.length;
@@ -128,7 +126,6 @@ class Ep {
     for (const ev of act) { const E = D.edges[ev.e]; for (const n of [E.a, E.b]) for (const k of sim.nodes[n].ins) if (k.e !== E && !this.ctrl.has(k.id)) feed.set(k.id, { k, since: ev.s }); }
     let ctl = []; for (const { k, since } of feed.values()) for (const ty of ['INTERR', 'CTRL50']) ctl.push({ type: ty, link: k.id, e: k.ei, since });
     const lib = [...this.ctrl.entries()].map(([id, c]) => ({ type: 'LIBERAR', link: id, e: sim.links[id].ei, since: c.since }));
-    if (ACOES === 'desob') { ctl = []; }
     const all = eq2([...des, ...ctl, ...lib]);
     des = all.filter(c => c.type === 'DESOB').sort((a, b) => b.score - a.score).slice(0, 20);
     const libs = all.filter(c => c.type === 'LIBERAR');
@@ -202,10 +199,6 @@ const P = {
   greedy: greedy1,
 };
 function runEpisode(sc, K, pol, opt = {}) {
-  const prevA = pol.acoes ? setAcoes(pol.acoes) : null;
-  try { return runEpisode_(sc, K, pol, opt); } finally { if (prevA) setAcoes(prevA); }
-}
-function runEpisode_(sc, K, pol, opt) {
   const ep = new Ep(sc, K), frames = [];
   const rec = () => { if (opt.frames) frames.push({ s: sim.slowFrac().map(x => x.join('')).join(''), on: sim.S.ev.filter(e => e.on).map(e => e.i), rm: sim.S.ev.filter(e => e.on && e.dt != null).map(e => e.i), half: sim.S.ev.filter(e => e.on && e.cur > 0).map(e => e.i),
     ctrl: [...ep.ctrl.entries()].map(([id, c]) => [sim.links[id].ei, sim.links[id].dir, c.type]), stab: ep.stab, st: flags(ep.hl[ep.hl.length - 1], sc.ref.lk[ep.h]) }); };
@@ -216,4 +209,4 @@ function runEpisode_(sc, K, pol, opt) {
 }
 // conjuntos independentes de cenários (sementes separadas por faixa)
 const SEEDS = { treino: s => 1000000 + s, validacao: i => 2000000 + i, teste: i => 3000000 + i };
-module.exports = { sim, D, VDM, H, B, NF, TIPOS, TNAMES, setAcoes, get ACOES() { return ACOES; }, THR, TYPES, OBS, setObs, Ep, P, scenario, runEpisode, SEEDS, rng, stable, flags };
+module.exports = { sim, D, VDM, H, B, NF, TIPOS, TNAMES, THR, TYPES, OBS, setObs, Ep, P, scenario, runEpisode, SEEDS, rng, stable, flags };

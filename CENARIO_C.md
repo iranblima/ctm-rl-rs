@@ -2,7 +2,7 @@
 
 Pergunta: **o Dueling DDQN MLP, treinado do zero num cenário sintético e mais diverso, se aproxima do Guloso?**
 
-O cenário C é independente dos outros: treina e testa as próprias redes, sem usar nada aprendido em outro cenário. O código fica em `simulador_c/`; `simulador/` (cenário A) e `simulador_b/` não são usados nem alterados. O cenário C só lê do A os resultados de teste já publicados, para a tabela de comparação.
+O cenário C é independente dos outros: treina e testa a própria rede, sem usar nada aprendido em outro cenário. O código fica em `simulador_c/`; `simulador/` (cenário A) e `simulador_b/` não são usados nem alterados. O cenário C só lê do A os resultados de teste já publicados, para a tabela de comparação.
 
 ## O que muda em relação ao cenário A
 
@@ -16,9 +16,8 @@ O cenário C é independente dos outros: treina e testa as próprias redes, sem 
 | Onde se mede a estabilidade | 32 postos de contagem | **Todos os 630 sentidos de trecho** |
 | O que o DDQN vê | Fluxo no posto mais próximo (18 atributos) | Fluxo no próprio trecho e nos que chegam a ele, mais o tipo da interdição e o tempo típico de remoção (22 atributos) |
 | Treino e teste | Divididos por data (treino no pico, teste numa fase posterior) | 300 cenários de treino, 40 de validação e 60 de teste, sorteados do mesmo jeito e independentes |
-| DDQN | Todas as ações | **Duas versões, ambas do zero:** todas as ações (igual ao A) e só esperar e desobstruir |
 
-Iguais ao A: o Guloso (adaptação do Greedy MC do artigo: testa cada ação no simulador por 1 h e escolhe a melhor), malha (308 nós, 315 trechos, 630 sentidos), modelo de tráfego, decisão a cada 1 h por 12 h, orçamento K ∈ {1, 3, 5, 10}, medida (horas até ≥ 80% estável; ±20% ou ±30 veículos/h da referência sem obstrução), recompensa (−1 por hora até estabilizar), arquitetura e hiperparâmetros do DDQN, 2 sementes × 2.400 episódios, escolha da rede na validação.
+Iguais ao A: as 5 ações (esperar, desobstruir, interromper, controle de 50% e liberar), o Guloso (adaptação do Greedy MC do artigo: testa cada ação no simulador por 1 h e escolhe a melhor), malha (308 nós, 315 trechos, 630 sentidos), modelo de tráfego, decisão a cada 1 h por 12 h, orçamento K ∈ {1, 3, 5, 10}, medida (horas até ≥ 80% estável; ±20% ou ±30 veículos/h da referência sem obstrução), recompensa (−1 por hora até estabilizar), arquitetura e hiperparâmetros do DDQN, 2 sementes × 2.400 episódios, escolha da rede na validação.
 
 ### Tipos de interdição (suposições)
 
@@ -44,10 +43,8 @@ Iguais ao A: o Guloso (adaptação do Greedy MC do artigo: testa cada ação no 
 
 ```powershell
 node simulador_c/pregen.js 0 2                      # sorteia os cenários uma vez (em outro terminal: node simulador_c/pregen.js 1 2)
-node simulador_c/train.js 0 2400                    # DDQN com todas as ações, semente 0 (em outro terminal, a semente 1)
-$env:CTM_ACOES="desob"; node simulador_c/train.js 0 2400   # DDQN só esperar e desobstruir (idem semente 1)
-node simulador_c/select.js total
-node simulador_c/select.js so_desob
+node simulador_c/train.js 0 2400                    # semente 0 (em outro terminal: node simulador_c/train.js 1 2400)
+node simulador_c/select.js
 node simulador_c/valref.js                          # Esperar e Guloso na validação
 node simulador_c/test.js 0 2                        # em outro terminal: node simulador_c/test.js 1 2
 python simulador_c/build.py
@@ -55,28 +52,28 @@ python tools/embed.py simulador_c/viewer.html simulador_c/results/viz.json pagin
 ```
 
 - `pregen.js` grava `cenarios_c_0.json` e `cenarios_c_1.json`; para juntar: `node -e "const f=require('fs');const o=Object.assign({},...[0,1].map(i=>JSON.parse(f.readFileSync('simulador_c/results/cenarios_c_'+i+'.json'))));f.writeFileSync('simulador_c/results/cenarios_c.json',JSON.stringify(o))"`. O arquivo já vem pronto no repositório.
-- No Git Bash ou no Linux: `CTM_ACOES=desob node simulador_c/train.js 0 2400`.
-- **Monitor do treino:** `node simulador_c/monitor.js total` ou `node simulador_c/monitor.js so_desob`, em http://localhost:8767.
-- **Voltar ao treino de referência:** `node simulador_c/reset.js` (as duas redes, as tabelas e a página).
+- **Monitor do treino:** `node simulador_c/monitor.js`, em http://localhost:8767.
+- **Voltar ao treino de referência:** `node simulador_c/reset.js` (rede, tabelas e página).
 
 ## Resultado
 
 Teste: 60 cenários × K ∈ {1, 3, 5, 10} = 240 episódios por método. Horas até ≥ 80% dos trechos estáveis; menor é melhor.
 
-| K | Esperar | Guloso | DDQN todas as ações | DDQN só desobstruir |
-|---|---|---|---|---|
-| 1 | 5,00 | 4,73 | 5,13 | **4,45** |
-| 3 | 5,00 | 4,60 | 5,10 | **4,25** |
-| 5 | 5,00 | 4,57 | 4,97 | **4,15** |
-| 10 | 5,00 | 4,57 | 5,20 | **4,13** |
-| **Média** | 5,00 | 4,62 | 5,10 | **4,25** |
+| K | Esperar | Guloso | DDQN |
+|---|---|---|---|
+| 1 | 5,00 | **4,73** | 5,13 |
+| 3 | 5,00 | **4,60** | 5,10 |
+| 5 | 5,00 | **4,57** | 4,97 |
+| 10 | 5,00 | **4,57** | 5,20 |
+| **Média** | 5,00 | **4,62** | 5,10 |
 
 | Comparação pareada (240 episódios) | Diferença média | IC 95% | Melhor / empate / pior |
 |---|---|---|---|
-| DDQN só desobstruir − Guloso | −0,37 h | −0,62 a −0,15 | 23% / 58% / 20% |
-| DDQN todas as ações − Guloso | +0,48 h | +0,29 a +0,70 | 8% / 63% / 29% |
+| DDQN − Guloso | +0,48 h | +0,29 a +0,70 | 8% / 63% / 29% |
+| DDQN − Esperar | +0,10 h | −0,04 a +0,25 | 8% / 81% / 11% |
+| Guloso − Esperar | −0,38 h | −0,53 a −0,25 | 23% / 73% / 4% |
 
-Validação (usada só para escolher a rede): Esperar 4,73 h, Guloso 4,08 h, DDQN todas as ações 4,51 h (semente 1, episódio 2.400), DDQN só desobstruir 4,13 h (semente 1, episódio 1.500).
+Validação (usada só para escolher a rede): Esperar 4,73 h, Guloso 4,08 h, DDQN 4,51 h (semente 1, episódio 2.400).
 
 ## Comparação com o cenário A
 
@@ -84,15 +81,10 @@ Validação (usada só para escolher a rede): Esperar 4,73 h, Guloso 4,08 h, DDQ
 |---|---|---|
 | Esperar | 4,97 | 5,00 |
 | Guloso | 1,90 | 4,62 |
-| DDQN, todas as ações | 4,79 | 5,10 |
-| DDQN, só esperar e desobstruir | não testado | 4,25 |
+| DDQN | 4,79 | 5,10 |
+| **DDQN − Guloso (mesma situação)** | **+2,88 h** (IC +2,44 a +3,37) | **+0,48 h** (IC +0,29 a +0,70) |
 
-| DDQN − Guloso (mesma situação) | Cenário A | Cenário C |
-|---|---|---|
-| DDQN todas as ações | +2,88 h (Guloso melhor) | +0,48 h (Guloso melhor) |
-| DDQN só desobstruir | não testado | −0,37 h (DDQN melhor) |
-
-Positivo: o DDQN levou mais tempo que o Guloso. Negativo: levou menos. Todas as diferenças são estatisticamente significativas (IC 95% sem o zero).
+Positivo: o DDQN levou mais tempo que o Guloso. Nos dois cenários o Guloso foi melhor, com diferença estatisticamente significativa; no C, a diferença é bem menor.
 
 As horas não são diretamente comparáveis entre A e C (no A a estabilidade é medida em 32 postos, com instantes reais; no C, em 630 sentidos de trecho, com obstruções sintéticas). O que se compara é a distância entre DDQN e Guloso.
 
@@ -102,5 +94,4 @@ As horas não são diretamente comparáveis entre A e C (no A a estabilidade é 
 - "Meia pista" é metade da capacidade no ponto, nos sentidos bloqueados.
 - O tempo de remoção não depende de equipes disponíveis nem de distância; várias remoções podem ocorrer ao mesmo tempo.
 - O Guloso vê o tempo exato de remoção (porque simula); o DDQN vê só o tempo típico do tipo.
-- O Guloso sempre pode usar todas as ações, inclusive na comparação com o DDQN só desobstruir.
 - O VDM do DNIT é uma estimativa anual, e a observação de cada trecho é o fluxo do próprio simulador, sem erro (observação completa ideal).

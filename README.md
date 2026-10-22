@@ -45,7 +45,7 @@ Compara três métodos nas mesmas situações:
 
 ## Cenário C (interdições sintéticas de quatro tipos)
 
-Treina o Dueling DDQN MLP do zero com obstruções sintéticas (acidente, barreira, estrutura, água) e remoção demorada, e compara com o cenário A. Resultado (DDQN − Guloso, em horas até estabilizar): com as mesmas ações do cenário A, +0,48 h (no cenário A era +2,88 h); só com esperar e desobstruir, −0,37 h. Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
+Treina o Dueling DDQN MLP do zero com obstruções sintéticas (acidente, barreira, estrutura, água) e remoção demorada, e compara com o cenário A. Resultado (DDQN − Guloso, em horas até estabilizar): +0,48 h no cenário C, contra +2,88 h no cenário A. O Guloso continua melhor, mas a diferença caiu. Detalhes em [`CENARIO_C.md`](CENARIO_C.md).
 
 ## Requisitos
 

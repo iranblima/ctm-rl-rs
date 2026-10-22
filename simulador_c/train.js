@@ -13,8 +13,7 @@ const seed = +args[0], EPIS = +args[1];
 const LOGN = args.includes('--log') ? +args[args.indexOf('--log') + 1] : 50;
 if (!Number.isFinite(seed) || !Number.isFinite(EPIS)) { console.error('uso: node train.js <semente> <episódios> [--log N]'); process.exit(1); }
 const CK = 300, GAMMA = 0.95, KS = [1, 3, 5, 10];
-// Ações: CTM_ACOES=desob treina só com esperar e desobstruir (resultados em results/so_desob/); padrão: todas (results/total/).
-const TAG = E.ACOES === 'desob' ? 'so_desob' : 'total', EPS0 = 1, LR = 1e-3;
+const TAG = 'total', EPS0 = 1, LR = 1e-3;
 const RD = `results/${TAG}`; fs.mkdirSync(RD, { recursive: true });
 const LOCK = `${RD}/.training_${seed}.lock`, LOG = `${RD}/train_log_${seed}.jsonl`;
 if (fs.existsSync(LOCK)) {

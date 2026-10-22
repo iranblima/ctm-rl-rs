@@ -90,11 +90,8 @@ Não mudam os resultados atuais. Corrigir só como mudança declarada, revalidan
 ## Cenário C (branch `cenario-c-interdicoes-sinteticas`)
 - Código em `simulador_c/`, independente: treina e testa as próprias redes do zero; só lê os testes do cenário A (`simulador/baseline/results/`) para comparar. Documentação e resultados em `CENARIO_C.md`.
 - Tipos de interdição e tempos de remoção em `TIPOS` (env.js), todos suposições. Desobstruir não é instantâneo. 22 atributos.
-- DDQN em duas versões: todas as ações (`results/total/`) e só esperar e desobstruir (`CTM_ACOES=desob`, `results/so_desob/`).
-- Guloso igual ao do cenário A (testa cada ação por 1 h).
-- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 4,62; DDQN todas as ações 5,10; DDQN só desobstruir 4,25.
-- DDQN − Guloso: todas as ações +0,48 h; só desobstruir −0,37 h. No cenário A: +2,88 h.
-- Pendência: rodar o cenário A só com esperar e desobstruir, para separar os efeitos.
+- DDQN com as mesmas 5 ações do cenário A; Guloso igual ao do cenário A.
+- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 4,62; DDQN 5,10. DDQN − Guloso: +0,48 h (no cenário A: +2,88 h).
 
 ## Próximo passo planejado
 Portar `sim.js` e `env.js` para Python, com interface Gymnasium e os contratos M1–M9 da proposta. Vetorizar a física com NumPy ou Numba e passar a rede para PyTorch. Antes de qualquer melhoria, validar que a versão portada reproduz os números acima.

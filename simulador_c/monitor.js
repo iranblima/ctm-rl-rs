@@ -1,11 +1,11 @@
-// Cenário C — monitor do treino: node monitor.js [total|so_desob] [porta]   →   abra http://localhost:8767 no navegador
+// Cenário C — monitor do treino: node monitor.js [porta]   →   abra http://localhost:8767 no navegador
 // Lê os registros de results/ a cada poucos segundos e desenha as curvas. Também oferece o botão
 // "Voltar ao treino de referência" (o mesmo que node reset.js). Sem dependências externas.
 process.chdir(__dirname);
 'use strict';
 const http = require('http'), fs = require('fs'), path = require('path');
 const { reset, running } = require('./reset.js');
-const MODE = process.argv[2] === 'so_desob' ? 'so_desob' : 'total';
+const MODE = 'total';
 const PORT = +(process.argv.find(a => /^\d+$/.test(a)) || 8767);
 const RD = `results/${MODE}`, BD = `baseline/${MODE}`; fs.mkdirSync(RD, { recursive: true });
 

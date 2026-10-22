@@ -1,15 +1,12 @@
 // Teste do cenário C (rodado uma única vez): node test.js <parte> <nPartes>
-// 60 cenários de teste independentes × K ∈ {1,3,5,10}. Métodos: Esperar, Guloso e
-// Dueling DDQN MLP treinado do zero no cenário C, com todas as ações e só com esperar/desobstruir.
-// (Se a rede só-desobstruir for treinada depois, test_desob.js acrescenta só ela ao teste já feito.)
+// 60 cenários de teste independentes × K ∈ {1,3,5,10}. Métodos: Esperar, Guloso e Dueling DDQN MLP (treinado do zero no cenário C, com as mesmas 5 ações do cenário A).
 process.chdir(__dirname);
 'use strict';
 const E = require('./env.js'), { Net, makePolicy } = require('./rl.js'), fs = require('fs');
 const part = +process.argv[2], np = +process.argv[3], NTE = 60;
-const load = (f, acoes) => { if (!fs.existsSync(f)) return null; const p = makePolicy(Net.from(JSON.parse(fs.readFileSync(f)).net)); p.acoes = acoes; return p; };
+const load = f => fs.existsSync(f) ? makePolicy(Net.from(JSON.parse(fs.readFileSync(f)).net)) : null;
 const POL = { 'Esperar': E.P.wait, 'Guloso': E.P.greedy,
-  'Dueling DDQN MLP — todas as ações': load('results/total/selected.json', 'todas'),
-  'Dueling DDQN MLP — só desobstruir': load('results/so_desob/selected.json', 'desob') };
+  'Dueling DDQN MLP': load('results/total/selected.json') };
 for (const k of Object.keys(POL)) if (!POL[k]) { console.log('sem rede:', k); delete POL[k]; }
 const res = [];
 for (let i = 0; i < NTE; i++) {
