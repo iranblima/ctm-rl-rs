@@ -15,7 +15,7 @@ function classify(txt) {
 }
 
 function makeSim(D, opt = {}) {
-  const VDM = opt.vdm || null; // cenário B: VDM por sentido do DNIT (C = km crescente, D = decrescente)
+  const VDM = opt.vdm || null; // VDM por sentido do DNIT (C = km crescente, D = decrescente)
   const links = [], nodes = D.nodes.map((_, i) => ({ i, ins: [], outs: [] }));
   D.edges.forEach((e, ei) => {
     const sp = SUP[e.sup] || SUP.PAV, lanes = e.lanes, Q = lanes * sp.q, L = Math.max(e.km, 0.1);
@@ -66,7 +66,7 @@ function makeSim(D, opt = {}) {
     return { i, e: s.e, br: s.br, km: s.km, cells: cellsAt(e, fr, 0) };
   });
   const stAcc = new Float64Array(STATIONS.length);
-  const lkAcc = new Float64Array(links.length); // fluxo horário no meio de cada sentido de trecho (cenário B: todos observáveis)
+  const lkAcc = new Float64Array(links.length); // fluxo horário no meio de cada sentido de trecho (todos observáveis)
   // demanda
   const gReal = new Float64Array(D.nh).fill(1);
   for (let h = 0; h < D.nh; h++) {

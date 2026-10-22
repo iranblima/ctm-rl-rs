@@ -87,13 +87,13 @@ Não mudam os resultados atuais. Corrigir só como mudança declarada, revalidan
   - estável = ±20% ou ±30 veículos/h da simulação sem interdições.
 - Commits pequenos, com mensagem em português.
 
-## Cenário C (branch `cenario-c-interdicoes-sinteticas`, criada a partir de `cobertura-vdm-dnit`)
-- Código em `simulador_c/` (parte do B; não mexe em `simulador/` nem em `simulador_b/`). Documentação e resultados em `CENARIO_C.md`.
-- Tipos de interdição e tempos de remoção em `TIPOS` (env.js) — todos suposições. Desobstruir não é instantâneo. 22 atributos (18 do B + 4 do tipo).
-- Métodos: Esperar, Guloso (1 h), Guloso (3 h), DDQN treinado no C, rede do B (`simulador_b/baseline/total/selected.json`).
-- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 1 h 4,62; Guloso 3 h 4,20; DDQN C 5,10; rede do B 4,40.
-- Ajuste a partir da rede do B (`results/ajuste/`, variáveis CTM_INIT/CTM_TAG/CTM_EPS0/CTM_LR em train.js): piorou (melhor ponto depois do ajuste 4,79 h no teste; rede do B 4,40 h). Treinar no C leva o agente a trocar desobstruções por controles de 50%.
-- Pendência: testar treino no C sem as ações de interromper e controlar 50%.
+## Cenário C (branch `cenario-c-interdicoes-sinteticas`)
+- Código em `simulador_c/`, independente: treina e testa as próprias redes do zero; só lê os testes do cenário A (`simulador/baseline/results/`) para comparar. Documentação e resultados em `CENARIO_C.md`.
+- Tipos de interdição e tempos de remoção em `TIPOS` (env.js), todos suposições. Desobstruir não é instantâneo. 22 atributos.
+- DDQN em duas versões: todas as ações (`results/total/`) e só esperar e desobstruir (`CTM_ACOES=desob`, `results/so_desob/`).
+- Referência no teste (média de 240 episódios): Esperar 5,00 h; Guloso 1 h 4,62; Guloso 3 h 4,20; DDQN todas as ações 5,10; DDQN só desobstruir 4,25.
+- DDQN só desobstruir − Guloso 3 h: +0,04 h (IC −0,18 a +0,25, empate). No cenário A era +2,88 h.
+- Pendência: rodar o cenário A só com esperar e desobstruir, para separar os efeitos.
 
 ## Próximo passo planejado
 Portar `sim.js` e `env.js` para Python, com interface Gymnasium e os contratos M1–M9 da proposta. Vetorizar a física com NumPy ou Numba e passar a rede para PyTorch. Antes de qualquer melhoria, validar que a versão portada reproduz os números acima.

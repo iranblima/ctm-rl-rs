@@ -1,4 +1,4 @@
-// Cenário C: o número de atributos vem da rede (22 no C, 18 na rede trazida do B).
+// Cenário C: o número de atributos vem da rede (22).
 // Dueling Double DQN (mesma arquitetura da reprodução: MLP compartilhada por candidato, cabeças de valor e vantagem)
 'use strict';
 const E = require('./env.js');
@@ -64,5 +64,5 @@ class Net {
     return loss / batch.length;
   }
 }
-function makePolicy(net) { return (ep, C, qs) => { if (C.length === 1 && !qs) return C[0]; const { Q } = net.fwd(ep.feats(C)); /* a rede do cenário B lê só os 18 primeiros atributos */ let b = 0; for (let j = 1; j < Q.length; j++) if (Q[j] > Q[b]) b = j; if (qs) qs.push(Q[b]); return C[b]; }; }
+function makePolicy(net) { return (ep, C, qs) => { if (C.length === 1 && !qs) return C[0]; const { Q } = net.fwd(ep.feats(C)); let b = 0; for (let j = 1; j < Q.length; j++) if (Q[j] > Q[b]) b = j; if (qs) qs.push(Q[b]); return C[b]; }; }
 module.exports = { Net, makePolicy, rng };

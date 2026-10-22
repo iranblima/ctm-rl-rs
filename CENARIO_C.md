@@ -1,20 +1,25 @@
 # Cenário C: interdições sintéticas de quatro tipos
 
-Pergunta: **o Dueling DDQN MLP continua competitivo quando as interdições são mais diversas?**
+Pergunta: **o Dueling DDQN MLP, treinado do zero num cenário sintético e mais diverso, se aproxima do Guloso?**
 
-O cenário C parte do cenário B: mesma malha, mesma demanda (VDM do DNIT por sentido), mesma medida (≥ 80% dos 630 sentidos de trecho estáveis), mesma observação da rede inteira, mesmas ações e mesmo orçamento. Muda só o tipo das obstruções. O código fica em `simulador_c/`; `simulador/` e `simulador_b/` não foram alterados.
+O cenário C é independente dos outros: treina e testa as próprias redes, sem usar nada aprendido em outro cenário. O código fica em `simulador_c/`; `simulador/` (cenário A) e `simulador_b/` não são usados nem alterados. O cenário C só lê do A os resultados de teste já publicados, para a tabela de comparação.
 
-## O que muda em relação ao cenário B
+## O que muda em relação ao cenário A
 
-| Elemento | Cenário B | Cenário C |
+| Elemento | Cenário A | Cenário C |
 |---|---|---|
-| Tipos de obstrução | Dois: "água na pista" (16%) ou desobstruível | **Quatro**: acidente, queda de barreira, dano na estrutura e água na pista |
-| Bloqueio | Sempre total | Total ou **meia pista** (metade da capacidade), conforme o tipo |
+| Situações de partida | 192 instantes reais das enchentes de 2024, com as interdições reais ativas | **4 a 12 obstruções sintéticas** sorteadas na rede toda, sobre o tráfego de uma semana típica |
+| Tipos de interdição | Reais. "Água na pista" não é desobstruível; o resto é | **Quatro tipos**: acidente, queda de barreira, dano na estrutura e água na pista |
+| Bloqueio | Sempre total no ponto | Total ou **meia pista**, conforme o tipo |
 | Desobstruir | Instantâneo | **Leva tempo**: a interdição só sai depois do tempo de remoção do tipo |
-| Duração | Sorteada entre todas as interdições reais de 2024 | Própria de cada tipo (tabela abaixo) |
-| O que o DDQN vê | 18 atributos | 22: os 18 do B + tipo da interdição (3) + tempo típico de remoção (1) |
+| Demanda por trecho | VDM do cadastro ÷ 2 por sentido | **VDM por sentido do DNIT** (VDM Modelagem 2019, SNV 202001A) em 295 dos 315 trechos; nos outros 20, VDM do cadastro ÷ 2 |
+| Onde se mede a estabilidade | 32 postos de contagem | **Todos os 630 sentidos de trecho** |
+| O que o DDQN vê | Fluxo no posto mais próximo (18 atributos) | Fluxo no próprio trecho e nos que chegam a ele, mais o tipo da interdição e o tempo típico de remoção (22 atributos) |
+| Treino e teste | Divididos por data (treino no pico, teste numa fase posterior) | 300 cenários de treino, 40 de validação e 60 de teste, sorteados do mesmo jeito e independentes |
 | Guloso | Testa cada ação por 1 h | O mesmo, **mais um Guloso que olha 3 h à frente** |
-| Métodos com DDQN | Treinado no B | **Treinado no C** e **a rede do B sem novo treino** (teste de generalização) |
+| DDQN | Todas as ações | **Duas versões, ambas do zero:** todas as ações (igual ao A) e só esperar e desobstruir |
+
+Iguais ao A: malha (308 nós, 315 trechos, 630 sentidos), modelo de tráfego, decisão a cada 1 h por 12 h, orçamento K ∈ {1, 3, 5, 10}, medida (horas até ≥ 80% estável; ±20% ou ±30 veículos/h da referência sem obstrução), recompensa (−1 por hora até estabilizar), arquitetura e hiperparâmetros do DDQN, 2 sementes × 2.400 episódios, escolha da rede na validação.
 
 ### Tipos de interdição (suposições)
 
@@ -30,102 +35,86 @@ O cenário C parte do cenário B: mesma malha, mesma demanda (VDM do DNIT por se
 
 ### Como os cenários são sorteados
 
-Igual ao cenário B, com uma diferença no início das obstruções:
-
-- **Tráfego de base:** semana típica, um estado a cada 2 h.
+- **Tráfego de base:** semana típica (perfil horário dos postos PNCT), um estado a cada 2 h.
 - **Obstruções:** de 4 a 12 por cenário, em trechos sorteados com peso pelo volume, em posição aleatória no trecho. O tipo é sorteado pela proporção da tabela.
-- **Início:** de 1 a 12 h antes da primeira decisão, mas sem passar do ponto em que a obstrução já teria acabado. (No B, todas as durações eram longas; aqui um acidente de 2 h não pode ter começado 12 h antes.)
-- **Filtro:** só valem cenários com menos de 80% dos trechos estáveis no início (até 400 tentativas). Como acidentes são curtos e muitas vezes parciais, só cerca de 1 em cada 8 sorteios passa no filtro (média de 7 rejeitados por cenário aceito).
+- **Início:** de 1 a 12 h antes da primeira decisão, sem passar do ponto em que a obstrução já teria acabado.
+- **Filtro:** só valem cenários com menos de 80% dos trechos estáveis no início (até 400 tentativas). Cerca de 1 em cada 8 sorteios passa.
 - **Sementes:** treino a partir de 1.000.000, validação a partir de 2.000.000 e teste a partir de 3.000.000. `results/cenarios_c.json` guarda a tentativa aceita de cada semente, só para não refazer as rejeitadas.
 
 ## Como rodar
 
 ```powershell
-node simulador_c/pregen.js 0 2                     # sorteia os cenários uma vez (em outro terminal: node simulador_c/pregen.js 1 2)
-node simulador_c/train.js 0 2400                   # semente 0 (em outro terminal: node simulador_c/train.js 1 2400)
-node simulador_c/select.js
+node simulador_c/pregen.js 0 2                      # sorteia os cenários uma vez (em outro terminal: node simulador_c/pregen.js 1 2)
+node simulador_c/train.js 0 2400                    # DDQN com todas as ações, semente 0 (em outro terminal, a semente 1)
+$env:CTM_ACOES="desob"; node simulador_c/train.js 0 2400   # DDQN só esperar e desobstruir (idem semente 1)
+node simulador_c/select.js total
+node simulador_c/select.js so_desob
 node simulador_c/valref.js                          # Esperar, Guloso (1 h) e Guloso (3 h) na validação
 node simulador_c/test.js 0 2                        # em outro terminal: node simulador_c/test.js 1 2
 python simulador_c/build.py
 python tools/embed.py simulador_c/viewer.html simulador_c/results/viz.json paginas/desobstrucao-rs-c.html
 ```
 
-- Para juntar os arquivos do `pregen`, rode `node -e "const f=require('fs');const o=Object.assign({},...[0,1].map(i=>JSON.parse(f.readFileSync('simulador_c/results/cenarios_c_'+i+'.json'))));f.writeFileSync('simulador_c/results/cenarios_c.json',JSON.stringify(o))"`. O arquivo já vem pronto no repositório.
-- **Monitor do treino:** `node simulador_c/monitor.js`, em http://localhost:8767.
-- **Voltar ao treino de referência:** `node simulador_c/reset.js` (rede, tabelas e página) ou `node simulador_c/reset.js total` (só a rede).
-- O teste usa a rede do B guardada em `simulador_b/baseline/total/selected.json`.
+- `pregen.js` grava `cenarios_c_0.json` e `cenarios_c_1.json`; para juntar: `node -e "const f=require('fs');const o=Object.assign({},...[0,1].map(i=>JSON.parse(f.readFileSync('simulador_c/results/cenarios_c_'+i+'.json'))));f.writeFileSync('simulador_c/results/cenarios_c.json',JSON.stringify(o))"`. O arquivo já vem pronto no repositório.
+- No Git Bash ou no Linux: `CTM_ACOES=desob node simulador_c/train.js 0 2400`.
+- **Monitor do treino:** `node simulador_c/monitor.js total` ou `node simulador_c/monitor.js so_desob`, em http://localhost:8767.
+- **Voltar ao treino de referência:** `node simulador_c/reset.js` (as duas redes, as tabelas e a página).
 
 ## Resultado
 
-O teste usa 60 cenários × K ∈ {1, 3, 5, 10}, num total de 240 episódios por método. Os valores são horas até ≥ 80% dos trechos estáveis; menor é melhor.
+Teste: 60 cenários × K ∈ {1, 3, 5, 10} = 240 episódios por método. Horas até ≥ 80% dos trechos estáveis; menor é melhor.
 
-| K | Esperar | Guloso (1 h) | Guloso (3 h) | DDQN treinado no C | Rede do B (sem novo treino) |
+| K | Esperar | Guloso (1 h) | Guloso (3 h) | DDQN todas as ações | DDQN só desobstruir |
 |---|---|---|---|---|---|
-| 1 | 5,00 | 4,73 | **4,48** | 5,13 | 4,78 |
-| 3 | 5,00 | 4,60 | **4,17** | 5,10 | 4,32 |
-| 5 | 5,00 | 4,57 | **4,08** | 4,97 | 4,27 |
-| 10 | 5,00 | 4,57 | **4,08** | 5,20 | 4,25 |
-| **Média** | 5,00 | 4,62 | **4,20** | 5,10 | 4,40 |
-| Veículo-hora médio | 20.428 | 20.185 | 19.333 | 21.040 | **18.736** |
+| 1 | 5,00 | 4,73 | 4,48 | 5,13 | **4,45** |
+| 3 | 5,00 | 4,60 | **4,17** | 5,10 | 4,25 |
+| 5 | 5,00 | 4,57 | **4,08** | 4,97 | 4,15 |
+| 10 | 5,00 | 4,57 | **4,08** | 5,20 | 4,13 |
+| **Média** | 5,00 | 4,62 | **4,20** | 5,10 | 4,25 |
+| Veículo-hora médio | 20.428 | 20.185 | 19.333 | 21.040 | **18.833** |
 
 | Comparação pareada (240 episódios) | Diferença média | IC 95% | Melhor / empate / pior |
 |---|---|---|---|
-| Rede do B − Guloso (1 h) | −0,21 h | −0,42 a −0,02 | 18% / 63% / 19% |
-| Rede do B − Guloso (3 h) | +0,20 h | +0,03 a +0,36 | 13% / 60% / 28% |
-| Rede do B − Esperar | −0,60 h | −0,81 a −0,40 | 22% / 76% / 2% |
-| DDQN treinado no C − Guloso (1 h) | +0,48 h | +0,29 a +0,70 | 8% / 63% / 29% |
-| DDQN treinado no C − Esperar | +0,10 h | −0,05 a +0,25 | 8% / 81% / 11% |
-| DDQN treinado no C − rede do B | +0,70 h | +0,50 a +0,90 | 3% / 69% / 29% |
-| Guloso (3 h) − Guloso (1 h) | −0,41 h | −0,58 a −0,25 | 20% / 76% / 4% |
-| Veículo-hora: rede do B − Guloso (3 h) | −597 v·h | −1.011 a −181 | — |
+| DDQN só desobstruir − Guloso (3 h) | +0,04 h | −0,18 a +0,25 | 17% / 54% / 29% |
+| DDQN só desobstruir − Guloso (1 h) | −0,37 h | −0,61 a −0,15 | 23% / 58% / 20% |
+| DDQN só desobstruir − Esperar | −0,75 h | −1,00 a −0,53 | 25% / 75% / 0% |
+| DDQN só desobstruir − todas as ações | −0,85 h | −1,11 a −0,62 | 31% / 68% / 1% |
+| DDQN todas as ações − Guloso (3 h) | +0,90 h | +0,68 a +1,13 | 4% / 55% / 41% |
+| DDQN todas as ações − Esperar | +0,10 h | −0,04 a +0,25 | 8% / 81% / 11% |
+| Guloso (3 h) − Guloso (1 h) | −0,41 h | −0,59 a −0,26 | 20% / 76% / 4% |
+| Veículo-hora: DDQN só desobstruir − Guloso (3 h) | −499 v·h | −919 a −68 | — |
 
-Na validação (40 cenários × 4 orçamentos), usada só para escolher a rede: Esperar 4,73 h, Guloso (1 h) 4,08 h, Guloso (3 h) 4,06 h, rede do B 4,14 h e DDQN treinado no C 4,51 h (semente 1, episódio 2.400).
+Validação (40 cenários × 4 orçamentos), usada só para escolher a rede: Esperar 4,73 h, Guloso (1 h) 4,08 h, Guloso (3 h) 4,06 h, DDQN todas as ações 4,51 h (semente 1, episódio 2.400), DDQN só desobstruir 4,13 h (semente 1, episódio 1.500).
 
-Desobstruções feitas no teste, por tipo: Guloso (1 h) 50 (só acidentes); Guloso (3 h) 179 (61 acidentes, 118 barreiras); rede do B 554 (121 acidentes, 274 barreiras, 159 estruturas); DDQN treinado no C 206 (15 acidentes, 91 barreiras, 100 estruturas), além de 473 interrupções e controles de 50%.
+Ações no teste: DDQN só desobstruir fez 511 desobstruções (88 acidentes, 301 barreiras, 122 estruturas). DDQN todas as ações fez 206 desobstruções e 473 interrupções e controles de 50%. Guloso (3 h): 179 desobstruções (61 acidentes, 118 barreiras) e 312 interrupções e controles. Guloso (1 h): 50 desobstruções (só acidentes) e 368 interrupções e controles.
 
 **Leitura:**
 
-1. **Olhar mais à frente passou a importar.** Com remoção demorada, o Guloso de 1 h quase não desobstrui (só acidentes, cujo efeito aparece em menos de 1 h). O Guloso de 3 h desobstrui também barreiras e é o melhor método no tempo até estabilizar.
-2. **A rede do B generalizou.** Sem novo treino e sem saber o tipo da interdição, ela venceu o Guloso de 1 h (−0,21 h, significativo) e teve a menor perda no trânsito de todos os métodos. Perdeu para o Guloso de 3 h (+0,20 h, significativo). Ela gasta orçamento em danos na estrutura, cuja obra provisória leva de 6 a 12 h e quase não ajuda dentro do horizonte.
-3. **O DDQN treinado do zero no C não aprendeu uma boa política.** No teste ficou igual a Esperar (+0,10 h, intervalo contém o zero) e pior que a rede do B (+0,70 h). Na validação ficou entre Esperar e os outros métodos (4,51 h contra 4,73 h de Esperar e 4,08 h do Guloso), e a curva de validação ficou parada desde o episódio 300. Ele usa muitas interrupções e controles de 50%, que atrapalham, e desobstrui estruturas.
+1. **Sem as ações de controle, o DDQN treinado do zero empatou com o melhor Guloso.** A diferença para o Guloso de 3 h é de +0,04 h, com intervalo contendo o zero. Ele vence o Guloso de 1 h (−0,37 h), nunca fica pior que Esperar e tem a menor perda no trânsito de todos os métodos (499 veículo-hora a menos que o Guloso de 3 h, significativo).
+2. **Com todas as ações, o treino falha.** O DDQN fica igual a Esperar e troca desobstruções por interrupções e controles de 50%, que atrapalham. Tirar essas ações melhorou o tempo em 0,85 h.
+3. **Olhar mais à frente importa para o Guloso.** Com remoção demorada, o Guloso de 1 h quase só desobstrui acidentes. O de 3 h desobstrui também barreiras e ganha 0,41 h.
 
-**Possíveis causas da falha do treino no C (hipóteses, não testadas):**
+## Comparação com o cenário A
 
-- O efeito de desobstruir agora chega horas depois; com recompensa de −1 por hora e desconto de 0,95, fica mais difícil o agente ligar a ação ao resultado.
-- 2.400 episódios podem ser poucos para um problema com mais tipos e efeitos atrasados.
-- Os quatro atributos novos mudam a entrada da rede, que começa do zero.
+| | Cenário A | Cenário C |
+|---|---|---|
+| Esperar | 4,97 h | 5,00 h |
+| Melhor Guloso | 1,90 h | 4,20 h (Guloso de 3 h) |
+| Melhor DDQN | 4,79 h | 4,25 h (só desobstruir) |
+| **DDQN − melhor Guloso (pareado)** | **+2,88 h** (IC +2,44 a +3,37) | **+0,04 h** (IC −0,18 a +0,25) |
+| DDQN vence ou empata | 22% | 71% |
+| Melhor DDQN − Esperar | −0,19 h | −0,75 h |
+| Episódios de teste | 156 | 240 |
 
-O ajuste a partir da rede do B foi testado na seção seguinte.
+As horas não são diretamente comparáveis (no A a estabilidade é medida em 32 postos, com instantes reais; no C, em 630 sentidos de trecho, com obstruções sintéticas). O que se compara é a distância entre os métodos.
 
-## Ajuste da rede do B no cenário C
+**O que explica a mudança (o C altera várias coisas ao mesmo tempo, então são interpretações, não efeitos isolados):**
 
-Para ver se o DDQN passa do Guloso de 3 h, a rede do B foi usada como ponto de partida e treinada mais 2.400 episódios no cenário C (duas sementes).
+- **Desobstrução instantânea favorecia o Guloso no A.** Ele via o efeito de cada ação em 1 hora. Com remoção demorada, o Guloso precisa olhar mais à frente, e o DDQN, que aprende o valor de longo prazo, ganha espaço.
+- **Treino e teste com a mesma distribuição.** No A, o DDQN treinou no pico das enchentes e foi testado numa fase posterior.
+- **As ações de controle atrapalham o aprendizado.** No A, o DDQN também usou interrupções e controles (40 e 13), e o Guloso só desobstruiu. No C, o DDQN só com esperar e desobstruir foi 0,85 h melhor que com todas as ações.
 
-- Os pesos dos 4 atributos novos começam em zero, então no início a rede decide exatamente como a do B.
-- Exploração menor (ε de 0,2 até 0,05) e taxa de aprendizado menor (0,0005), para não apagar o que ela já sabia.
-- O ponto de partida também entra na validação (episódio 0).
-
-```powershell
-$env:CTM_INIT="../simulador_b/baseline/total/selected.json"; $env:CTM_TAG="ajuste"; $env:CTM_EPS0="0.2"; $env:CTM_LR="0.0005"
-node simulador_c/train.js 0 2400                     # em outro terminal, a semente 1
-node simulador_c/select.js ajuste --sem-partida      # melhor ponto depois do ajuste (sem o episódio 0)
-node simulador_c/test_ajuste.js 0 2                  # em outro terminal: node simulador_c/test_ajuste.js 1 2
-```
-
-**Resultado: o ajuste piorou a rede.** Na validação, todos os 16 pontos depois do ajuste ficaram piores que o ponto de partida (4,14 h): entre 4,34 h e 4,61 h. Pela regra de escolha, a rede escolhida seria a própria rede do B. Para mostrar o efeito do treino, o teste usou o melhor ponto depois do ajuste (semente 0, episódio 2.400; 4,34 h na validação).
-
-| Comparação pareada no teste (240 episódios) | Diferença média | IC 95% | Melhor / empate / pior |
-|---|---|---|---|
-| Rede ajustada − rede do B | +0,39 h | +0,22 a +0,57 | 8% / 73% / 19% |
-| Rede ajustada − Guloso (3 h) | +0,59 h | +0,38 a +0,80 | 10% / 56% / 34% |
-| Rede ajustada − Guloso (1 h) | +0,18 h | +0,01 a +0,34 | 16% / 60% / 24% |
-| Rede ajustada − Esperar | −0,21 h | −0,36 a −0,06 | 17% / 78% / 5% |
-
-Tempo médio no teste: 4,79 h (rede do B: 4,40 h; Guloso de 3 h: 4,20 h).
-
-**O que o treino no C mudou no comportamento:** a rede ajustada desobstruiu menos (240 contra 554 da rede do B) e passou a usar muito mais o controle de 50% (337 contra 59). O mesmo aconteceu com o DDQN treinado do zero (473 interrupções e controles). Ou seja, treinar neste cenário leva o agente a trocar desobstruções por controles de fluxo, que pioram o resultado.
-
-**Hipótese (não testada):** como o efeito de desobstruir chega horas depois e muitas obstruções acabam sozinhas, o sinal de recompensa fica fraco e ruidoso, e o aprendizado superestima o valor dos controles. Teste sugerido: treinar no C sem as ações de interromper e controlar 50%.
+Para separar esses efeitos, seria preciso rodar o cenário A só com esperar e desobstruir (teste sugerido).
 
 ## Suposições adicionais deste cenário
 
@@ -133,3 +122,5 @@ Tempo médio no teste: 4,79 h (rede do B: 4,40 h; Guloso de 3 h: 4,20 h).
 - "Meia pista" é metade da capacidade no ponto, nos sentidos bloqueados.
 - O tempo de remoção não depende de equipes disponíveis nem de distância; várias remoções podem ocorrer ao mesmo tempo.
 - O Guloso vê o tempo exato de remoção (porque simula); o DDQN vê só o tempo típico do tipo.
+- O Guloso sempre pode usar todas as ações, inclusive na comparação com o DDQN só desobstruir. Isso não o prejudica: ele tem mais opções.
+- O VDM do DNIT é uma estimativa anual, e a observação de cada trecho é o fluxo do próprio simulador, sem erro (observação completa ideal).

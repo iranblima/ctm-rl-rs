@@ -7,8 +7,8 @@ D = json.load(open(os.path.join('..', 'data', 'derived', 'rsdata.json'), encodin
 names = json.load(open(os.path.join('..', 'data', 'derived', 'node_names.json'), encoding='utf-8'))
 res = sorted([x for f in sorted(glob.glob('results/test_*.json')) for x in json.load(open(f, encoding='utf-8'))], key=lambda r: (r['i'], r['K']))
 W, G, G3 = 'Esperar', 'Guloso (1 h)', 'Guloso (3 h)'
-AC, AB, AJ = 'Dueling DDQN MLP — treinado no C', 'Dueling DDQN MLP — rede do B', 'Dueling DDQN MLP — ajustado a partir do B'
-M = [m for m in (W, G, G3, AC, AB, AJ) if m in res[0]['m']]
+AT, AD = 'Dueling DDQN MLP — todas as ações', 'Dueling DDQN MLP — só desobstruir'
+M = [m for m in (W, G, G3, AT, AD) if m in res[0]['m']]
 rng = np.random.default_rng(1)
 
 def boot(x, n=5000):
@@ -22,7 +22,7 @@ def paired(x):
 def col(rr, m, k):
     return np.array([r['m'][m][k] for r in rr], float)
 
-pairs = [(AC, G), (AC, G3), (G3, G)] + ([(AB, G), (AB, G3), (AC, AB)] if AB in M else []) + ([(AJ, G), (AJ, G3), (AJ, AB), (AJ, W)] if AJ in M else [])
+pairs = [(AT, G), (AT, G3), (AT, W), (G3, G), (G, W), (G3, W)] + ([(AD, G), (AD, G3), (AD, W), (AD, AT)] if AD in M else [])
 byK = []
 for K in (1, 3, 5, 10):
     rr = [r for r in res if r['K'] == K]
@@ -45,12 +45,22 @@ for r in res:
             if l['type'] == 'DESOB':
                 c = r['evs'][l['ev']]['cls']; bytype.setdefault(m, {}); bytype[m][c] = bytype[m].get(c, 0) + 1
 sel = {}
-for key, f in (('c', 'results/total/selected.json'), ('b', '../simulador_b/baseline/total/selected.json'), ('aj', 'results/ajuste/selected.json')):
+for key, f in (('todas', 'results/total/selected.json'), ('desob', 'results/so_desob/selected.json')):
     if os.path.exists(f):
         s = json.load(open(f)); sel[key] = dict(seed=s['seed'], ep=s['ep'], kpi=s['kpi'], vh=s['vh'])
+# referência do cenário A (simulador original, teste de referência): médias por método e diferença pareada DDQN − Guloso
+def cenA():
+    fs_ = sorted(glob.glob('../simulador/baseline/results/test_*.json')) or sorted(glob.glob('../simulador/results/test_*.json'))
+    if not fs_: return None
+    ra = [x for f in fs_ for x in json.load(open(f, encoding='utf-8'))['res']]
+    ma = list(ra[0]['m']); wa, ga, da = ma[0], ma[1], ma[2]
+    return dict(n=len(ra), kpi={k: float(np.mean([x['m'][m]['kpi'] for x in ra])) for k, m in (('Esperar', wa), ('Guloso', ga), ('DDQN', da))},
+                byK={K: {k: float(np.mean([x['m'][m]['kpi'] for x in ra if x['K'] == K])) for k, m in (('Esperar', wa), ('Guloso', ga), ('DDQN', da))} for K in (1, 3, 5, 10)},
+                ddqn_guloso=paired([x['m'][da]['kpi'] - x['m'][ga]['kpi'] for x in ra]), ddqn_esperar=paired([x['m'][da]['kpi'] - x['m'][wa]['kpi'] for x in ra]))
+A = cenA()
 valref = json.load(open('results/valref.json')) if os.path.exists('results/valref.json') else None
 nte = len(set(r['i'] for r in res))
-summary = dict(n_cenarios=nte, metodos=M, byK=byK, pooled=pooled, pooled_vh=pooled_vh, acts=acts, desob_por_tipo=bytype, sims_guloso=sims, selecionados=sel, validacao=valref,
+summary = dict(cenario_A=A, n_cenarios=nte, metodos=M, byK=byK, pooled=pooled, pooled_vh=pooled_vh, acts=acts, desob_por_tipo=bytype, sims_guloso=sims, selecionados=sel, validacao=valref,
                stab0=[float(np.min([r['stab0'] for r in res])), float(np.max([r['stab0'] for r in res]))],
                obstrucoes=[int(np.min([r['n'] for r in res])), int(np.max([r['n'] for r in res]))])
 json.dump(summary, open('results/summary.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
