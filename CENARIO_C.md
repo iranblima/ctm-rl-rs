@@ -82,7 +82,7 @@ Validação (usada só para escolher a rede): Esperar 4,73 h, Guloso 4,08 h, DDQ
 | Esperar | 4,97 | 5,00 |
 | Guloso | 1,90 | 4,62 |
 | DDQN | 4,79 | 5,10 |
-| **DDQN − Guloso (mesma situação)** | **+2,88 h** (IC +2,44 a +3,37) | **+0,48 h** (IC +0,29 a +0,70) |
+| **DDQN − Guloso (mesma situação)** | **+2,88 h** (IC +2,44 a +3,33) | **+0,48 h** (IC +0,29 a +0,70) |
 
 Positivo: o DDQN levou mais tempo que o Guloso. Nos dois cenários o Guloso foi melhor, com diferença estatisticamente significativa; no C, a diferença é bem menor.
 

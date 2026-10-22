@@ -56,7 +56,7 @@ def cenA():
     ma = list(ra[0]['m']); wa, ga, da = ma[0], ma[1], ma[2]
     return dict(n=len(ra), kpi={k: float(np.mean([x['m'][m]['kpi'] for x in ra])) for k, m in (('Esperar', wa), ('Guloso', ga), ('DDQN', da))},
                 byK={K: {k: float(np.mean([x['m'][m]['kpi'] for x in ra if x['K'] == K])) for k, m in (('Esperar', wa), ('Guloso', ga), ('DDQN', da))} for K in (1, 3, 5, 10)},
-                ddqn_guloso=paired([x['m'][da]['kpi'] - x['m'][ga]['kpi'] for x in ra]), ddqn_esperar=paired([x['m'][da]['kpi'] - x['m'][wa]['kpi'] for x in ra]))
+                ddqn_guloso=(json.load(open(os.path.join(os.path.dirname(fs_[0]), 'summary.json')))['pooled'] if os.path.exists(os.path.join(os.path.dirname(fs_[0]), 'summary.json')) else paired([x['m'][da]['kpi'] - x['m'][ga]['kpi'] for x in ra])),  ddqn_esperar=paired([x['m'][da]['kpi'] - x['m'][wa]['kpi'] for x in ra]))
 A = cenA()
 valref = json.load(open('results/valref.json')) if os.path.exists('results/valref.json') else None
 nte = len(set(r['i'] for r in res))
