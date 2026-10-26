@@ -162,7 +162,7 @@ class Ep {
     this.left--;
     if (c.type === 'DESOB') { // começa a remoção; a interdição só sai (ou vira meia pista) depois do tempo de remoção
       const ev = sim.S.ev.find(x => x.i === c.ev.i && x.on);
-      if (ev) { ev.dt = t; if (ev.cap2 == null) ev.f = Math.min(ev.f, t + ev.rm); else ev.r2 = t + ev.rm; }
+      if (ev) { ev.dt = t; ev.f0 = ev.f; if (ev.cap2 == null) ev.f = Math.min(ev.f, t + ev.rm); else ev.r2 = t + ev.rm; } // f0: fim natural (usado só no diagnóstico)
     }
     else if (c.type === 'INTERR' || c.type === 'CTRL50') { sim.links[c.link].man[0] = c.type === 'INTERR' ? 0 : 0.5; this.ctrl.set(c.link, { type: c.type, since: t }); }
     else if (c.type === 'LIBERAR') { sim.links[c.link].man[0] = 1; this.ctrl.delete(c.link); }
@@ -209,4 +209,4 @@ function runEpisode(sc, K, pol, opt = {}) {
 }
 // conjuntos independentes de cenários (sementes separadas por faixa)
 const SEEDS = { treino: s => 1000000 + s, validacao: i => 2000000 + i, teste: i => 3000000 + i };
-module.exports = { sim, D, VDM, H, B, NF, TIPOS, TNAMES, THR, TYPES, OBS, setObs, Ep, P, scenario, runEpisode, SEEDS, rng, stable, flags };
+module.exports = { sim, D, VDM, H, B, NF, TIPOS, TNAMES, REM_MED, THR, TYPES, OBS, setObs, Ep, P, scenario, runEpisode, SEEDS, rng, stable, flags };

@@ -88,6 +88,24 @@ Positivo: o DDQN levou mais tempo que o Guloso. Nos dois cenários o Guloso foi 
 
 As horas não são diretamente comparáveis entre A e C (no A a estabilidade é medida em 32 postos, com instantes reais; no C, em 630 sentidos de trecho, com obstruções sintéticas). O que se compara é a distância entre DDQN e Guloso.
 
+## Diagnóstico: o Guloso precisa saber o tempo exato de remoção?
+
+Teste feito só para entender a vantagem do Guloso; o Guloso da comparação principal não mudou.
+
+- **Guloso com tempo típico** (`simulador_c/diag_guloso_tipico.js`): igual ao Guloso, mas na simulação de 1 h de cada candidato toda remoção usa o tempo típico do tipo (o meio da faixa), que é o que o DDQN conhece. O ambiente continua com o tempo exato. Os outros privilégios do Guloso (estado completo do CTM e fim natural de cada obstrução) continuam.
+- Mesmos 240 episódios de teste.
+
+| | Média |
+|---|---|
+| Guloso (tempo exato) | 4,62 h |
+| Guloso com tempo típico | 4,62 h |
+| Diferença pareada | +0,00 h (IC 95% −0,01 a +0,01); empate em 99% dos episódios |
+| DDQN − Guloso com tempo típico | +0,48 h (IC 95% +0,29 a +0,69) |
+
+- Com o tempo típico, o Guloso não desobstruiu nenhuma vez: o tempo típico do acidente é 60 min, então a remoção só termina no fim da hora simulada e ele não vê ganho. Passou a usar só interromper (385), liberar (98) e controle 50% (3).
+- O Guloso com tempo exato fez 50 desobstruções (todas de acidentes, com remoção de 31 a 59 min), 366 interrupções, 87 liberações e 2 controles de 50%.
+- **Leitura:** no cenário C, conhecer o tempo exato de remoção não explica a vantagem do Guloso sobre o DDQN. As desobstruções de acidentes quase não mudaram o tempo até estabilizar. A vantagem vem de avaliar as ações no CTM, principalmente as interrupções.
+
 ## Suposições adicionais deste cenário
 
 - Proporções dos tipos, duração dos acidentes, bloqueio parcial e todos os tempos de remoção são suposições. Não vêm de dados. As durações de barreira, estrutura e água vêm de poucas interdições reais (11, 5 e 14).
