@@ -109,6 +109,23 @@ Auditoria offline (`simulador_c2/AUDITORIA_C2.md`, 271 estados): a melhor ação
 
 **Leitura:** o ambiente tem oportunidade temporal, modesta e concentrada em remoções demoradas (barreiras). Com a mesma busca de 10 sementes, a melhor rede DDQN-SMDP supera a melhor Q1-SMDP e a melhor DDQN de 60 min. Mas uma semente típica de M5 não é melhor que uma de M3 (médias 4,52 × 4,51): o ganho depende de encontrar a boa rede entre várias sementes, e a validação a encontrou.
 
+## Resultado final: 10 sementes em todas as configurações (28/10/2026)
+
+Rede escolhida na validação (teste, horas): M0 4,63 (s8); M1 4,59 (s9); M2 4,59 (s3); M3 4,23 (s9); M4 4,41 (s9); M5 4,09 (s3). Esperar 4,79; Aleatória 4,88.
+Média das 10 sementes: M0 4,63; M1 4,58; M2 4,70; M3 4,51; M4 4,61; M5 4,52.
+
+| Contraste (pareado, horas) | Rede escolhida (10 × 10 sementes) | Média das sementes |
+|---|---|---|
+| M1 − M0 (longo prazo, reward base) | −0,04 [−0,17; +0,10] | −0,06 [−0,11; +0,00] |
+| M3 − M1 (reward progressivo no DDQN) | −0,36 [−0,49; −0,24] | −0,07 [−0,10; −0,04] |
+| M2 − M0 (reward progressivo no Q1) | −0,04 [−0,17; +0,09] | +0,06 [+0,02; +0,10] |
+| M3 − M2 (longo prazo, reward progressivo) | −0,36 [−0,46; −0,26] | −0,19 [−0,23; −0,14] |
+| M4 − M2 (timing sem longo prazo) | −0,18 [−0,30; −0,06] | −0,08 [−0,14; −0,02] |
+| M5 − M4 (valor temporal completo) | −0,32 [−0,43; −0,20] | −0,10 [−0,14; −0,06] |
+| M5 − M3 (timing no DDQN) | −0,14 [−0,22; −0,06] | +0,01 [−0,02; +0,03] |
+
+**Leitura:** com a mesma busca em todas as configurações, o retorno futuro ajuda quando combinado com o reward progressivo (M3 − M2 e M5 − M4 significativos nas duas leituras). O reward progressivo ajuda o DDQN, não o Q1. O timing variável ajuda o Q1 (M4 − M2) e a melhor rede DDQN (M5 − M3), mas na média das sementes M5 e M3 empatam.
+
 ## Suposições deste cenário
 
 - α = 0,25, o valor escolhido na validação do cenário A (diagnóstico A3). Não foi reajustado no C2.

@@ -1,0 +1,10 @@
+[M1] M1 — DDQN, 60 min, reward base | semente 5: 2400 episódios
+[M1] semente 5 ep 300 validação: KPI 4.556 h, 12040 v·h (4.7 min)
+[M1] semente 5 ep 600 validação: KPI 4.047 h, 10326 v·h (9.0 min)
+[M1] semente 5 ep 900 validação: KPI 4.191 h, 10789 v·h (13.4 min)
+[M1] semente 5 ep 1200 validação: KPI 4.162 h, 10707 v·h (17.6 min)
+[M1] semente 5 ep 1500 validação: KPI 4.119 h, 10410 v·h (22.0 min)
+[M1] semente 5 ep 1800 validação: KPI 3.981 h, 10316 v·h (25.7 min)
+[M1] semente 5 ep 2100 validação: KPI 4.292 h, 11268 v·h (27.9 min)
+[M1] semente 5 ep 2400 validação: KPI 4.214 h, 10944 v·h (29.0 min)
+[M1] semente 5: fim (29.0 min)
