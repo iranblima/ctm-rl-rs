@@ -194,7 +194,7 @@ class Ep {
   }
   // avança uma época de até dt minutos, em blocos de 15 min. Para antes se: a rede estabiliza (fim do episódio), acaba o
   // horizonte de 12 h, ou (modo variável) um evento observável ocorre no bloco. Devolve a duração efetiva e o motivo.
-  advance(dt, alpha = 0) {
+  advance(dt, alpha = 0, onBlock = null) {   // onBlock: chamado a cada bloco de 15 min (usado só para gravar a animação da página)
     const phi0 = this.stab, nmax = Math.round((dt || 60) / BIN); let n = 0, why = 'tempo';
     while (n < nmax && this.m < NB) {
       const before = sim.S.ev.map(e => e.cur);
@@ -202,6 +202,7 @@ class Ep {
       this.bins.push(sim.hourLinkFlows()); if (this.bins.length > 12) this.bins.shift();
       this.m++; n++;
       this.stab = stable(this.hl(0), this.sc.ref.roll[this.m]); this.stabs.push(this.stab);
+      if (onBlock) onBlock();
       if (!this.done && this.stab >= THR) { this.done = true; this.kpi = this.m * BIN / 60; why = 'estavel'; break; }
       if (this.variavel && sim.S.ev.some((e, i) => e.cur !== before[i])) { why = 'evento'; break; }
     }

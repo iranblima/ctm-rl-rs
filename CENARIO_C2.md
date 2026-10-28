@@ -29,6 +29,10 @@ Proposta da reunião de 26/10/2026 (documento "Proposta experimental para verifi
 
 As horas do C2 não se comparam diretamente com as do C1, porque a medida passou a ser feita a cada 15 min. Dentro do C2, todos os métodos usam a mesma medida.
 
+## Página do simulador
+
+`paginas/desobstrucao-rs-c2.html`: dois mapas lado a lado (qualquer par entre Esperar, Aleatória e M0–M5), animação a cada 15 min em 10 cenários de teste × 4 orçamentos, momentos de decisão de cada política, tabelas do teste e resumo da auditoria. Para refazer: `node simulador_c2/viz.js` e depois `python tools/embed.py simulador_c2/viewer.html simulador_c2/results/viz.json paginas/desobstrucao-rs-c2.html`. Os episódios da animação repetem exatamente os do teste (conferido nos 320 episódios).
+
 ## Configurações
 
 | ID | Política | Época | Reward | Pergunta |
