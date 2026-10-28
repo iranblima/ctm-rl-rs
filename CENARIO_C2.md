@@ -94,6 +94,21 @@ Teste: 100 cenários novos × 4 orçamentos = 400 episódios por método. Horas 
 
 **Critérios do documento (seção 12):** M5 supera M4 e M3 com a rede escolhida, mas o efeito não aparece de forma consistente nas sementes; Δτ não colapsa em 60 min, mas colapsa em 15 min; o ganho é maior com K grande, não pequeno; a frequência de benefício atrasado não foi medida (auditoria offline não feita). Conclusão provisória: há um indício de valor temporal no DDQN-SMDP, ainda não robusto.
 
+## Resultado com 10 sementes em M3, M4 e M5 + auditoria (28/10/2026, 1,4 h no i9)
+
+M0–M2 continuam com 5 sementes. Rede escolhida na validação (teste, horas): M3 4,23 (semente 9); M4 4,41 (semente 9); M5 4,09 (semente 3, a mesma de antes). Média das 10 sementes: M3 4,51; M4 4,61; M5 4,52.
+
+| Contraste (pareado, horas) | Rede escolhida | Busca comparável? |
+|---|---|---|
+| M5 − M4 (valor temporal completo) | −0,32 [−0,43; −0,20] | Sim (10 × 10 sementes) |
+| M5 − M3 (timing no DDQN) | −0,14 [−0,22; −0,06] | Sim (10 × 10) |
+| M3 − M2 (longo prazo, 60 min) | −0,36 [−0,46; −0,26] | Não (10 × 5 sementes) |
+| M4 − M2 (timing sem longo prazo) | −0,18 [−0,30; −0,06] | Não (10 × 5) |
+
+Auditoria offline (`simulador_c2/AUDITORIA_C2.md`, 271 estados): a melhor ação de 180 min difere da melhor de 60 min em 17% dos estados (diferença ≥ 1 pp); há benefício atrasado em 6,3%; desobstruir barreira nunca é a melhor ação em 60 min, mas é a melhor em 180 min em 64 estados (24%). O ganho absoluto de uma única ação seguida de espera é pequeno (0,4 pp em 60 min; 1,0 pp em 180 min); arrependimento míope médio de 0,5 pp.
+
+**Leitura:** o ambiente tem oportunidade temporal, modesta e concentrada em remoções demoradas (barreiras). Com a mesma busca de 10 sementes, a melhor rede DDQN-SMDP supera a melhor Q1-SMDP e a melhor DDQN de 60 min. Mas uma semente típica de M5 não é melhor que uma de M3 (médias 4,52 × 4,51): o ganho depende de encontrar a boa rede entre várias sementes, e a validação a encontrou.
+
 ## Suposições deste cenário
 
 - α = 0,25, o valor escolhido na validação do cenário A (diagnóstico A3). Não foi reajustado no C2.

@@ -1,0 +1,10 @@
+[M5] M5 — DDQN-SMDP, Δτ variável, reward progressivo | semente 8: 2400 episódios
+[M5] semente 8 ep 300 validação: KPI 4.117 h, 10513 v·h (5.2 min)
+[M5] semente 8 ep 600 validação: KPI 4.027 h, 10300 v·h (11.7 min)
+[M5] semente 8 ep 900 validação: KPI 4.195 h, 10887 v·h (18.4 min)
+[M5] semente 8 ep 1200 validação: KPI 3.884 h, 10130 v·h (24.5 min)
+[M5] semente 8 ep 1500 validação: KPI 4.059 h, 10622 v·h (33.2 min)
+[M5] semente 8 ep 1800 validação: KPI 4.186 h, 11038 v·h (43.7 min)
+[M5] semente 8 ep 2100 validação: KPI 3.989 h, 10405 v·h (52.2 min)
+[M5] semente 8 ep 2400 validação: KPI 3.978 h, 10086 v·h (57.8 min)
+[M5] semente 8: fim (57.8 min)

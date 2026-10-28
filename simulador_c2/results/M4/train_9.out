@@ -1,0 +1,10 @@
+[M4] M4 — Q1-SMDP, Δτ variável, reward progressivo | semente 9: 2400 episódios
+[M4] semente 9 ep 300 validação: KPI 4.013 h, 10232 v·h (5.3 min)
+[M4] semente 9 ep 600 validação: KPI 4.281 h, 11301 v·h (10.5 min)
+[M4] semente 9 ep 900 validação: KPI 3.670 h, 9357 v·h (16.0 min)
+[M4] semente 9 ep 1200 validação: KPI 3.827 h, 9941 v·h (21.2 min)
+[M4] semente 9 ep 1500 validação: KPI 3.931 h, 10391 v·h (27.3 min)
+[M4] semente 9 ep 1800 validação: KPI 4.547 h, 11745 v·h (35.3 min)
+[M4] semente 9 ep 2100 validação: KPI 4.017 h, 10569 v·h (43.1 min)
+[M4] semente 9 ep 2400 validação: KPI 3.864 h, 10034 v·h (50.1 min)
+[M4] semente 9: fim (50.1 min)

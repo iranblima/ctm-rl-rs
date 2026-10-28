@@ -66,3 +66,42 @@
 [23:19:09] 5/6 testando (100 cenários × 4 orçamentos; 10 partes)…
 [23:26:34] 6/6 gerando tabelas…
 [23:26:36] Pronto em 1.9 h. Resultados: simulador_c2/RESULTADOS_C2.md e simulador_c2/results/summary.json
+[06:33:05] Cenário C2: 10 sementes × 6 configurações, 2400 episódios cada, 15 processos em paralelo (20 núcleos, 32 GB).
+[06:33:05] 1/6 conjunto de teste já sorteado.
+[06:33:05] 2/6 treinando M5, M4, M3: 15 treinos pendentes.
+[06:33:05]    início M5 semente 5
+[06:33:06]    início M5 semente 6
+[06:33:06]    início M5 semente 7
+[06:33:07]    início M5 semente 8
+[06:33:08]    início M5 semente 9
+[06:33:08]    início M4 semente 5
+[06:33:09]    início M4 semente 6
+[06:33:10]    início M4 semente 7
+[06:33:10]    início M4 semente 8
+[06:33:11]    início M4 semente 9
+[06:33:12]    início M3 semente 5
+[06:33:13]    início M3 semente 6
+[06:33:14]    início M3 semente 7
+[06:33:15]    início M3 semente 8
+[06:33:15]    início M3 semente 9
+[07:02:41]    fim    M3 semente 9 (29 min) — 1/15
+[07:04:25]    fim    M3 semente 7 (31 min) — 2/15
+[07:05:19]    fim    M3 semente 6 (32 min) — 3/15
+[07:05:35]    fim    M3 semente 8 (32 min) — 4/15
+[07:05:54]    fim    M3 semente 5 (33 min) — 5/15
+[07:32:47]    fim    M4 semente 5 (60 min) — 6/15
+[07:34:10]    fim    M4 semente 8 (61 min) — 7/15
+[07:35:35]    fim    M4 semente 9 (62 min) — 8/15
+[07:35:37]    fim    M4 semente 6 (62 min) — 9/15
+[07:36:50]    fim    M4 semente 7 (64 min) — 10/15
+[07:40:12]    fim    M5 semente 6 (67 min) — 11/15
+[07:40:24]    fim    M5 semente 7 (67 min) — 12/15
+[07:41:47]    fim    M5 semente 8 (69 min) — 13/15
+[07:43:52]    fim    M5 semente 5 (71 min) — 14/15
+[07:44:23]    fim    M5 semente 9 (71 min) — 15/15
+[07:44:23] 3/6 escolhendo as redes na validação…
+[07:44:24] 4/6 referências da validação já prontas.
+[07:44:24] 5/6 testando (100 cenários × 4 orçamentos; 10 partes)…
+[07:53:54] 6/6 gerando tabelas…
+[07:53:56] + auditoria offline de temporalidade (10 partes)…
+[07:56:47] Pronto em 1.4 h. Resultados: simulador_c2/RESULTADOS_C2.md e simulador_c2/AUDITORIA_C2.md
