@@ -1,0 +1,10 @@
+[M4] M4 — Q1-SMDP, Δτ variável, reward progressivo | semente 4: 2400 episódios
+[M4] semente 4 ep 300 validação: KPI 4.259 h, 11046 v·h (4.7 min)
+[M4] semente 4 ep 600 validação: KPI 4.091 h, 10888 v·h (9.7 min)
+[M4] semente 4 ep 900 validação: KPI 4.698 h, 12398 v·h (15.4 min)
+[M4] semente 4 ep 1200 validação: KPI 4.237 h, 10881 v·h (23.1 min)
+[M4] semente 4 ep 1500 validação: KPI 4.173 h, 10657 v·h (32.6 min)
+[M4] semente 4 ep 1800 validação: KPI 4.356 h, 11096 v·h (43.3 min)
+[M4] semente 4 ep 2100 validação: KPI 4.228 h, 10918 v·h (54.2 min)
+[M4] semente 4 ep 2400 validação: KPI 4.211 h, 11061 v·h (65.8 min)
+[M4] semente 4: fim (65.8 min)

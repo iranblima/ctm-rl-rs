@@ -1,0 +1,68 @@
+[21:33:59] Cenário C2: 5 sementes × 6 configurações, 2400 episódios cada, 15 processos em paralelo (20 núcleos, 32 GB).
+[21:33:59] 1/6 sorteando o novo conjunto de teste (100 cenários, 10 partes)…
+[21:36:14] 2/6 treinando: 30 treinos pendentes (0 já prontos).
+[21:36:14]    início M5 semente 0
+[21:36:15]    início M5 semente 1
+[21:36:15]    início M5 semente 2
+[21:36:16]    início M5 semente 3
+[21:36:17]    início M5 semente 4
+[21:36:17]    início M4 semente 0
+[21:36:18]    início M4 semente 1
+[21:36:19]    início M4 semente 2
+[21:36:20]    início M4 semente 3
+[21:36:20]    início M4 semente 4
+[21:36:21]    início M3 semente 0
+[21:36:22]    início M3 semente 1
+[21:36:23]    início M3 semente 2
+[21:36:24]    início M3 semente 3
+[21:36:25]    início M3 semente 4
+[22:10:01]    fim    M3 semente 3 (34 min) — 1/30
+[22:10:01]    início M1 semente 0
+[22:10:03]    fim    M3 semente 2 (34 min) — 2/30
+[22:10:03]    início M1 semente 1
+[22:11:00]    fim    M3 semente 1 (35 min) — 3/30
+[22:11:00]    início M1 semente 2
+[22:11:15]    fim    M3 semente 4 (35 min) — 4/30
+[22:11:15]    início M1 semente 3
+[22:12:44]    fim    M3 semente 0 (36 min) — 5/30
+[22:12:44]    início M1 semente 4
+[22:42:19]    fim    M1 semente 1 (32 min) — 6/30
+[22:42:19]    início M2 semente 0
+[22:43:22]    fim    M1 semente 3 (32 min) — 7/30
+[22:43:22]    início M2 semente 1
+[22:45:09]    fim    M1 semente 2 (34 min) — 8/30
+[22:45:09]    início M2 semente 2
+[22:45:11]    fim    M1 semente 4 (32 min) — 9/30
+[22:45:11]    início M2 semente 3
+[22:46:09]    fim    M1 semente 0 (36 min) — 10/30
+[22:46:09]    início M2 semente 4
+[22:53:04]    fim    M4 semente 1 (77 min) — 11/30
+[22:53:04]    início M0 semente 0
+[22:53:44]    fim    M4 semente 4 (77 min) — 12/30
+[22:53:44]    início M0 semente 1
+[22:54:41]    fim    M4 semente 0 (78 min) — 13/30
+[22:54:41]    início M0 semente 2
+[22:56:23]    fim    M4 semente 3 (80 min) — 14/30
+[22:56:23]    início M0 semente 3
+[23:00:01]    fim    M4 semente 2 (84 min) — 15/30
+[23:00:01]    início M0 semente 4
+[23:06:24]    fim    M5 semente 1 (90 min) — 16/30
+[23:07:12]    fim    M5 semente 3 (91 min) — 17/30
+[23:08:47]    fim    M5 semente 2 (93 min) — 18/30
+[23:08:53]    fim    M5 semente 0 (93 min) — 19/30
+[23:09:08]    fim    M5 semente 4 (93 min) — 20/30
+[23:12:39]    fim    M2 semente 0 (30 min) — 21/30
+[23:12:52]    fim    M2 semente 1 (30 min) — 22/30
+[23:14:03]    fim    M2 semente 4 (28 min) — 23/30
+[23:14:03]    fim    M2 semente 2 (29 min) — 24/30
+[23:14:26]    fim    M2 semente 3 (29 min) — 25/30
+[23:17:00]    fim    M0 semente 0 (24 min) — 26/30
+[23:17:12]    fim    M0 semente 3 (21 min) — 27/30
+[23:17:29]    fim    M0 semente 1 (24 min) — 28/30
+[23:18:12]    fim    M0 semente 4 (18 min) — 29/30
+[23:18:24]    fim    M0 semente 2 (24 min) — 30/30
+[23:18:24] 3/6 escolhendo as redes na validação…
+[23:18:25] 4/6 Esperar e Aleatória na validação…
+[23:19:09] 5/6 testando (100 cenários × 4 orçamentos; 10 partes)…
+[23:26:34] 6/6 gerando tabelas…
+[23:26:36] Pronto em 1.9 h. Resultados: simulador_c2/RESULTADOS_C2.md e simulador_c2/results/summary.json

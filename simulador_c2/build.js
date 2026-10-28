@@ -30,7 +30,7 @@ C.push(['Aleatória', 'Esperar', 'Aleatória − Esperar']);
 const contrastes = C.filter(([a, b]) => M.includes(a) && M.includes(b)).map(([a, b, nome]) => ({ a, b, nome, kpi: paired(res.map(r => r.m[a].kpi - r.m[b].kpi)), vh: paired(res.map(r => r.m[a].vh - r.m[b].vh)),
   porK: Object.fromEntries(KS.map(K => [K, paired(res.filter(r => r.K === K).map(r => r.m[a].kpi - r.m[b].kpi))])) }));
 const sementes = {};
-if (seedsRes.length) for (const nm of Object.keys(seedsRes[0].m)) { const [cfg, s] = nm.split(' '); (sementes[cfg] = sementes[cfg] || []).push({ semente: s, kpi: mean(seedsRes.map(r => r.m[nm].kpi)) }); }
+if (seedsRes.length) for (const nm of Object.keys(seedsRes[0].m)) { const [cfg, s] = nm.split(' '); (sementes[cfg] = sementes[cfg] || []).push({ semente: s.replace(/^s/, ""), kpi: mean(seedsRes.map(r => r.m[nm].kpi)) }); }
 for (const k in sementes) { const v = sementes[k].map(o => o.kpi), m = mean(v); sementes[k] = { porSemente: sementes[k], media: m, dp: Math.sqrt(mean(v.map(y => (y - m) ** 2))) }; }
 const sel = {}; for (const m of Object.keys(CONFIGS)) { const f = `results/${m}/selected.json`; if (fs.existsSync(f)) { const s = JSON.parse(fs.readFileSync(f)); sel[m] = { semente: s.seed, episodio: s.ep, kpiValidacao: s.kpi, vhValidacao: s.vh }; } }
 const valref = fs.existsSync('results/valref.json') ? JSON.parse(fs.readFileSync('results/valref.json')) : null;

@@ -1,0 +1,10 @@
+[M5] M5 — DDQN-SMDP, Δτ variável, reward progressivo | semente 4: 2400 episódios
+[M5] semente 4 ep 300 validação: KPI 4.281 h, 10962 v·h (5.6 min)
+[M5] semente 4 ep 600 validação: KPI 4.244 h, 10833 v·h (11.9 min)
+[M5] semente 4 ep 900 validação: KPI 4.208 h, 10996 v·h (20.5 min)
+[M5] semente 4 ep 1200 validação: KPI 4.205 h, 10924 v·h (30.1 min)
+[M5] semente 4 ep 1500 validação: KPI 4.125 h, 10575 v·h (41.6 min)
+[M5] semente 4 ep 1800 validação: KPI 4.213 h, 11257 v·h (53.7 min)
+[M5] semente 4 ep 2100 validação: KPI 4.125 h, 10955 v·h (68.6 min)
+[M5] semente 4 ep 2400 validação: KPI 4.100 h, 10628 v·h (80.1 min)
+[M5] semente 4: fim (80.1 min)

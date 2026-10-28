@@ -1,0 +1,10 @@
+[M5] M5 — DDQN-SMDP, Δτ variável, reward progressivo | semente 3: 2400 episódios
+[M5] semente 3 ep 300 validação: KPI 4.114 h, 10837 v·h (5.4 min)
+[M5] semente 3 ep 600 validação: KPI 3.847 h, 9895 v·h (11.4 min)
+[M5] semente 3 ep 900 validação: KPI 3.920 h, 10179 v·h (19.4 min)
+[M5] semente 3 ep 1200 validação: KPI 3.903 h, 10244 v·h (28.6 min)
+[M5] semente 3 ep 1500 validação: KPI 4.080 h, 10606 v·h (39.1 min)
+[M5] semente 3 ep 1800 validação: KPI 3.511 h, 8917 v·h (52.1 min)
+[M5] semente 3 ep 2100 validação: KPI 4.145 h, 10787 v·h (65.7 min)
+[M5] semente 3 ep 2400 validação: KPI 3.727 h, 9567 v·h (79.0 min)
+[M5] semente 3: fim (79.0 min)

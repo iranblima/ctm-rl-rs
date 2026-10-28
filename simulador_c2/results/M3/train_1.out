@@ -1,0 +1,10 @@
+[M3] M3 — DDQN, 60 min, reward progressivo | semente 1: 2400 episódios
+[M3] semente 1 ep 300 validação: KPI 4.209 h, 11059 v·h (2.7 min)
+[M3] semente 1 ep 600 validação: KPI 4.231 h, 11178 v·h (5.5 min)
+[M3] semente 1 ep 900 validação: KPI 4.145 h, 10886 v·h (8.0 min)
+[M3] semente 1 ep 1200 validação: KPI 4.145 h, 11101 v·h (10.6 min)
+[M3] semente 1 ep 1500 validação: KPI 4.114 h, 10642 v·h (13.3 min)
+[M3] semente 1 ep 1800 validação: KPI 4.177 h, 10933 v·h (16.2 min)
+[M3] semente 1 ep 2100 validação: KPI 4.059 h, 10930 v·h (20.2 min)
+[M3] semente 1 ep 2400 validação: KPI 4.308 h, 11468 v·h (23.8 min)
+[M3] semente 1: fim (23.8 min)
