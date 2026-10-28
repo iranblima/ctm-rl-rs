@@ -54,6 +54,8 @@ node simulador_c2/run_c2.js
 - Usa vários processos em paralelo (núcleos − 2, limitado pela memória). Para escolher: `node simulador_c2/run_c2.js --jobs 12`.
 - Se for interrompido (Ctrl+C), rode de novo: as etapas prontas são puladas. Um treino interrompido recomeça do zero.
 - Progresso: `simulador_c2/results/progresso.log`. Saída de cada treino: `simulador_c2/results/<M>/train_<semente>.out`.
+- Sementes extras só de algumas configurações: `node simulador_c2/run_c2.js --sementes 10 --configs M3,M4,M5` (treina as sementes 5 a 9 dessas três; refaz a escolha, o teste e as tabelas).
+- Auditoria offline de temporalidade: acrescente `--auditoria` (gera `simulador_c2/AUDITORIA_C2.md`).
 - Resultado: `simulador_c2/RESULTADOS_C2.md` (tabelas) e `simulador_c2/results/summary.json` (números completos). Os resultados brutos por episódio ficam em `simulador_c2/results/test_*.json`.
 
 ## Resultado (rodada de 27/10/2026, 5 sementes × 6 configurações, 1,9 h no i9)
@@ -100,4 +102,4 @@ Teste: 100 cenários novos × 4 orçamentos = 400 episódios por método. Horas 
 - Os gatilhos valem só para M4 e M5. Nos modos de 60 min, a decisão espera sempre a hora cheia; a medida de estabilidade, porém, é feita a cada 15 min em todos os métodos.
 - Reavaliar não gasta orçamento e não tem custo.
 - Aleatória: a cada 60 min, escolhe uma ação válida (incluindo esperar) com a mesma chance; o sorteio é fixo por cenário e K.
-- A auditoria offline de temporalidade (seção 13 do documento) ainda não foi feita.
+- Auditoria offline: estados = 100 cenários de teste no início e após 60 e 120 min só esperando; cada ação seguida de "só esperar"; limiares de 1 pp (inversão) e 2 pp (benefício atrasado); orçamento K = 10 nesses estados.

@@ -1,4 +1,6 @@
 // Cenário C2 — roda TUDO em paralelo no seu computador: node simulador_c2/run_c2.js [--sementes 5] [--episodios 2400] [--jobs N]
+//   [--configs M3,M4,M5]  treina sementes novas só destas configurações (as outras ficam como estão)
+//   [--auditoria]         roda também a auditoria offline de temporalidade (AUDITORIA_C2.md)
 // Etapas (cada uma pula o que já estiver pronto, então dá para interromper com Ctrl+C e rodar de novo):
 //   1. sorteia o novo conjunto de teste (100 cenários);  2. treina M0–M5 × sementes;  3. escolhe as redes na validação;
 //   4. roda Esperar e Aleatória na validação;  5. testa;  6. gera results/summary.json e RESULTADOS_C2.md.
@@ -9,7 +11,9 @@ const { spawn } = require('child_process'), fs = require('fs'), os = require('os
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? +process.argv[i + 1] : d; };
 const SEEDS = arg('--sementes', 5), EPIS = arg('--episodios', 2400), CK = +process.env.CTM_CK || 300;
 const JOBS = arg('--jobs', Math.max(1, Math.min(os.cpus().length - 2, Math.floor(os.totalmem() / 2 ** 30 / 2))));
-const ORDEM = ['M5', 'M4', 'M3', 'M1', 'M2', 'M0'];  // as mais demoradas (Δτ variável) primeiro
+const CFGARG = (() => { const i = process.argv.indexOf('--configs'); return i > 0 ? process.argv[i + 1].split(',') : null; })();
+const AUDIT = process.argv.includes('--auditoria');
+const ORDEM = ['M5', 'M4', 'M3', 'M1', 'M2', 'M0'].filter(M => !CFGARG || CFGARG.includes(M));  // as mais demoradas (Δτ variável) primeiro
 fs.mkdirSync('results', { recursive: true });
 const LOGF = 'results/progresso.log', T0 = Date.now();
 const log = s => { const l = `[${new Date().toLocaleTimeString('pt-BR')}] ${s}`; console.log(l); fs.appendFileSync(LOGF, l + '\n'); };
@@ -37,7 +41,7 @@ const okCkpt = (M, s) => { try { return JSON.parse(fs.readFileSync(`results/${M}
   } else log('1/6 conjunto de teste já sorteado.');
   // 2. treinos
   const jobs = []; for (const M of ORDEM) for (let s = 0; s < SEEDS; s++) if (!okCkpt(M, s)) jobs.push([M, s]);
-  log(`2/6 treinando: ${jobs.length} treinos pendentes (${SEEDS * 6 - jobs.length} já prontos).`);
+  log(`2/6 treinando ${ORDEM.join(', ')}: ${jobs.length} treinos pendentes.`);
   let feitos = 0;
   await pool(jobs.map(([M, s]) => async () => {
     fs.mkdirSync(`results/${M}`, { recursive: true }); log(`   início ${M} semente ${s}`);
@@ -57,5 +61,11 @@ const okCkpt = (M, s) => { try { return JSON.parse(fs.readFileSync(`results/${M}
   await pool(tasks, JOBS);
   // 6. tabelas
   log('6/6 gerando tabelas…'); await run(['build.js'], 'results/build.out');
-  log(`Pronto em ${((Date.now() - T0) / 3600000).toFixed(1)} h. Resultados: simulador_c2/RESULTADOS_C2.md e simulador_c2/results/summary.json`);
+  if (AUDIT) {
+    const NA = Math.min(JOBS, 10); log(`+ auditoria offline de temporalidade (${NA} partes)…`);
+    for (const f of fs.readdirSync('results').filter(f => /^auditoria_\d+\.json$/.test(f))) fs.unlinkSync(`results/${f}`);
+    await pool(Array.from({ length: NA }, (_, p) => () => run(['audit.js', p, NA], `results/auditoria_${p}.out`)), NA);
+    await run(['audit_build.js'], 'results/auditoria.out');
+  }
+  log(`Pronto em ${((Date.now() - T0) / 3600000).toFixed(1)} h. Resultados: simulador_c2/RESULTADOS_C2.md${AUDIT ? ' e simulador_c2/AUDITORIA_C2.md' : ''}`);
 })().catch(e => { log('ERRO: ' + e.message); process.exit(1); });
