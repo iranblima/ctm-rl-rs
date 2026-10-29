@@ -1,0 +1,130 @@
+{
+ "D1-Q1 − Guloso 15 min, 5 ações": {
+  "mean": -0.323125,
+  "lo": -0.513125,
+  "hi": -0.14,
+  "win": 0.4025,
+  "tie": 0.3225,
+  "loss": 0.275
+ },
+ "D1-DDQN − Guloso 15 min, 5 ações": {
+  "mean": -0.33625,
+  "lo": -0.534375,
+  "hi": -0.149375,
+  "win": 0.38,
+  "tie": 0.33,
+  "loss": 0.29
+ },
+ "D2L-Q1 − Guloso 15 min, 5 ações": {
+  "mean": -0.3975,
+  "lo": -0.598125,
+  "hi": -0.200625,
+  "win": 0.4025,
+  "tie": 0.31,
+  "loss": 0.2875
+ },
+ "D2L-DDQN − Guloso 15 min, 5 ações": {
+  "mean": -0.395,
+  "lo": -0.59125,
+  "hi": -0.195,
+  "win": 0.4075,
+  "tie": 0.315,
+  "loss": 0.2775
+ },
+ "D2P-Q1 − Guloso 15 min, 5 ações": {
+  "mean": -0.423125,
+  "lo": -0.611875,
+  "hi": -0.238125,
+  "win": 0.4175,
+  "tie": 0.3025,
+  "loss": 0.28
+ },
+ "D2P-DDQN − Guloso 15 min, 5 ações": {
+  "mean": -0.314375,
+  "lo": -0.501875,
+  "hi": -0.13625,
+  "win": 0.3775,
+  "tie": 0.3375,
+  "loss": 0.285
+ },
+ "D1-Q1 − Guloso 15 min, só desobstruir": {
+  "mean": -0.603125,
+  "lo": -0.779375,
+  "hi": -0.44,
+  "win": 0.34,
+  "tie": 0.5725,
+  "loss": 0.0875
+ },
+ "D1-DDQN − Guloso 15 min, só desobstruir": {
+  "mean": -0.61625,
+  "lo": -0.783125,
+  "hi": -0.464375,
+  "win": 0.3275,
+  "tie": 0.5725,
+  "loss": 0.1
+ },
+ "D2L-Q1 − Guloso 15 min, só desobstruir": {
+  "mean": -0.6775,
+  "lo": -0.860625,
+  "hi": -0.509375,
+  "win": 0.34,
+  "tie": 0.5575,
+  "loss": 0.1025
+ },
+ "D2L-DDQN − Guloso 15 min, só desobstruir": {
+  "mean": -0.675,
+  "lo": -0.8425,
+  "hi": -0.504375,
+  "win": 0.355,
+  "tie": 0.5525,
+  "loss": 0.0925
+ },
+ "D2P-Q1 − Guloso 15 min, só desobstruir": {
+  "mean": -0.703125,
+  "lo": -0.885625,
+  "hi": -0.528125,
+  "win": 0.3575,
+  "tie": 0.5375,
+  "loss": 0.105
+ },
+ "D2P-DDQN − Guloso 15 min, só desobstruir": {
+  "mean": -0.594375,
+  "lo": -0.75875,
+  "hi": -0.435625,
+  "win": 0.31,
+  "tie": 0.59,
+  "loss": 0.1
+ },
+ "Guloso 15 min, 5 ações − Guloso 60 min, 5 ações": {
+  "mean": -0.02625,
+  "lo": -0.069375,
+  "hi": 0.015,
+  "win": 0.115,
+  "tie": 0.745,
+  "loss": 0.14
+ },
+ "Guloso 15 min, só desobstruir − Guloso 60 min, só desobstruir": {
+  "mean": 0,
+  "lo": 0,
+  "hi": 0,
+  "win": 0,
+  "tie": 1,
+  "loss": 0
+ },
+ "Guloso 15 min, só desobstruir − Guloso 15 min, 5 ações": {
+  "mean": 0.28,
+  "lo": 0.148125,
+  "hi": 0.4275,
+  "win": 0.1975,
+  "tie": 0.515,
+  "loss": 0.2875
+ },
+ "Esperar − Guloso 15 min, 5 ações": {
+  "mean": 0.399375,
+  "lo": 0.2625,
+  "hi": 0.5475,
+  "win": 0.1525,
+  "tie": 0.4825,
+  "loss": 0.365
+ }
+}
