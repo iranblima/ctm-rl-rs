@@ -1,0 +1,138 @@
+{
+ "Esperar − Guloso (5 ações)": {
+  "mean": 0.373125,
+  "lo": 0.24625,
+  "hi": 0.51875,
+  "win": 0.1175,
+  "tie": 0.5325,
+  "loss": 0.35
+ },
+ "Aleatória − Guloso (5 ações)": {
+  "mean": -0.066875,
+  "lo": -0.225,
+  "hi": 0.090625,
+  "win": 0.295,
+  "tie": 0.42,
+  "loss": 0.285
+ },
+ "D1-Q1 − Guloso (5 ações)": {
+  "mean": -0.349375,
+  "lo": -0.539375,
+  "hi": -0.163125,
+  "win": 0.395,
+  "tie": 0.3525,
+  "loss": 0.2525
+ },
+ "D1-DDQN − Guloso (5 ações)": {
+  "mean": -0.3625,
+  "lo": -0.55,
+  "hi": -0.17625,
+  "win": 0.37,
+  "tie": 0.365,
+  "loss": 0.265
+ },
+ "D2L-Q1 − Guloso (5 ações)": {
+  "mean": -0.42375,
+  "lo": -0.6225,
+  "hi": -0.2325,
+  "win": 0.3925,
+  "tie": 0.335,
+  "loss": 0.2725
+ },
+ "D2L-DDQN − Guloso (5 ações)": {
+  "mean": -0.42125,
+  "lo": -0.6275,
+  "hi": -0.233125,
+  "win": 0.395,
+  "tie": 0.3475,
+  "loss": 0.2575
+ },
+ "D2P-Q1 − Guloso (5 ações)": {
+  "mean": -0.449375,
+  "lo": -0.640625,
+  "hi": -0.26875,
+  "win": 0.385,
+  "tie": 0.355,
+  "loss": 0.26
+ },
+ "D2P-DDQN − Guloso (5 ações)": {
+  "mean": -0.340625,
+  "lo": -0.526875,
+  "hi": -0.166875,
+  "win": 0.3575,
+  "tie": 0.375,
+  "loss": 0.2675
+ },
+ "Esperar − Guloso (esperar/desobstruir)": {
+  "mean": 0.119375,
+  "lo": 0.076875,
+  "hi": 0.1675,
+  "win": 0,
+  "tie": 0.8725,
+  "loss": 0.1275
+ },
+ "Aleatória − Guloso (esperar/desobstruir)": {
+  "mean": -0.320625,
+  "lo": -0.445,
+  "hi": -0.203125,
+  "win": 0.2425,
+  "tie": 0.65,
+  "loss": 0.1075
+ },
+ "D1-Q1 − Guloso (esperar/desobstruir)": {
+  "mean": -0.603125,
+  "lo": -0.773125,
+  "hi": -0.443125,
+  "win": 0.34,
+  "tie": 0.5725,
+  "loss": 0.0875
+ },
+ "D1-DDQN − Guloso (esperar/desobstruir)": {
+  "mean": -0.61625,
+  "lo": -0.77875,
+  "hi": -0.45625,
+  "win": 0.3275,
+  "tie": 0.5725,
+  "loss": 0.1
+ },
+ "D2L-Q1 − Guloso (esperar/desobstruir)": {
+  "mean": -0.6775,
+  "lo": -0.86125,
+  "hi": -0.500625,
+  "win": 0.34,
+  "tie": 0.5575,
+  "loss": 0.1025
+ },
+ "D2L-DDQN − Guloso (esperar/desobstruir)": {
+  "mean": -0.675,
+  "lo": -0.845625,
+  "hi": -0.5075,
+  "win": 0.355,
+  "tie": 0.5525,
+  "loss": 0.0925
+ },
+ "D2P-Q1 − Guloso (esperar/desobstruir)": {
+  "mean": -0.703125,
+  "lo": -0.888125,
+  "hi": -0.530625,
+  "win": 0.3575,
+  "tie": 0.5375,
+  "loss": 0.105
+ },
+ "D2P-DDQN − Guloso (esperar/desobstruir)": {
+  "mean": -0.594375,
+  "lo": -0.760625,
+  "hi": -0.43875,
+  "win": 0.31,
+  "tie": 0.59,
+  "loss": 0.1
+ },
+ "Guloso (esperar/desobstruir) − Guloso (5 ações)": {
+  "mean": 0.25375,
+  "lo": 0.11625,
+  "hi": 0.400625,
+  "win": 0.165,
+  "tie": 0.575,
+  "loss": 0.26
+ }
+}
