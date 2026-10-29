@@ -5,6 +5,7 @@
 process.chdir(__dirname);
 'use strict';
 const fs = require('fs'), os = require('os'), { spawn } = require('child_process');
+fs.mkdirSync('results', { recursive: true });
 const NP = 8, JOBS = Math.max(2, Math.min(16, os.cpus().length - 2)), fila = [];
 const quer = (arq, args) => { if (!fs.existsSync(`results/${arq}.json`)) fila.push([arq, args]); };
 // as mais demoradas primeiro, para aproveitar o paralelismo
