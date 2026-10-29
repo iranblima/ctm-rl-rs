@@ -39,9 +39,12 @@ Compara três métodos nas mesmas situações:
 | `preparacao/prep.py` | Gera `data/derived/rsdata.json` a partir dos dados brutos |
 | `data/raw/` | Malha SNV/DNIT, contagens PNCT e interdições da PRF (chuvas de 2024) |
 | `data/derived/` | `rsdata.json` (malha + postos + interdições) e `node_names.json` (nomes dos nós) |
-| `paginas/desobstrucao-rs-c.html` | Página do cenário C |
-| `paginas/desobstrucao-rs.html` | O simulador pronto para abrir no navegador |
+| `simulador_c2/`, `CENARIO_C2.md` | **Cenário C2**: épocas de decisão de 15, 30 ou 60 min e reward progressivo (branch `cenario-c2-temporal`) |
+| `simulador_d/`, `CENARIO_D.md` | **Cenário D**: só esperar ou desobstruir; recompensa com importância; comparação com o Guloso (branch `cenario-d-desobstruir`) |
+| `paginas/desobstrucao-rs.html` | O simulador pronto para abrir no navegador (cenário A) |
+| `paginas/desobstrucao-rs-b.html`, `-c.html`, `-c2.html`, `-d.html` | Páginas dos cenários B, C, C2 e D |
 | `tools/embed.py` | Junta o modelo HTML com os dados e gera a página |
+| `tools/nav.py` | Põe a barra "Cenário: A · B · C · C2 · D" no topo de todas as páginas e modelos (rodar de novo depois de criar uma página) |
 
 ## Cenário C (interdições sintéticas de quatro tipos)
 
@@ -54,7 +57,8 @@ Treina o Dueling DDQN MLP do zero com obstruções sintéticas (acidente, barrei
 
 ## Uso rápido
 
-- **Ver o simulador:** abra `paginas/desobstrucao-rs.html`.
+- **Ver o simulador:** abra `paginas/desobstrucao-rs.html`. A barra no topo troca entre os cenários A, B, C, C2 e D.
+- **Regerar a página do cenário D:** `node simulador_d/viz.js`, depois `python tools/embed.py simulador_d/viewer.html simulador_d/results/viz.json paginas/desobstrucao-rs-d.html`.
 - **Treinar, acompanhar e voltar ao estado de referência:** veja [TREINO.md](TREINO.md).
 - **Regerar os dados derivados (opcional):** `python preparacao/prep.py`. Leva cerca de 1 minuto e produz um arquivo idêntico ao incluído.
 

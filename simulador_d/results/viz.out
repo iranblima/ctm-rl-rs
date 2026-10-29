@@ -1,0 +1,10 @@
+cenário 1 K 1 Esperar 2.25 | Aleatória 2.25 | Guloso5 3 | GulosoD 2.25 | D1-Q1 2.25 | D1-DDQN 2.25 | D2L-Q1 2.25 | D2L-DDQN 2.25 | D2P-Q1 2.25 | D2P-DDQN 2.25
+cenário 1 K 3 Esperar 2.25 | Aleatória 2.25 | Guloso5 2.5 | GulosoD 2.25 | D1-Q1 2.25 | D1-DDQN 2.25 | D2L-Q1 2.25 | D2L-DDQN 2.25 | D2P-Q1 2.25 | D2P-DDQN 2.25
+cenário 1 K 5 Esperar 2.25 | Aleatória 2.25 | Guloso5 2.5 | GulosoD 2.25 | D1-Q1 2.25 | D1-DDQN 2.25 | D2L-Q1 2.25 | D2L-DDQN 2.25 | D2P-Q1 2.25 | D2P-DDQN 2.25
+cenário 1 K 10 Esperar 2.25 | Aleatória 2.25 | Guloso5 2.5 | GulosoD 2.25 | D1-Q1 2.25 | D1-DDQN 2.25 | D2L-Q1 2.25 | D2L-DDQN 2.25 | D2P-Q1 2.25 | D2P-DDQN 2.25
+cenário 11 K 1 Esperar 1.5 | Aleatória 1.5 | Guloso5 1.25 | GulosoD 1.5 | D1-Q1 1.5 | D1-DDQN 1.5 | D2L-Q1 1.5 | D2L-DDQN 1.5 | D2P-Q1 1.5 | D2P-DDQN 1.5
+cenário 11 K 3 Esperar 1.5 | Aleatória 1.5 | Guloso5 1.25 | GulosoD 1.5 | D1-Q1 1.5 | D1-DDQN 1.5 | D2L-Q1 1.5 | D2L-DDQN 1.5 | D2P-Q1 1.5 | D2P-DDQN 1.5
+cenário 11 K 5 Esperar 1.5 | Aleatória 1.5 | Guloso5 1.25 | GulosoD 1.5 | D1-Q1 1.5 | D1-DDQN 1.5 | D2L-Q1 1.5 | D2L-DDQN 1.5 | D2P-Q1 1.5 | D2P-DDQN 1.5
+cenário 11 K 10 Esperar 1.5 | Aleatória 1.5 | Guloso5 1.25 | GulosoD 1.5 | D1-Q1 1.5 | D1-DDQN 1.5 | D2L-Q1 1.5 | D2L-DDQN 1.5 | D2P-Q1 1.5 | D2P-DDQN 1.5
+cenário 21 K 1 Esperar 5 | Aleatória 3.75 | Guloso5 5.25 | GulosoD 5 | D1-Q1 4.75 | D1-DDQN 3.75 | D2L-Q1 4.75 | D2L-DDQN 5 | D2P-Q1 4.75 | D2P-DDQN 4.75
+cenário 21 K 3 Esperar 5 | Aleatória 4.5 | Guloso5 6 | GulosoD 5 | D1-Q1 4.25 | D1-DDQN 3.75 | D2L-Q1 4.25 | D2L-DDQN 4.75 | D2P-Q1 4 | D2P-DDQN 4.25

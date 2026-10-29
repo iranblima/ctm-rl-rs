@@ -1,0 +1,10 @@
+[D1-DDQN] D1 — DDQN, reward atual (fração estável) | semente 9: 2400 episódios
+[D1-DDQN] semente 9 ep 300 validação: KPI 3.561 h, 9116 v·h (3.0 min)
+[D1-DDQN] semente 9 ep 600 validação: KPI 3.720 h, 9452 v·h (6.0 min)
+[D1-DDQN] semente 9 ep 900 validação: KPI 3.563 h, 9166 v·h (9.0 min)
+[D1-DDQN] semente 9 ep 1200 validação: KPI 3.767 h, 9643 v·h (12.3 min)
+[D1-DDQN] semente 9 ep 1500 validação: KPI 3.677 h, 9389 v·h (16.0 min)
+[D1-DDQN] semente 9 ep 1800 validação: KPI 3.706 h, 9411 v·h (24.7 min)
+[D1-DDQN] semente 9 ep 2100 validação: KPI 3.625 h, 9239 v·h (32.8 min)
+[D1-DDQN] semente 9 ep 2400 validação: KPI 3.995 h, 10613 v·h (40.1 min)
+[D1-DDQN] semente 9: fim (40.1 min)

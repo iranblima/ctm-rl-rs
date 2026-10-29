@@ -1,0 +1,10 @@
+[D1-Q1] D1 — Q1, reward atual (fração estável) | semente 7: 2400 episódios
+[D1-Q1] semente 7 ep 300 validação: KPI 3.659 h, 9261 v·h (3.3 min)
+[D1-Q1] semente 7 ep 600 validação: KPI 3.609 h, 9291 v·h (6.3 min)
+[D1-Q1] semente 7 ep 900 validação: KPI 3.563 h, 9155 v·h (9.6 min)
+[D1-Q1] semente 7 ep 1200 validação: KPI 3.586 h, 9242 v·h (12.8 min)
+[D1-Q1] semente 7 ep 1500 validação: KPI 3.583 h, 9224 v·h (17.1 min)
+[D1-Q1] semente 7 ep 1800 validação: KPI 3.636 h, 9347 v·h (23.4 min)
+[D1-Q1] semente 7 ep 2100 validação: KPI 3.544 h, 9035 v·h (30.1 min)
+[D1-Q1] semente 7 ep 2400 validação: KPI 3.783 h, 9776 v·h (36.8 min)
+[D1-Q1] semente 7: fim (36.9 min)

@@ -1,0 +1,10 @@
+[D1-DDQN] D1 — DDQN, reward atual (fração estável) | semente 6: 2400 episódios
+[D1-DDQN] semente 6 ep 300 validação: KPI 3.739 h, 9540 v·h (3.1 min)
+[D1-DDQN] semente 6 ep 600 validação: KPI 3.744 h, 9671 v·h (6.3 min)
+[D1-DDQN] semente 6 ep 900 validação: KPI 3.817 h, 9764 v·h (9.7 min)
+[D1-DDQN] semente 6 ep 1200 validação: KPI 3.688 h, 9476 v·h (13.1 min)
+[D1-DDQN] semente 6 ep 1500 validação: KPI 3.839 h, 9871 v·h (17.8 min)
+[D1-DDQN] semente 6 ep 1800 validação: KPI 3.744 h, 9687 v·h (25.8 min)
+[D1-DDQN] semente 6 ep 2100 validação: KPI 3.741 h, 9668 v·h (33.3 min)
+[D1-DDQN] semente 6 ep 2400 validação: KPI 3.741 h, 9816 v·h (41.8 min)
+[D1-DDQN] semente 6: fim (41.8 min)

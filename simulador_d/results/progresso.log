@@ -1,0 +1,128 @@
+[21:48:29] Cenário D: 10 sementes × 6 configurações, 2400 episódios cada, 15 processos em paralelo (20 núcleos, 32 GB).
+[21:48:29] 1/6 conjunto de teste já sorteado.
+[21:48:29] 2/6 treinando D1-DDQN, D2L-DDQN, D2P-DDQN, D1-Q1, D2L-Q1, D2P-Q1: 60 treinos pendentes.
+[21:48:29]    início D1-DDQN semente 0
+[21:48:30]    início D1-DDQN semente 1
+[21:48:31]    início D1-DDQN semente 2
+[21:48:31]    início D1-DDQN semente 3
+[21:48:32]    início D1-DDQN semente 4
+[21:48:33]    início D1-DDQN semente 5
+[21:48:33]    início D1-DDQN semente 6
+[21:48:34]    início D1-DDQN semente 7
+[21:48:35]    início D1-DDQN semente 8
+[21:48:36]    início D1-DDQN semente 9
+[21:48:37]    início D2L-DDQN semente 0
+[21:48:37]    início D2L-DDQN semente 1
+[21:48:38]    início D2L-DDQN semente 2
+[21:48:39]    início D2L-DDQN semente 3
+[21:48:40]    início D2L-DDQN semente 4
+[22:38:49]    fim    D1-DDQN semente 0 (50 min) — 1/60
+[22:38:49]    início D2L-DDQN semente 5
+[22:40:02]    fim    D1-DDQN semente 3 (52 min) — 2/60
+[22:40:02]    início D2L-DDQN semente 6
+[22:40:25]    fim    D2L-DDQN semente 3 (52 min) — 3/60
+[22:40:25]    início D2L-DDQN semente 7
+[22:41:38]    fim    D2L-DDQN semente 4 (53 min) — 4/60
+[22:41:38]    início D2L-DDQN semente 8
+[22:41:52]    fim    D1-DDQN semente 1 (53 min) — 5/60
+[22:41:52]    início D2L-DDQN semente 9
+[22:41:57]    fim    D1-DDQN semente 9 (53 min) — 6/60
+[22:41:57]    início D2P-DDQN semente 0
+[22:42:20]    fim    D1-DDQN semente 7 (54 min) — 7/60
+[22:42:20]    início D2P-DDQN semente 1
+[22:42:45]    fim    D2L-DDQN semente 1 (54 min) — 8/60
+[22:42:45]    início D2P-DDQN semente 2
+[22:43:39]    fim    D1-DDQN semente 6 (55 min) — 9/60
+[22:43:39]    início D2P-DDQN semente 3
+[22:43:46]    fim    D1-DDQN semente 8 (55 min) — 10/60
+[22:43:46]    início D2P-DDQN semente 4
+[22:44:13]    fim    D1-DDQN semente 2 (56 min) — 11/60
+[22:44:13]    início D2P-DDQN semente 5
+[22:44:55]    fim    D2L-DDQN semente 2 (56 min) — 12/60
+[22:44:55]    início D2P-DDQN semente 6
+[22:45:04]    fim    D2L-DDQN semente 0 (56 min) — 13/60
+[22:45:04]    início D2P-DDQN semente 7
+[22:45:39]    fim    D1-DDQN semente 4 (57 min) — 14/60
+[22:45:39]    início D2P-DDQN semente 8
+[22:45:44]    fim    D1-DDQN semente 5 (57 min) — 15/60
+[22:45:44]    início D2P-DDQN semente 9
+[23:29:34]    fim    D2L-DDQN semente 7 (49 min) — 16/60
+[23:29:34]    início D1-Q1 semente 0
+[23:30:00]    fim    D2L-DDQN semente 6 (50 min) — 17/60
+[23:30:00]    início D1-Q1 semente 1
+[23:33:18]    fim    D2L-DDQN semente 5 (54 min) — 18/60
+[23:33:18]    início D1-Q1 semente 2
+[23:33:36]    fim    D2P-DDQN semente 1 (51 min) — 19/60
+[23:33:36]    início D1-Q1 semente 3
+[23:34:01]    fim    D2L-DDQN semente 8 (52 min) — 20/60
+[23:34:01]    início D1-Q1 semente 4
+[23:34:36]    fim    D2P-DDQN semente 5 (50 min) — 21/60
+[23:34:36]    início D1-Q1 semente 5
+[23:34:49]    fim    D2P-DDQN semente 0 (53 min) — 22/60
+[23:34:49]    início D1-Q1 semente 6
+[23:35:38]    fim    D2P-DDQN semente 2 (53 min) — 23/60
+[23:35:38]    início D1-Q1 semente 7
+[23:36:53]    fim    D2P-DDQN semente 8 (51 min) — 24/60
+[23:36:53]    início D1-Q1 semente 8
+[23:38:17]    fim    D2P-DDQN semente 9 (53 min) — 25/60
+[23:38:17]    início D1-Q1 semente 9
+[23:38:28]    fim    D2P-DDQN semente 7 (53 min) — 26/60
+[23:38:28]    início D2L-Q1 semente 0
+[23:38:32]    fim    D2P-DDQN semente 4 (55 min) — 27/60
+[23:38:32]    início D2L-Q1 semente 1
+[23:38:41]    fim    D2L-DDQN semente 9 (57 min) — 28/60
+[23:38:41]    início D2L-Q1 semente 2
+[23:39:18]    fim    D2P-DDQN semente 6 (54 min) — 29/60
+[23:39:18]    início D2L-Q1 semente 3
+[23:39:46]    fim    D2P-DDQN semente 3 (56 min) — 30/60
+[23:39:46]    início D2L-Q1 semente 4
+[00:16:51]    fim    D1-Q1 semente 1 (47 min) — 31/60
+[00:16:51]    início D2L-Q1 semente 5
+[00:19:26]    fim    D1-Q1 semente 0 (50 min) — 32/60
+[00:19:26]    início D2L-Q1 semente 6
+[00:25:39]    fim    D1-Q1 semente 7 (50 min) — 33/60
+[00:25:39]    início D2L-Q1 semente 7
+[00:28:03]    fim    D1-Q1 semente 5 (53 min) — 34/60
+[00:28:03]    início D2L-Q1 semente 8
+[00:28:05]    fim    D1-Q1 semente 6 (53 min) — 35/60
+[00:28:05]    início D2L-Q1 semente 9
+[00:28:54]    fim    D1-Q1 semente 2 (56 min) — 36/60
+[00:28:54]    início D2P-Q1 semente 0
+[00:29:12]    fim    D1-Q1 semente 3 (56 min) — 37/60
+[00:29:12]    início D2P-Q1 semente 1
+[00:29:23]    fim    D2L-Q1 semente 0 (51 min) — 38/60
+[00:29:23]    início D2P-Q1 semente 2
+[00:30:56]    fim    D2L-Q1 semente 1 (52 min) — 39/60
+[00:30:56]    início D2P-Q1 semente 3
+[00:31:28]    fim    D2L-Q1 semente 2 (53 min) — 40/60
+[00:31:28]    início D2P-Q1 semente 4
+[00:33:05]    fim    D1-Q1 semente 8 (56 min) — 41/60
+[00:33:05]    início D2P-Q1 semente 5
+[00:33:37]    fim    D2L-Q1 semente 4 (54 min) — 42/60
+[00:33:37]    início D2P-Q1 semente 6
+[00:34:21]    fim    D1-Q1 semente 4 (60 min) — 43/60
+[00:34:21]    início D2P-Q1 semente 7
+[00:34:37]    fim    D1-Q1 semente 9 (56 min) — 44/60
+[00:34:37]    início D2P-Q1 semente 8
+[00:34:46]    fim    D2L-Q1 semente 3 (55 min) — 45/60
+[00:34:46]    início D2P-Q1 semente 9
+[01:01:27]    fim    D2L-Q1 semente 6 (42 min) — 46/60
+[01:02:06]    fim    D2L-Q1 semente 5 (45 min) — 47/60
+[01:13:13]    fim    D2L-Q1 semente 7 (48 min) — 48/60
+[01:17:08]    fim    D2L-Q1 semente 8 (49 min) — 49/60
+[01:20:31]    fim    D2P-Q1 semente 4 (49 min) — 50/60
+[01:21:11]    fim    D2P-Q1 semente 5 (48 min) — 51/60
+[01:21:15]    fim    D2L-Q1 semente 9 (53 min) — 52/60
+[01:21:34]    fim    D2P-Q1 semente 2 (52 min) — 53/60
+[01:22:03]    fim    D2P-Q1 semente 0 (53 min) — 54/60
+[01:22:05]    fim    D2P-Q1 semente 6 (48 min) — 55/60
+[01:22:10]    fim    D2P-Q1 semente 7 (48 min) — 56/60
+[01:22:34]    fim    D2P-Q1 semente 3 (52 min) — 57/60
+[01:22:35]    fim    D2P-Q1 semente 9 (48 min) — 58/60
+[01:22:37]    fim    D2P-Q1 semente 1 (53 min) — 59/60
+[01:22:41]    fim    D2P-Q1 semente 8 (48 min) — 60/60
+[01:22:41] 3/6 escolhendo as redes na validação…
+[01:22:42] 4/6 Esperar e Aleatória na validação…
+[01:23:29] 5/6 testando (100 cenários × 4 orçamentos; 10 partes)…
+[01:33:46] 6/6 gerando tabelas…
+[01:33:48] Pronto em 3.8 h. Resultados: simulador_d/RESULTADOS_D.md

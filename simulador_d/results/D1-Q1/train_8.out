@@ -1,0 +1,10 @@
+[D1-Q1] D1 — Q1, reward atual (fração estável) | semente 8: 2400 episódios
+[D1-Q1] semente 8 ep 300 validação: KPI 3.728 h, 9734 v·h (3.2 min)
+[D1-Q1] semente 8 ep 600 validação: KPI 3.587 h, 9461 v·h (6.6 min)
+[D1-Q1] semente 8 ep 900 validação: KPI 3.777 h, 9815 v·h (9.9 min)
+[D1-Q1] semente 8 ep 1200 validação: KPI 3.680 h, 9608 v·h (13.5 min)
+[D1-Q1] semente 8 ep 1500 validação: KPI 3.677 h, 9476 v·h (18.1 min)
+[D1-Q1] semente 8 ep 1800 validação: KPI 3.623 h, 9404 v·h (25.3 min)
+[D1-Q1] semente 8 ep 2100 validação: KPI 3.809 h, 9935 v·h (32.6 min)
+[D1-Q1] semente 8 ep 2400 validação: KPI 3.602 h, 9263 v·h (39.3 min)
+[D1-Q1] semente 8: fim (39.3 min)

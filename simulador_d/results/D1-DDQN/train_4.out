@@ -1,0 +1,10 @@
+[D1-DDQN] D1 — DDQN, reward atual (fração estável) | semente 4: 2400 episódios
+[D1-DDQN] semente 4 ep 300 validação: KPI 3.658 h, 9439 v·h (3.1 min)
+[D1-DDQN] semente 4 ep 600 validação: KPI 3.631 h, 9447 v·h (6.3 min)
+[D1-DDQN] semente 4 ep 900 validação: KPI 3.792 h, 9953 v·h (9.5 min)
+[D1-DDQN] semente 4 ep 1200 validação: KPI 3.939 h, 10157 v·h (13.2 min)
+[D1-DDQN] semente 4 ep 1500 validação: KPI 3.748 h, 9776 v·h (18.9 min)
+[D1-DDQN] semente 4 ep 1800 validação: KPI 3.619 h, 9488 v·h (27.3 min)
+[D1-DDQN] semente 4 ep 2100 validação: KPI 3.600 h, 9436 v·h (35.6 min)
+[D1-DDQN] semente 4 ep 2400 validação: KPI 3.733 h, 9831 v·h (43.2 min)
+[D1-DDQN] semente 4: fim (43.2 min)
