@@ -42,7 +42,8 @@ Compara três métodos nas mesmas situações:
 | `simulador_c2/`, `CENARIO_C2.md` | **Cenário C2**: épocas de decisão de 15, 30 ou 60 min e reward progressivo (branch `cenario-c2-temporal`) |
 | `simulador_d/`, `CENARIO_D.md` | **Cenário D**: só esperar ou desobstruir; recompensa com importância; comparação com o Guloso (branch `cenario-d-desobstruir`) |
 | `paginas/desobstrucao-rs.html` | O simulador pronto para abrir no navegador (cenário A) |
-| `paginas/desobstrucao-rs-b.html`, `-c.html`, `-c2.html`, `-d.html` | Páginas dos cenários B, C, C2 e D |
+| `simulador_d2/`, `CENARIO_D2.md` | **Cenário D2**: o D com o Guloso decidindo a cada 15 min (comparação justa de frequência) (branch `cenario-d2-guloso-15min`) |
+| `paginas/desobstrucao-rs-b.html`, `-c.html`, `-c2.html`, `-d.html`, `-d2.html` | Páginas dos cenários B, C, C2, D e D2 |
 | `tools/embed.py` | Junta o modelo HTML com os dados e gera a página |
 | `tools/nav.py` | Põe a barra "Cenário: A · B · C · C2 · D" no topo de todas as páginas e modelos (rodar de novo depois de criar uma página) |
 
@@ -57,7 +58,7 @@ Treina o Dueling DDQN MLP do zero com obstruções sintéticas (acidente, barrei
 
 ## Uso rápido
 
-- **Ver o simulador:** abra `paginas/desobstrucao-rs.html`. A barra no topo troca entre os cenários A, B, C, C2 e D.
+- **Ver o simulador:** abra `paginas/desobstrucao-rs.html`. A barra no topo troca entre os cenários A, B, C, C2, D e D2.
 - **Regerar a página do cenário D:** `node simulador_d/viz.js`, depois `python tools/embed.py simulador_d/viewer.html simulador_d/results/viz.json paginas/desobstrucao-rs-d.html`.
 - **Treinar, acompanhar e voltar ao estado de referência:** veja [TREINO.md](TREINO.md).
 - **Regerar os dados derivados (opcional):** `python preparacao/prep.py`. Leva cerca de 1 minuto e produz um arquivo idêntico ao incluído.

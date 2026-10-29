@@ -6,7 +6,8 @@ CEN = [('A', 'desobstrucao-rs.html', 'Enchentes 2024 (real)', ['simulador/viewer
        ('B', 'desobstrucao-rs-b.html', 'Rede inteira observável', ['simulador_b/viewer.html']),
        ('C', 'desobstrucao-rs-c.html', 'Quatro tipos de obstrução', ['simulador_c/viewer.html']),
        ('C2', 'desobstrucao-rs-c2.html', 'Épocas de decisão', ['simulador_c2/viewer.html']),
-       ('D', 'desobstrucao-rs-d.html', 'Só desobstruir', ['simulador_d/viewer.html'])]
+       ('D', 'desobstrucao-rs-d.html', 'Só desobstruir', ['simulador_d/viewer.html']),
+       ('D2', 'desobstrucao-rs-d2.html', 'Guloso a cada 15 min', ['simulador_d2/viewer.html'])]
 CSS = ('<style>.scn-nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 14px;font:500 13px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif}'
        '.scn-nav .lb{color:inherit;opacity:.7;margin-right:2px}'
        '.scn-nav a{display:inline-flex;gap:6px;align-items:baseline;padding:5px 11px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:999px;color:inherit;text-decoration:none}'
