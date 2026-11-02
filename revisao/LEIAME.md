@@ -10,3 +10,15 @@
 Escolhas desta análise (declaradas antes dos resultados): no plano fixo, a observação do tráfego fica congelada em t0 e só relógio,
 orçamento e tempo desde o início de cada obstrução são atualizados; obstruções novas: 1 a 4 por cenário, tipo e trecho sorteados como
 no gerador do D, início entre 30 min e 6 h após a primeira decisão, sorteio fixo por cenário.
+
+## Rodada da noite: P5 e P4 simplificado (`node revisao/run_noite.js`, ~7 h estimadas no i9)
+
+- **P5 — permutação** (`revisao/p5/permutacao.js`): nas redes D1-DDQN, D1-Q1 e D2P-Q1 já treinadas, embaralha um grupo de atributos por
+  vez e mede quanto o tempo até estabilizar piora (o que a rede usa).
+- **P5 — ablações com treino** (`revisao/p5/configs.js`, `train.js`): DDQN (recompensa D1) treinado de novo sem um grupo de atributos
+  por vez (7 grupos), e Q1/DDQN com α = 0 (só recompensa base), 0,10 e 0,50; 5 sementes × 2.400 episódios cada. Referência: D1 do
+  cenário D, sementes 0 a 4 (o que a rede precisa).
+- **P4 simplificado** (`revisao/p4/guloso_imperfeito.js`): Guloso de 1 h e de 6 h, com 5 ações e só desobstruindo, cujas simulações
+  de teste usam um modelo imperfeito: (a) sem saber os tempos de remoção sorteados nem quando cada obstrução acabaria sozinha;
+  (b) isso + demanda errada (±20%, por cenário) + filas com erro (±20% por sentido, a cada decisão).
+- Resultados: `revisao/p5/RESULTADOS_P5.md` e `revisao/p4/RESULTADOS_P4.md`. Pode interromper e rodar de novo: o que terminou é pulado.
