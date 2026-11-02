@@ -1,0 +1,10 @@
+[A-sem-obstrucao] DDQN sem tipo e tempo de remoção da obstrução | semente 0: 2400 episódios
+[A-sem-obstrucao] semente 0 ep 300 validação: KPI 3.944 h, 10355 v·h (4.3 min)
+[A-sem-obstrucao] semente 0 ep 600 validação: KPI 3.670 h, 9669 v·h (8.6 min)
+[A-sem-obstrucao] semente 0 ep 900 validação: KPI 3.663 h, 9323 v·h (12.8 min)
+[A-sem-obstrucao] semente 0 ep 1200 validação: KPI 3.498 h, 8901 v·h (16.7 min)
+[A-sem-obstrucao] semente 0 ep 1500 validação: KPI 3.569 h, 9110 v·h (21.0 min)
+[A-sem-obstrucao] semente 0 ep 1800 validação: KPI 3.777 h, 9596 v·h (27.4 min)
+[A-sem-obstrucao] semente 0 ep 2100 validação: KPI 3.780 h, 9769 v·h (35.7 min)
+[A-sem-obstrucao] semente 0 ep 2400 validação: KPI 3.708 h, 9634 v·h (44.4 min)
+[A-sem-obstrucao] semente 0: fim (44.4 min)

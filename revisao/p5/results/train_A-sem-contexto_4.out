@@ -1,0 +1,10 @@
+[A-sem-contexto] DDQN sem contexto (orçamento, hora, nº de obstruções, fração estável) | semente 4: 2400 episódios
+[A-sem-contexto] semente 4 ep 300 validação: KPI 3.570 h, 9085 v·h (3.8 min)
+[A-sem-contexto] semente 4 ep 600 validação: KPI 3.564 h, 9231 v·h (7.3 min)
+[A-sem-contexto] semente 4 ep 900 validação: KPI 3.528 h, 8927 v·h (10.9 min)
+[A-sem-contexto] semente 4 ep 1200 validação: KPI 3.620 h, 9219 v·h (14.8 min)
+[A-sem-contexto] semente 4 ep 1500 validação: KPI 3.663 h, 9316 v·h (20.2 min)
+[A-sem-contexto] semente 4 ep 1800 validação: KPI 3.581 h, 9116 v·h (28.9 min)
+[A-sem-contexto] semente 4 ep 2100 validação: KPI 3.655 h, 9582 v·h (37.1 min)
+[A-sem-contexto] semente 4 ep 2400 validação: KPI 3.517 h, 8915 v·h (45.6 min)
+[A-sem-contexto] semente 4: fim (45.6 min)

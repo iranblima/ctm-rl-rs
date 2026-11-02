@@ -1,0 +1,10 @@
+[A-sem-fluxo_previsto] DDQN sem fluxo previsto do trecho | semente 2: 2400 episódios
+[A-sem-fluxo_previsto] semente 2 ep 300 validação: KPI 3.600 h, 9302 v·h (3.7 min)
+[A-sem-fluxo_previsto] semente 2 ep 600 validação: KPI 3.706 h, 9434 v·h (7.5 min)
+[A-sem-fluxo_previsto] semente 2 ep 900 validação: KPI 3.886 h, 9897 v·h (11.4 min)
+[A-sem-fluxo_previsto] semente 2 ep 1200 validação: KPI 3.670 h, 9549 v·h (15.3 min)
+[A-sem-fluxo_previsto] semente 2 ep 1500 validação: KPI 3.580 h, 9255 v·h (20.6 min)
+[A-sem-fluxo_previsto] semente 2 ep 1800 validação: KPI 3.886 h, 10193 v·h (27.9 min)
+[A-sem-fluxo_previsto] semente 2 ep 2100 validação: KPI 3.731 h, 9756 v·h (36.3 min)
+[A-sem-fluxo_previsto] semente 2 ep 2400 validação: KPI 3.742 h, 9759 v·h (44.5 min)
+[A-sem-fluxo_previsto] semente 2: fim (44.5 min)

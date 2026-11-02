@@ -1,0 +1,10 @@
+[A-sem-estrutura] DDQN sem grau do entroncamento e pista dupla | semente 3: 2400 episódios
+[A-sem-estrutura] semente 3 ep 300 validação: KPI 4.095 h, 10547 v·h (3.4 min)
+[A-sem-estrutura] semente 3 ep 600 validação: KPI 3.652 h, 9510 v·h (6.7 min)
+[A-sem-estrutura] semente 3 ep 900 validação: KPI 3.786 h, 9783 v·h (10.4 min)
+[A-sem-estrutura] semente 3 ep 1200 validação: KPI 3.700 h, 9665 v·h (14.4 min)
+[A-sem-estrutura] semente 3 ep 1500 validação: KPI 3.723 h, 9717 v·h (19.8 min)
+[A-sem-estrutura] semente 3 ep 1800 validação: KPI 3.913 h, 10058 v·h (28.8 min)
+[A-sem-estrutura] semente 3 ep 2100 validação: KPI 3.627 h, 9411 v·h (37.9 min)
+[A-sem-estrutura] semente 3 ep 2400 validação: KPI 3.619 h, 9441 v·h (45.8 min)
+[A-sem-estrutura] semente 3: fim (45.8 min)

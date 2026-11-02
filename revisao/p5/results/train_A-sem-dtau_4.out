@@ -1,0 +1,10 @@
+[A-sem-dtau] DDQN sem intervalo da decisão (Δτ) | semente 4: 2400 episódios
+[A-sem-dtau] semente 4 ep 300 validação: KPI 3.627 h, 9362 v·h (4.1 min)
+[A-sem-dtau] semente 4 ep 600 validação: KPI 3.794 h, 9774 v·h (9.2 min)
+[A-sem-dtau] semente 4 ep 900 validação: KPI 3.681 h, 9257 v·h (14.3 min)
+[A-sem-dtau] semente 4 ep 1200 validação: KPI 3.825 h, 9966 v·h (19.6 min)
+[A-sem-dtau] semente 4 ep 1500 validação: KPI 3.711 h, 9693 v·h (26.3 min)
+[A-sem-dtau] semente 4 ep 1800 validação: KPI 3.694 h, 9626 v·h (35.0 min)
+[A-sem-dtau] semente 4 ep 2100 validação: KPI 3.892 h, 10185 v·h (43.4 min)
+[A-sem-dtau] semente 4 ep 2400 validação: KPI 3.866 h, 10205 v·h (53.2 min)
+[A-sem-dtau] semente 4: fim (53.2 min)

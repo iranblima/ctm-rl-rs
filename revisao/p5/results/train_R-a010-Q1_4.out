@@ -1,0 +1,10 @@
+[R-a010-Q1] Q1, α = 0,1 | semente 4: 2400 episódios
+[R-a010-Q1] semente 4 ep 300 validação: KPI 3.566 h, 9186 v·h (3.4 min)
+[R-a010-Q1] semente 4 ep 600 validação: KPI 3.694 h, 9463 v·h (7.0 min)
+[R-a010-Q1] semente 4 ep 900 validação: KPI 3.625 h, 9374 v·h (10.7 min)
+[R-a010-Q1] semente 4 ep 1200 validação: KPI 3.605 h, 9420 v·h (15.4 min)
+[R-a010-Q1] semente 4 ep 1500 validação: KPI 3.805 h, 9894 v·h (20.8 min)
+[R-a010-Q1] semente 4 ep 1800 validação: KPI 3.722 h, 9657 v·h (27.4 min)
+[R-a010-Q1] semente 4 ep 2100 validação: KPI 3.603 h, 9260 v·h (34.7 min)
+[R-a010-Q1] semente 4 ep 2400 validação: KPI 3.681 h, 9630 v·h (41.7 min)
+[R-a010-Q1] semente 4: fim (41.7 min)

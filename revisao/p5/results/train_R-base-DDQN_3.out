@@ -1,0 +1,10 @@
+[R-base-DDQN] DDQN, α = 0 (só recompensa base) | semente 3: 2400 episódios
+[R-base-DDQN] semente 3 ep 300 validação: KPI 3.698 h, 9625 v·h (4.2 min)
+[R-base-DDQN] semente 3 ep 600 validação: KPI 3.623 h, 9509 v·h (7.9 min)
+[R-base-DDQN] semente 3 ep 900 validação: KPI 3.678 h, 9730 v·h (12.0 min)
+[R-base-DDQN] semente 3 ep 1200 validação: KPI 3.645 h, 9604 v·h (15.9 min)
+[R-base-DDQN] semente 3 ep 1500 validação: KPI 3.672 h, 9592 v·h (20.1 min)
+[R-base-DDQN] semente 3 ep 1800 validação: KPI 3.773 h, 9952 v·h (28.2 min)
+[R-base-DDQN] semente 3 ep 2100 validação: KPI 3.855 h, 10092 v·h (36.6 min)
+[R-base-DDQN] semente 3 ep 2400 validação: KPI 3.755 h, 9803 v·h (44.1 min)
+[R-base-DDQN] semente 3: fim (44.1 min)

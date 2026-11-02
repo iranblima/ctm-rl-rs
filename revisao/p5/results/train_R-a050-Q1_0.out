@@ -1,0 +1,10 @@
+[R-a050-Q1] Q1, α = 0,5 | semente 0: 2400 episódios
+[R-a050-Q1] semente 0 ep 300 validação: KPI 3.691 h, 9735 v·h (4.1 min)
+[R-a050-Q1] semente 0 ep 600 validação: KPI 3.609 h, 9267 v·h (8.4 min)
+[R-a050-Q1] semente 0 ep 900 validação: KPI 3.589 h, 8907 v·h (12.4 min)
+[R-a050-Q1] semente 0 ep 1200 validação: KPI 3.664 h, 9314 v·h (16.3 min)
+[R-a050-Q1] semente 0 ep 1500 validação: KPI 3.672 h, 9268 v·h (21.1 min)
+[R-a050-Q1] semente 0 ep 1800 validação: KPI 3.636 h, 9222 v·h (28.7 min)
+[R-a050-Q1] semente 0 ep 2100 validação: KPI 3.778 h, 9628 v·h (37.0 min)
+[R-a050-Q1] semente 0 ep 2400 validação: KPI 3.666 h, 9249 v·h (44.9 min)
+[R-a050-Q1] semente 0: fim (44.9 min)

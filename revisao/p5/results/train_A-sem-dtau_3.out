@@ -1,0 +1,10 @@
+[A-sem-dtau] DDQN sem intervalo da decisão (Δτ) | semente 3: 2400 episódios
+[A-sem-dtau] semente 3 ep 300 validação: KPI 3.595 h, 9340 v·h (3.4 min)
+[A-sem-dtau] semente 3 ep 600 validação: KPI 3.712 h, 9555 v·h (7.6 min)
+[A-sem-dtau] semente 3 ep 900 validação: KPI 3.741 h, 9669 v·h (12.1 min)
+[A-sem-dtau] semente 3 ep 1200 validação: KPI 3.638 h, 9514 v·h (16.6 min)
+[A-sem-dtau] semente 3 ep 1500 validação: KPI 3.642 h, 9466 v·h (22.4 min)
+[A-sem-dtau] semente 3 ep 1800 validação: KPI 3.692 h, 9560 v·h (30.1 min)
+[A-sem-dtau] semente 3 ep 2100 validação: KPI 3.695 h, 9676 v·h (38.0 min)
+[A-sem-dtau] semente 3 ep 2400 validação: KPI 3.723 h, 9757 v·h (45.8 min)
+[A-sem-dtau] semente 3: fim (45.8 min)

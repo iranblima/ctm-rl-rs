@@ -1,0 +1,10 @@
+[A-sem-estrutura] DDQN sem grau do entroncamento e pista dupla | semente 4: 2400 episódios
+[A-sem-estrutura] semente 4 ep 300 validação: KPI 3.756 h, 9588 v·h (3.2 min)
+[A-sem-estrutura] semente 4 ep 600 validação: KPI 3.833 h, 9908 v·h (6.5 min)
+[A-sem-estrutura] semente 4 ep 900 validação: KPI 3.942 h, 10238 v·h (10.0 min)
+[A-sem-estrutura] semente 4 ep 1200 validação: KPI 3.823 h, 10006 v·h (13.3 min)
+[A-sem-estrutura] semente 4 ep 1500 validação: KPI 3.817 h, 9895 v·h (17.4 min)
+[A-sem-estrutura] semente 4 ep 1800 validação: KPI 3.611 h, 9238 v·h (24.3 min)
+[A-sem-estrutura] semente 4 ep 2100 validação: KPI 3.627 h, 9311 v·h (32.2 min)
+[A-sem-estrutura] semente 4 ep 2400 validação: KPI 3.619 h, 9366 v·h (41.1 min)
+[A-sem-estrutura] semente 4: fim (41.1 min)

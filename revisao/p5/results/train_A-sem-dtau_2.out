@@ -1,0 +1,10 @@
+[A-sem-dtau] DDQN sem intervalo da decisão (Δτ) | semente 2: 2400 episódios
+[A-sem-dtau] semente 2 ep 300 validação: KPI 3.772 h, 9762 v·h (3.9 min)
+[A-sem-dtau] semente 2 ep 600 validação: KPI 3.680 h, 9686 v·h (8.3 min)
+[A-sem-dtau] semente 2 ep 900 validação: KPI 3.803 h, 10029 v·h (13.7 min)
+[A-sem-dtau] semente 2 ep 1200 validação: KPI 3.691 h, 9630 v·h (19.0 min)
+[A-sem-dtau] semente 2 ep 1500 validação: KPI 3.534 h, 9072 v·h (25.7 min)
+[A-sem-dtau] semente 2 ep 1800 validação: KPI 3.612 h, 9236 v·h (34.7 min)
+[A-sem-dtau] semente 2 ep 2100 validação: KPI 3.833 h, 9980 v·h (42.7 min)
+[A-sem-dtau] semente 2 ep 2400 validação: KPI 3.861 h, 10109 v·h (51.3 min)
+[A-sem-dtau] semente 2: fim (51.3 min)

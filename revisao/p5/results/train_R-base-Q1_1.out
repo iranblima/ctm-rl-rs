@@ -1,0 +1,10 @@
+[R-base-Q1] Q1, α = 0 (só recompensa base) | semente 1: 2400 episódios
+[R-base-Q1] semente 1 ep 300 validação: KPI 3.733 h, 9468 v·h (3.9 min)
+[R-base-Q1] semente 1 ep 600 validação: KPI 3.720 h, 9298 v·h (8.0 min)
+[R-base-Q1] semente 1 ep 900 validação: KPI 3.705 h, 9547 v·h (12.3 min)
+[R-base-Q1] semente 1 ep 1200 validação: KPI 3.669 h, 9402 v·h (16.4 min)
+[R-base-Q1] semente 1 ep 1500 validação: KPI 3.592 h, 9215 v·h (21.2 min)
+[R-base-Q1] semente 1 ep 1800 validação: KPI 3.669 h, 9227 v·h (27.4 min)
+[R-base-Q1] semente 1 ep 2100 validação: KPI 3.858 h, 9952 v·h (35.4 min)
+[R-base-Q1] semente 1 ep 2400 validação: KPI 3.638 h, 9444 v·h (43.3 min)
+[R-base-Q1] semente 1: fim (43.3 min)

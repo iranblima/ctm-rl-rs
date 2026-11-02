@@ -1,0 +1,10 @@
+[R-a010-DDQN] DDQN, α = 0,1 | semente 2: 2400 episódios
+[R-a010-DDQN] semente 2 ep 300 validação: KPI 3.727 h, 9547 v·h (3.8 min)
+[R-a010-DDQN] semente 2 ep 600 validação: KPI 3.623 h, 9223 v·h (8.1 min)
+[R-a010-DDQN] semente 2 ep 900 validação: KPI 3.628 h, 9286 v·h (12.6 min)
+[R-a010-DDQN] semente 2 ep 1200 validação: KPI 3.663 h, 9542 v·h (17.5 min)
+[R-a010-DDQN] semente 2 ep 1500 validação: KPI 3.705 h, 9627 v·h (22.9 min)
+[R-a010-DDQN] semente 2 ep 1800 validação: KPI 3.647 h, 9436 v·h (30.2 min)
+[R-a010-DDQN] semente 2 ep 2100 validação: KPI 3.778 h, 9629 v·h (37.3 min)
+[R-a010-DDQN] semente 2 ep 2400 validação: KPI 3.672 h, 9259 v·h (45.6 min)
+[R-a010-DDQN] semente 2: fim (45.6 min)

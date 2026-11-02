@@ -1,0 +1,199 @@
+[21:11:46] Rodada da noite (20 núcleos lógicos).
+[21:11:46] Fase 1 (treinos P5, Guloso imperfeito, permutação): 141 tarefas pendentes (0 já prontas), 16 em paralelo.
+[21:57:37]   P4 c2 6 h tempo parte 1 ok (45.7 min) — 1/141, 0.8 h desde o início
+[21:58:27]   P4 c2 6 h tempo parte 6 ok (46.5 min) — 2/141, 0.8 h desde o início
+[21:59:59]   P4 c2 6 h tempo parte 2 ok (48.1 min) — 3/141, 0.8 h desde o início
+[22:00:52]   P4 c2 6 h realista parte 4 ok (49.0 min) — 4/141, 0.8 h desde o início
+[22:01:51]   P4 c2 6 h realista parte 6 ok (50.0 min) — 5/141, 0.8 h desde o início
+[22:02:05]   P4 c2 6 h tempo parte 4 ok (50.2 min) — 6/141, 0.8 h desde o início
+[22:05:12]   P4 c2 6 h realista parte 3 ok (53.4 min) — 7/141, 0.9 h desde o início
+[22:05:48]   P4 c2 6 h realista parte 1 ok (54.0 min) — 8/141, 0.9 h desde o início
+[22:06:15]   P4 c2 6 h tempo parte 5 ok (54.3 min) — 9/141, 0.9 h desde o início
+[22:06:46]   P4 c2 6 h tempo parte 3 ok (54.9 min) — 10/141, 0.9 h desde o início
+[22:07:47]   P4 c2 6 h realista parte 2 ok (56.0 min) — 11/141, 0.9 h desde o início
+[22:08:07]   P4 c2 6 h tempo parte 7 ok (56.1 min) — 12/141, 0.9 h desde o início
+[22:11:09]   P4 c2 6 h realista parte 7 ok (59.3 min) — 13/141, 1.0 h desde o início
+[22:13:07]   P4 c2 6 h realista parte 0 ok (61.3 min) — 14/141, 1.0 h desde o início
+[22:13:38]   P4 c2 6 h tempo parte 0 ok (61.8 min) — 15/141, 1.0 h desde o início
+[22:17:18]   P4 c2 6 h realista parte 5 ok (65.5 min) — 16/141, 1.1 h desde o início
+[22:59:05]   P5 treino A-sem-obstrucao semente 0 ok (61.5 min) — 17/141, 1.8 h desde o início
+[23:00:23]   P5 treino A-sem-obstrucao semente 3 ok (59.5 min) — 18/141, 1.8 h desde o início
+[23:00:40]   P5 treino A-sem-obstrucao semente 1 ok (62.2 min) — 19/141, 1.8 h desde o início
+[23:00:51]   P5 treino A-sem-obstrucao semente 2 ok (60.9 min) — 20/141, 1.8 h desde o início
+[23:03:40]   P5 treino A-sem-fluxo_previsto semente 1 ok (58.5 min) — 21/141, 1.9 h desde o início
+[23:06:05]   P5 treino A-sem-fluxo_previsto semente 2 ok (60.3 min) — 22/141, 1.9 h desde o início
+[23:06:42]   P5 treino A-sem-obstrucao semente 4 ok (64.9 min) — 23/141, 1.9 h desde o início
+[23:07:07]   P5 treino A-sem-fluxo_previsto semente 4 ok (60.3 min) — 24/141, 1.9 h desde o início
+[23:08:26]   P5 treino A-sem-estrutura semente 1 ok (60.3 min) — 25/141, 1.9 h desde o início
+[23:08:39]   P5 treino A-sem-fluxo_previsto semente 0 ok (66.6 min) — 26/141, 1.9 h desde o início
+[23:08:59]   P5 treino A-sem-estrutura semente 4 ok (55.3 min) — 27/141, 2.0 h desde o início
+[23:10:51]   P5 treino A-sem-fluxo_previsto semente 3 ok (64.6 min) — 28/141, 2.0 h desde o início
+[23:13:57]   P5 treino A-sem-estrutura semente 0 ok (66.2 min) — 29/141, 2.0 h desde o início
+[23:15:02]   P5 treino A-sem-estrutura semente 3 ok (61.9 min) — 30/141, 2.1 h desde o início
+[23:16:11]   P5 treino A-sem-estrutura semente 2 ok (65.0 min) — 31/141, 2.1 h desde o início
+[23:20:07]   P5 treino A-sem-fluxo_observado semente 0 ok (62.8 min) — 32/141, 2.1 h desde o início
+[23:55:29]   P5 treino A-sem-fluxo_observado semente 1 ok (56.4 min) — 33/141, 2.7 h desde o início
+[23:57:54]   P5 treino A-sem-fluxo_observado semente 2 ok (57.5 min) — 34/141, 2.8 h desde o início
+[23:59:17]   P5 treino A-sem-fluxo_observado semente 3 ok (58.6 min) — 35/141, 2.8 h desde o início
+[00:01:02]   P5 treino A-sem-fluxo_observado semente 4 ok (60.2 min) — 36/141, 2.8 h desde o início
+[00:08:45]   P5 treino A-sem-contexto semente 1 ok (59.8 min) — 37/141, 2.9 h desde o início
+[00:08:49]   P5 treino A-sem-tempo_obstrucao semente 2 ok (62.1 min) — 38/141, 3.0 h desde o início
+[00:11:00]   P5 treino A-sem-tempo_obstrucao semente 1 ok (64.9 min) — 39/141, 3.0 h desde o início
+[00:11:11]   P5 treino A-sem-tempo_obstrucao semente 0 ok (67.5 min) — 40/141, 3.0 h desde o início
+[00:13:14]   P5 treino A-sem-tempo_obstrucao semente 4 ok (64.8 min) — 41/141, 3.0 h desde o início
+[00:14:49]   P5 treino A-sem-contexto semente 2 ok (64.0 min) — 42/141, 3.1 h desde o início
+[00:15:21]   P5 treino A-sem-tempo_obstrucao semente 3 ok (68.2 min) — 43/141, 3.1 h desde o início
+[00:15:30]   P5 treino A-sem-contexto semente 0 ok (66.9 min) — 44/141, 3.1 h desde o início
+[00:18:34]   P5 treino A-sem-contexto semente 3 ok (64.6 min) — 45/141, 3.1 h desde o início
+[00:19:28]   P5 treino A-sem-contexto semente 4 ok (64.4 min) — 46/141, 3.1 h desde o início
+[00:25:39]   P5 treino A-sem-dtau semente 0 ok (69.5 min) — 47/141, 3.2 h desde o início
+[00:25:43]   P5 treino A-sem-dtau semente 1 ok (65.6 min) — 48/141, 3.2 h desde o início
+[00:52:17]   P5 treino A-sem-dtau semente 3 ok (54.4 min) — 49/141, 3.7 h desde o início
+[00:55:52]   P5 treino R-base-Q1 semente 0 ok (54.8 min) — 50/141, 3.7 h desde o início
+[00:56:07]   P5 treino A-sem-dtau semente 2 ok (60.6 min) — 51/141, 3.7 h desde o início
+[01:00:44]   P5 treino R-base-Q1 semente 2 ok (51.9 min) — 52/141, 3.8 h desde o início
+[01:02:10]   P5 treino A-sem-dtau semente 4 ok (62.9 min) — 53/141, 3.8 h desde o início
+[01:05:52]   P5 treino R-base-Q1 semente 1 ok (57.1 min) — 54/141, 3.9 h desde o início
+[01:09:45]   P5 treino R-base-Q1 semente 4 ok (58.6 min) — 55/141, 4.0 h desde o início
+[01:14:10]   P5 treino R-base-Q1 semente 3 ok (63.2 min) — 56/141, 4.0 h desde o início
+[01:15:38]   P5 treino R-base-DDQN semente 1 ok (60.8 min) — 57/141, 4.1 h desde o início
+[01:16:41]   P5 treino R-base-DDQN semente 0 ok (63.4 min) — 58/141, 4.1 h desde o início
+[01:17:46]   P5 treino R-a010-Q1 semente 0 ok (58.3 min) — 59/141, 4.1 h desde o início
+[01:19:46]   P5 treino R-base-DDQN semente 3 ok (64.3 min) — 60/141, 4.1 h desde o início
+[01:21:06]   P5 treino R-base-DDQN semente 4 ok (62.5 min) — 61/141, 4.2 h desde o início
+[01:21:42]   P5 treino R-a010-Q1 semente 1 ok (56.1 min) — 62/141, 4.2 h desde o início
+[01:22:08]   P5 treino R-base-DDQN semente 2 ok (66.8 min) — 63/141, 4.2 h desde o início
+[01:22:38]   P5 treino R-a010-Q1 semente 2 ok (56.9 min) — 64/141, 4.2 h desde o início
+[01:45:31]   P5 treino R-a010-Q1 semente 3 ok (53.2 min) — 65/141, 4.6 h desde o início
+[01:47:01]   P5 treino R-a010-Q1 semente 4 ok (51.1 min) — 66/141, 4.6 h desde o início
+[01:52:51]   P5 treino R-a010-DDQN semente 0 ok (56.7 min) — 67/141, 4.7 h desde o início
+[01:53:12]   P5 permutação D1-DDQN parte 0 ok (6.2 min) — 68/141, 4.7 h desde o início
+[01:57:13]   P5 treino R-a010-DDQN semente 2 ok (55.1 min) — 69/141, 4.8 h desde o início
+[01:58:56]   P5 permutação D1-DDQN parte 2 ok (5.7 min) — 70/141, 4.8 h desde o início
+[02:00:26]   P5 permutação D1-DDQN parte 1 ok (7.6 min) — 71/141, 4.8 h desde o início
+[02:03:16]   P5 treino R-a010-DDQN semente 1 ok (62.5 min) — 72/141, 4.9 h desde o início
+[02:03:35]   P5 permutação D1-DDQN parte 3 ok (6.4 min) — 73/141, 4.9 h desde o início
+[02:05:32]   P5 permutação D1-Q1 parte 0 ok (6.6 min) — 74/141, 4.9 h desde o início
+[02:05:48]   P5 treino R-a010-DDQN semente 4 ok (56.0 min) — 75/141, 4.9 h desde o início
+[02:08:25]   P5 permutação D1-Q1 parte 1 ok (8.0 min) — 76/141, 4.9 h desde o início
+[02:09:49]   P5 permutação D1-Q1 parte 2 ok (6.5 min) — 77/141, 5.0 h desde o início
+[02:10:46]   P5 permutação D1-Q1 parte 3 ok (7.2 min) — 78/141, 5.0 h desde o início
+[02:10:51]   P5 treino R-a010-DDQN semente 3 ok (65.0 min) — 79/141, 5.0 h desde o início
+[02:12:25]   P5 permutação D2P-Q1 parte 0 ok (6.9 min) — 80/141, 5.0 h desde o início
+[02:13:14]   P5 permutação D2P-Q1 parte 1 ok (7.4 min) — 81/141, 5.0 h desde o início
+[02:14:17]   P5 permutação D2P-Q1 parte 2 ok (5.9 min) — 82/141, 5.0 h desde o início
+[02:14:37]   P5 treino R-a050-Q1 semente 1 ok (59.0 min) — 83/141, 5.0 h desde o início
+[02:14:55]   P5 treino R-a050-Q1 semente 0 ok (60.8 min) — 84/141, 5.1 h desde o início
+[02:16:00]   P5 treino R-a050-Q1 semente 2 ok (59.3 min) — 85/141, 5.1 h desde o início
+[02:18:54]   P4 d 6 h realista parte 1 ok (8.0 min) — 86/141, 5.1 h desde o início
+[02:19:05]   P5 permutação D2P-Q1 parte 3 ok (9.3 min) — 87/141, 5.1 h desde o início
+[02:19:59]   P5 treino R-a050-DDQN semente 0 ok (58.9 min) — 88/141, 5.1 h desde o início
+[02:20:24]   P5 treino R-a050-Q1 semente 4 ok (60.6 min) — 89/141, 5.1 h desde o início
+[02:20:59]   P4 d 6 h realista parte 0 ok (10.2 min) — 90/141, 5.2 h desde o início
+[02:21:02]   P4 d 6 h realista parte 2 ok (8.6 min) — 91/141, 5.2 h desde o início
+[02:21:50]   P4 d 6 h realista parte 3 ok (8.6 min) — 92/141, 5.2 h desde o início
+[02:23:22]   P5 treino R-a050-Q1 semente 3 ok (65.6 min) — 93/141, 5.2 h desde o início
+[02:23:32]   P4 d 6 h realista parte 4 ok (9.2 min) — 94/141, 5.2 h desde o início
+[02:24:33]   P4 d 6 h realista parte 6 ok (9.6 min) — 95/141, 5.2 h desde o início
+[02:24:39]   P5 treino R-a050-DDQN semente 3 ok (62.0 min) — 96/141, 5.2 h desde o início
+[02:26:03]   P5 treino R-a050-DDQN semente 2 ok (63.9 min) — 97/141, 5.2 h desde o início
+[02:26:17]   P5 treino R-a050-DDQN semente 1 ok (64.6 min) — 98/141, 5.2 h desde o início
+[02:29:06]   P4 d 6 h realista parte 5 ok (14.5 min) — 99/141, 5.3 h desde o início
+[02:29:33]   P4 d 6 h realista parte 7 ok (13.6 min) — 100/141, 5.3 h desde o início
+[02:33:55]   P4 d 6 h tempo parte 1 ok (14.8 min) — 101/141, 5.4 h desde o início
+[02:34:34]   P4 c2 1 h realista parte 1 ok (10.0 min) — 102/141, 5.4 h desde o início
+[02:34:36]   P4 d 6 h tempo parte 3 ok (14.2 min) — 103/141, 5.4 h desde o início
+[02:34:55]   P4 d 6 h tempo parte 2 ok (14.9 min) — 104/141, 5.4 h desde o início
+[02:34:57]   P4 d 6 h tempo parte 0 ok (16.1 min) — 105/141, 5.4 h desde o início
+[02:35:33]   P4 d 6 h tempo parte 4 ok (14.6 min) — 106/141, 5.4 h desde o início
+[02:36:41]   P4 d 6 h tempo parte 6 ok (14.8 min) — 107/141, 5.4 h desde o início
+[02:37:28]   P4 c2 1 h realista parte 4 ok (11.2 min) — 108/141, 5.4 h desde o início
+[02:38:03]   P4 c2 1 h realista parte 3 ok (12.0 min) — 109/141, 5.4 h desde o início
+[02:38:05]   P4 d 6 h tempo parte 5 ok (17.0 min) — 110/141, 5.4 h desde o início
+[02:38:21]   P4 d 6 h tempo parte 7 ok (15.0 min) — 111/141, 5.4 h desde o início
+[02:38:26]   P4 c2 1 h realista parte 0 ok (14.9 min) — 112/141, 5.4 h desde o início
+[02:39:24]   P4 c2 1 h realista parte 2 ok (14.7 min) — 113/141, 5.5 h desde o início
+[02:39:46]   P4 c2 1 h realista parte 6 ok (10.2 min) — 114/141, 5.5 h desde o início
+[02:41:44]   P5 treino R-a050-DDQN semente 4 ok (56.2 min) — 115/141, 5.5 h desde o início
+[02:43:47]   P4 d 1 h realista parte 2 ok (5.4 min) — 116/141, 5.5 h desde o início
+[02:44:43]   P4 d 1 h realista parte 1 ok (6.4 min) — 117/141, 5.5 h desde o início
+[02:45:08]   P4 d 1 h realista parte 0 ok (7.1 min) — 118/141, 5.6 h desde o início
+[02:45:31]   P4 d 1 h realista parte 4 ok (5.7 min) — 119/141, 5.6 h desde o início
+[02:45:41]   P4 d 1 h realista parte 3 ok (6.3 min) — 120/141, 5.6 h desde o início
+[02:46:47]   P4 c2 1 h tempo parte 2 ok (11.9 min) — 121/141, 5.6 h desde o início
+[02:46:48]   P4 c2 1 h tempo parte 1 ok (12.2 min) — 122/141, 5.6 h desde o início
+[02:47:00]   P4 c2 1 h tempo parte 6 ok (9.5 min) — 123/141, 5.6 h desde o início
+[02:47:02]   P4 c2 1 h tempo parte 4 ok (11.5 min) — 124/141, 5.6 h desde o início
+[02:48:15]   P4 c2 1 h realista parte 5 ok (19.2 min) — 125/141, 5.6 h desde o início
+[02:48:58]   P4 d 1 h realista parte 6 ok (5.2 min) — 126/141, 5.6 h desde o início
+[02:49:07]   P4 d 1 h realista parte 5 ok (7.4 min) — 127/141, 5.6 h desde o início
+[02:49:39]   P4 c2 1 h tempo parte 3 ok (14.7 min) — 128/141, 5.6 h desde o início
+[02:49:51]   P4 c2 1 h tempo parte 0 ok (15.3 min) — 129/141, 5.6 h desde o início
+[02:50:19]   P4 d 1 h tempo parte 2 ok (4.6 min) — 130/141, 5.6 h desde o início
+[02:50:28]   P4 d 1 h tempo parte 0 ok (5.3 min) — 131/141, 5.6 h desde o início
+[02:50:29]   P4 d 1 h tempo parte 1 ok (5.0 min) — 132/141, 5.6 h desde o início
+[02:50:30]   P4 d 1 h realista parte 7 ok (5.8 min) — 133/141, 5.6 h desde o início
+[02:50:31]   P4 d 1 h tempo parte 4 ok (3.7 min) — 134/141, 5.6 h desde o início
+[02:50:35]   P4 d 1 h tempo parte 6 ok (3.5 min) — 135/141, 5.6 h desde o início
+[02:50:44]   P4 d 1 h tempo parte 3 ok (3.9 min) — 136/141, 5.6 h desde o início
+[02:50:45]   P4 c2 1 h realista parte 7 ok (16.8 min) — 137/141, 5.6 h desde o início
+[02:50:58]   P4 c2 1 h tempo parte 7 ok (12.9 min) — 138/141, 5.7 h desde o início
+[02:51:01]   P4 d 1 h tempo parte 7 ok (2.8 min) — 139/141, 5.7 h desde o início
+[02:51:01]   P4 d 1 h tempo parte 5 ok (4.0 min) — 140/141, 5.7 h desde o início
+[02:51:08]   P4 c2 1 h tempo parte 5 ok (14.5 min) — 141/141, 5.7 h desde o início
+[02:51:08] Fase 2: escolhendo as redes do P5 na validação…
+[02:51:10] Fase 2 (teste do P5): 52 tarefas pendentes (0 já prontas), 16 em paralelo.
+[02:57:33]   P5 teste A-sem-fluxo_previsto parte 2 ok (6.3 min) — 1/52, 5.8 h desde o início
+[02:57:49]   P5 teste A-sem-fluxo_previsto parte 0 ok (6.6 min) — 2/52, 5.8 h desde o início
+[02:57:59]   P5 teste A-sem-fluxo_observado parte 2 ok (6.6 min) — 3/52, 5.8 h desde o início
+[02:58:13]   P5 teste A-sem-estrutura parte 2 ok (6.9 min) — 4/52, 5.8 h desde o início
+[02:58:17]   P5 teste A-sem-obstrucao parte 0 ok (7.1 min) — 5/52, 5.8 h desde o início
+[02:58:21]   P5 teste A-sem-estrutura parte 3 ok (7.0 min) — 6/52, 5.8 h desde o início
+[02:58:22]   P5 teste A-sem-fluxo_previsto parte 3 ok (7.1 min) — 7/52, 5.8 h desde o início
+[02:58:28]   P5 teste A-sem-fluxo_observado parte 0 ok (7.1 min) — 8/52, 5.8 h desde o início
+[02:58:38]   P5 teste A-sem-obstrucao parte 2 ok (7.5 min) — 9/52, 5.8 h desde o início
+[02:58:39]   P5 teste A-sem-estrutura parte 0 ok (7.4 min) — 10/52, 5.8 h desde o início
+[02:58:43]   P5 teste A-sem-fluxo_observado parte 3 ok (7.4 min) — 11/52, 5.8 h desde o início
+[02:58:44]   P5 teste A-sem-obstrucao parte 3 ok (7.5 min) — 12/52, 5.8 h desde o início
+[02:58:45]   P5 teste A-sem-estrutura parte 1 ok (7.5 min) — 13/52, 5.8 h desde o início
+[02:58:47]   P5 teste A-sem-obstrucao parte 1 ok (7.6 min) — 14/52, 5.8 h desde o início
+[02:59:09]   P5 teste A-sem-fluxo_previsto parte 1 ok (7.9 min) — 15/52, 5.8 h desde o início
+[02:59:30]   P5 teste A-sem-fluxo_observado parte 1 ok (8.2 min) — 16/52, 5.8 h desde o início
+[03:04:24]   P5 teste A-sem-tempo_obstrucao parte 0 ok (6.8 min) — 17/52, 5.9 h desde o início
+[03:04:49]   P5 teste A-sem-tempo_obstrucao parte 2 ok (6.8 min) — 18/52, 5.9 h desde o início
+[03:04:53]   P5 teste R-base-Q1 parte 0 ok (6.1 min) — 19/52, 5.9 h desde o início
+[03:05:06]   P5 teste A-sem-dtau parte 2 ok (6.4 min) — 20/52, 5.9 h desde o início
+[03:05:26]   P5 teste A-sem-dtau parte 1 ok (6.8 min) — 21/52, 5.9 h desde o início
+[03:05:27]   P5 teste A-sem-contexto parte 2 ok (7.1 min) — 22/52, 5.9 h desde o início
+[03:05:31]   P5 teste A-sem-contexto parte 0 ok (7.2 min) — 23/52, 5.9 h desde o início
+[03:05:42]   P5 teste A-sem-tempo_obstrucao parte 1 ok (7.9 min) — 24/52, 5.9 h desde o início
+[03:05:45]   P5 teste A-sem-contexto parte 3 ok (7.3 min) — 25/52, 5.9 h desde o início
+[03:05:53]   P5 teste A-sem-dtau parte 0 ok (7.3 min) — 26/52, 5.9 h desde o início
+[03:05:59]   P5 teste R-base-Q1 parte 1 ok (7.2 min) — 27/52, 5.9 h desde o início
+[03:06:05]   P5 teste A-sem-contexto parte 1 ok (7.7 min) — 28/52, 5.9 h desde o início
+[03:06:16]   P5 teste R-base-Q1 parte 2 ok (7.1 min) — 29/52, 5.9 h desde o início
+[03:06:27]   P5 teste A-sem-tempo_obstrucao parte 3 ok (8.2 min) — 30/52, 5.9 h desde o início
+[03:06:35]   P5 teste A-sem-dtau parte 3 ok (7.8 min) — 31/52, 5.9 h desde o início
+[03:07:06]   P5 teste R-base-Q1 parte 3 ok (7.6 min) — 32/52, 5.9 h desde o início
+[03:10:51]   P5 teste R-base-DDQN parte 0 ok (6.4 min) — 33/52, 6.0 h desde o início
+[03:12:07]   P5 teste R-base-DDQN parte 3 ok (7.0 min) — 34/52, 6.0 h desde o início
+[03:12:18]   P5 teste R-a010-Q1 parte 2 ok (6.8 min) — 35/52, 6.0 h desde o início
+[03:12:22]   P5 teste R-a050-Q1 parte 2 ok (5.8 min) — 36/52, 6.0 h desde o início
+[03:12:27]   P5 teste R-base-DDQN parte 2 ok (7.6 min) — 37/52, 6.0 h desde o início
+[03:12:31]   P5 teste R-a010-DDQN parte 2 ok (6.5 min) — 38/52, 6.0 h desde o início
+[03:12:41]   P5 teste R-a010-Q1 parte 0 ok (7.3 min) — 39/52, 6.0 h desde o início
+[03:12:45]   P5 teste R-a050-Q1 parte 0 ok (6.5 min) — 40/52, 6.0 h desde o início
+[03:12:48]   P5 teste R-a010-Q1 parte 1 ok (7.3 min) — 41/52, 6.0 h desde o início
+[03:12:51]   P5 teste R-a010-DDQN parte 0 ok (7.1 min) — 42/52, 6.0 h desde o início
+[03:12:56]   P5 teste R-a010-Q1 parte 3 ok (7.2 min) — 43/52, 6.0 h desde o início
+[03:13:00]   P5 teste R-a010-DDQN parte 1 ok (7.1 min) — 44/52, 6.0 h desde o início
+[03:13:06]   P5 teste R-a010-DDQN parte 3 ok (7.0 min) — 45/52, 6.0 h desde o início
+[03:13:07]   P5 teste R-base-DDQN parte 1 ok (8.3 min) — 46/52, 6.0 h desde o início
+[03:13:18]   P5 teste R-a050-Q1 parte 3 ok (6.2 min) — 47/52, 6.0 h desde o início
+[03:13:24]   P5 teste R-a050-Q1 parte 1 ok (6.9 min) — 48/52, 6.0 h desde o início
+[03:13:39]   P5 teste R-a050-DDQN parte 0 ok (2.8 min) — 49/52, 6.0 h desde o início
+[03:13:56]   P5 teste R-a050-DDQN parte 3 ok (1.6 min) — 50/52, 6.0 h desde o início
+[03:13:57]   P5 teste R-a050-DDQN parte 2 ok (1.6 min) — 51/52, 6.0 h desde o início
+[03:14:03]   P5 teste R-a050-DDQN parte 1 ok (1.9 min) — 52/52, 6.0 h desde o início
+[03:14:03] Fase 3: tabelas…
+[03:14:06] Pronto em 6.0 h. Resultados: revisao/p5/RESULTADOS_P5.md e revisao/p4/RESULTADOS_P4.md

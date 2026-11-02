@@ -1,0 +1,10 @@
+[A-sem-fluxo_observado] DDQN sem fluxo observado no trecho e vizinhos | semente 3: 2400 episódios
+[A-sem-fluxo_observado] semente 3 ep 300 validação: KPI 3.730 h, 9698 v·h (4.6 min)
+[A-sem-fluxo_observado] semente 3 ep 600 validação: KPI 3.616 h, 9207 v·h (9.0 min)
+[A-sem-fluxo_observado] semente 3 ep 900 validação: KPI 3.939 h, 10236 v·h (13.5 min)
+[A-sem-fluxo_observado] semente 3 ep 1200 validação: KPI 3.612 h, 9179 v·h (17.9 min)
+[A-sem-fluxo_observado] semente 3 ep 1500 validação: KPI 3.572 h, 9074 v·h (22.4 min)
+[A-sem-fluxo_observado] semente 3 ep 1800 validação: KPI 3.627 h, 9321 v·h (29.3 min)
+[A-sem-fluxo_observado] semente 3 ep 2100 validação: KPI 3.719 h, 9581 v·h (36.9 min)
+[A-sem-fluxo_observado] semente 3 ep 2400 validação: KPI 3.723 h, 9648 v·h (45.4 min)
+[A-sem-fluxo_observado] semente 3: fim (45.4 min)

@@ -1,0 +1,10 @@
+[A-sem-estrutura] DDQN sem grau do entroncamento e pista dupla | semente 2: 2400 episódios
+[A-sem-estrutura] semente 2 ep 300 validação: KPI 3.536 h, 9065 v·h (3.3 min)
+[A-sem-estrutura] semente 2 ep 600 validação: KPI 3.606 h, 9403 v·h (6.9 min)
+[A-sem-estrutura] semente 2 ep 900 validação: KPI 3.691 h, 9499 v·h (10.7 min)
+[A-sem-estrutura] semente 2 ep 1200 validação: KPI 3.786 h, 9632 v·h (14.7 min)
+[A-sem-estrutura] semente 2 ep 1500 validação: KPI 3.742 h, 9802 v·h (20.7 min)
+[A-sem-estrutura] semente 2 ep 1800 validação: KPI 3.703 h, 9614 v·h (29.4 min)
+[A-sem-estrutura] semente 2 ep 2100 validação: KPI 3.723 h, 9433 v·h (38.8 min)
+[A-sem-estrutura] semente 2 ep 2400 validação: KPI 3.913 h, 10086 v·h (47.7 min)
+[A-sem-estrutura] semente 2: fim (47.7 min)

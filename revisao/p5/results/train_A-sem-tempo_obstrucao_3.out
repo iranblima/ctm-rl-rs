@@ -1,0 +1,10 @@
+[A-sem-tempo_obstrucao] DDQN sem tempo desde o início da obstrução | semente 3: 2400 episódios
+[A-sem-tempo_obstrucao] semente 3 ep 300 validação: KPI 3.906 h, 9944 v·h (4.2 min)
+[A-sem-tempo_obstrucao] semente 3 ep 600 validação: KPI 3.925 h, 10184 v·h (8.5 min)
+[A-sem-tempo_obstrucao] semente 3 ep 900 validação: KPI 3.791 h, 9712 v·h (12.6 min)
+[A-sem-tempo_obstrucao] semente 3 ep 1200 validação: KPI 3.809 h, 9962 v·h (17.0 min)
+[A-sem-tempo_obstrucao] semente 3 ep 1500 validação: KPI 3.922 h, 10239 v·h (22.7 min)
+[A-sem-tempo_obstrucao] semente 3 ep 1800 validação: KPI 3.875 h, 10079 v·h (32.0 min)
+[A-sem-tempo_obstrucao] semente 3 ep 2100 validação: KPI 3.928 h, 10338 v·h (41.1 min)
+[A-sem-tempo_obstrucao] semente 3 ep 2400 validação: KPI 3.850 h, 10003 v·h (50.5 min)
+[A-sem-tempo_obstrucao] semente 3: fim (50.5 min)

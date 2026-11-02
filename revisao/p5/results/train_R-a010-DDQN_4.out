@@ -1,0 +1,10 @@
+[R-a010-DDQN] DDQN, α = 0,1 | semente 4: 2400 episódios
+[R-a010-DDQN] semente 4 ep 300 validação: KPI 3.631 h, 9380 v·h (4.1 min)
+[R-a010-DDQN] semente 4 ep 600 validação: KPI 3.653 h, 9382 v·h (8.4 min)
+[R-a010-DDQN] semente 4 ep 900 validação: KPI 3.680 h, 9604 v·h (13.1 min)
+[R-a010-DDQN] semente 4 ep 1200 validação: KPI 3.759 h, 9728 v·h (18.1 min)
+[R-a010-DDQN] semente 4 ep 1500 validação: KPI 3.903 h, 10277 v·h (22.9 min)
+[R-a010-DDQN] semente 4 ep 1800 validação: KPI 3.775 h, 9914 v·h (30.0 min)
+[R-a010-DDQN] semente 4 ep 2100 validação: KPI 3.673 h, 9482 v·h (37.8 min)
+[R-a010-DDQN] semente 4 ep 2400 validação: KPI 3.656 h, 9543 v·h (46.3 min)
+[R-a010-DDQN] semente 4: fim (46.3 min)
